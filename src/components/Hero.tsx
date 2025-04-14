@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
@@ -6,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import HorizontalSocialIcons from "./HorizontalSocialIcons";
 import ScrollReveal from "./ScrollReveal";
 import { ChevronDown } from "lucide-react";
+import DotField from "./DotField";
 import ReactiveHeading from "./ReactiveHeading";
 
 interface HeroProps {
@@ -93,6 +95,8 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
     <div 
       className="relative min-h-screen flex flex-col justify-center items-center text-center px-4 py-10 md:py-16 overflow-hidden bg-deep-black"
     >      
+      <DotField />
+      
       <motion.div 
         className="max-w-3xl mx-auto z-10 mt-[-6rem] md:mt-[-8rem]"
         variants={containerVariants}
