@@ -29,6 +29,9 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
     { sectionId: "contact", emoji: "✉️", tooltipEn: "Contact", tooltipHe: "צור קשר" },
   ];
 
+  // The transformY value for the progress line
+  const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "30vh"]);
+
   // Check screen size for responsive design
   useEffect(() => {
     const handleResize = () => {
@@ -70,7 +73,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
     };
   }, []);
 
-  // Mobile timeline orientation
+  // Render the appropriate timeline based on screen size
   if (isMobile) {
     return (
       <motion.div
@@ -106,7 +109,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
           style={{
             left: 0,
             right: 0,
-            width: scrollYProgress,
+            width: useTransform(scrollYProgress, [0, 1], ["0%", "100%"]),
             transformOrigin: isRtl ? "right" : "left"
           }}
         />
@@ -136,7 +139,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
           left: "50%", 
           transform: "translateX(-50%)",
           top: "-15vh",
-          height: useTransform(scrollYProgress, [0, 1], ["0%", "30vh"]),
+          height: progressHeight,
           originY: 0
         }}
       />
