@@ -178,9 +178,9 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
                   className="inline-block text-purple-600"
                   style={{ 
                     color: '#7a3df4',
-                    opacity: 1, // Explicitly set opacity to ensure visibility
-                    visibility: 'visible', // Ensure visibility
-                    textShadow: '0 0 1px rgba(122, 61, 244, 0.3)' // Add slight text shadow for better visibility
+                    opacity: 1,
+                    visibility: 'visible',
+                    textShadow: '0 0 1px rgba(122, 61, 244, 0.3)'
                   }}
                   animate={{
                     x: position.x,
@@ -205,7 +205,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
         </motion.h1>
 
         <motion.div 
-          className={`text-2xl md:text-3xl font-medium mb-8 min-h-[8em] flex items-center justify-center`}
+          className="text-2xl md:text-3xl font-medium mb-8 min-h-[8em] flex items-center justify-center"
           variants={itemVariants}
         >
           <TypeAnimation
