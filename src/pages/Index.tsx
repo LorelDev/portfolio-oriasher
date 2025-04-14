@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -31,7 +30,7 @@ const Index = () => {
     en: {
       hero: {
         greeting: "Hi, I'm Ori",
-        tagline: "A frontend developer focused on building interactive experiences",
+        tagline: "A computer science student seeking every opportunity to learn, build, improve, and grow.",
         cta: "See My Work",
         downloadResume: "Download Resume"
       },
@@ -77,7 +76,7 @@ const Index = () => {
     he: {
       hero: {
         greeting: "היי, אני אורי",
-        tagline: "מפתח פרונטאנד המתמקד בבניית חוויות אינטראקטיביות",
+        tagline: "סטודנט למדעי המחשב שמחפש כל הזדמנות ללמוד, לבנות, לשפר ולהשתפר.",
         cta: "ראה את העבודות שלי",
         downloadResume: "הורד קורות חיים"
       },
@@ -133,7 +132,6 @@ const Index = () => {
       className={`min-h-screen ${isRtl ? "font-assistant" : "font-poppins"}`}
       style={{ fontFamily: isRtl ? "'Assistant', sans-serif" : "'Poppins', sans-serif" }}
     >
-      {/* Add the scroll-based background gradient */}
       <ScrollGradientBackground />
       
       <div className={`fixed top-4 ${isRtl ? "left-4" : "right-4"} z-30`}>
