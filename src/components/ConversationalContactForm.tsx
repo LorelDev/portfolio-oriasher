@@ -42,7 +42,7 @@ const ConversationalContactForm = ({ isRtl, currentText }: ConversationalContact
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const { toast } = useToast();
 
-  const questions = {
+  const questions: { en: Question[], he: Question[] } = {
     en: [
       {
         id: "name",
