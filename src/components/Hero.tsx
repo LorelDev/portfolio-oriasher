@@ -4,6 +4,7 @@ import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
 import { motion, useAnimation } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import HorizontalSocialIcons from "./HorizontalSocialIcons";
 
 interface HeroProps {
   language: "en" | "he";
@@ -13,6 +14,14 @@ interface HeroProps {
       tagline: string;
       cta: string;
       downloadResume: string;
+    };
+    social: {
+      linkedin: string;
+      instagram: string;
+      whatsapp: string;
+      upwork: string;
+      phone: string;
+      resume: string;
     };
   };
   isRtl: boolean;
@@ -201,14 +210,17 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
         </motion.div>
 
         <motion.p 
-          className="text-xl md:text-2xl text-gray-700 mb-10"
+          className="text-xl md:text-2xl text-gray-700 mb-6"
           variants={itemVariants}
         >
           {currentText.hero.tagline}
         </motion.p>
 
+        {/* Add Horizontal Social Icons */}
+        <HorizontalSocialIcons translations={currentText.social} />
+
         <motion.div 
-          className="flex flex-wrap gap-4 justify-center"
+          className="flex flex-wrap gap-4 justify-center mt-8"
           variants={itemVariants}
         >
           <Link to="projects" smooth={true} duration={800} offset={-50}>

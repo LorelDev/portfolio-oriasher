@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-scroll";
 import Hero from "@/components/Hero";
-import SocialIcons from "@/components/SocialIcons";
+import HorizontalSocialIcons from "@/components/HorizontalSocialIcons";
 import { Send, FileText } from "lucide-react";
 
 const Index = () => {
@@ -125,8 +125,6 @@ const Index = () => {
         </Button>
       </div>
 
-      <SocialIcons isRtl={isRtl} translations={currentText.social} />
-
       <Hero 
         language={language} 
         currentText={currentText} 
@@ -205,7 +203,13 @@ const Index = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
             {currentText.contact.title}
           </h2>
-          <p className="text-xl text-center mb-12">{currentText.contact.cta}</p>
+          <p className="text-xl text-center mb-8">{currentText.contact.cta}</p>
+          
+          <div className="flex justify-center mb-8">
+            <div className="p-2 bg-white/10 backdrop-blur-sm rounded-full">
+              <HorizontalSocialIcons translations={currentText.social} />
+            </div>
+          </div>
           
           <div className="max-w-md mx-auto">
             <form className="space-y-4">

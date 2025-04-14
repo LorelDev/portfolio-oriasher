@@ -169,6 +169,11 @@
   animation: gradient-shift 15s ease infinite;
 }
 
+/* Social icon glow effect */
+.hover\:shadow-glow:hover {
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+}
+
 /* Global smooth scrolling */
 html {
   scroll-behavior: smooth;
