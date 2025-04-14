@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import MagicTrail from "./components/MagicTrail";
+import LiveDotsBackground from "./components/LiveDotsBackground";
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <MagicTrail />
+      <LiveDotsBackground color="#ffffff" />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
