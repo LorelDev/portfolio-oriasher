@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
@@ -145,66 +144,18 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
   const currentTypingSequence = typingSequences[language];
 
   return (
-    <section 
-      id="hero"
+    <div 
       className="relative min-h-screen flex flex-col justify-center items-center text-center px-4 py-10 md:py-16 overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-animated" />
       
       <motion.div 
-        className="max-w-3xl mx-auto z-10 mt-[-6rem] md:mt-[-8rem]"  // Adjusted negative margin
+        className="max-w-3xl mx-auto z-10 mt-[-6rem] md:mt-[-8rem]"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <ScrollReveal>
-          <motion.h1 
-            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text"
-            variants={itemVariants}
-          >
-            {language === "en" ? "Hi, I'm " : "היי, אני "}
-            <motion.div
-              ref={nameContainerRef}
-              animate={controls}
-              className="relative inline-flex origin-center"
-            >
-              {nameChars.map((char, index) => {
-                const position = charPositions[index] || { x: 0, y: 0, rotate: 0 };
-                
-                return (
-                  <motion.span
-                    key={index}
-                    className="inline-block text-purple-600"
-                    style={{ 
-                      color: '#7a3df4',
-                      opacity: 1,
-                      visibility: 'visible',
-                      textShadow: '0 0 1px rgba(122, 61, 244, 0.3)'
-                    }}
-                    animate={{
-                      x: position.x,
-                      y: position.y,
-                      rotate: position.rotate,
-                      transition: {
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 10
-                      }
-                    }}
-                    whileHover={{
-                      scale: 1.2,
-                      transition: { duration: 0.2 }
-                    }}
-                  >
-                    {char}
-                  </motion.span>
-                );
-              })}
-            </motion.div>
-          </motion.h1>
-        </ScrollReveal>
-
-        <ScrollReveal delay={0.2}>
           <motion.div 
             className="text-2xl md:text-3xl font-medium mb-8 min-h-[8em] flex items-center justify-center"
             variants={itemVariants}
@@ -262,14 +213,14 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
       </motion.div>
 
       <motion.div 
-        className="absolute bottom-12 w-full flex justify-center z-20"  // Adjusted bottom positioning and added z-index
+        className="absolute bottom-12 w-full flex justify-center z-20"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2, duration: 0.5 }}
       >
         <Link to="projects" smooth={true} duration={800} offset={-50}>
           <motion.div 
-            className="animate-bounce cursor-pointer text-gray-500 hover:text-gray-700 bg-white/30 backdrop-blur-sm rounded-full p-3 shadow-lg"  // Added background, backdrop blur, and shadow
+            className="animate-bounce cursor-pointer text-gray-500 hover:text-gray-700 bg-white/30 backdrop-blur-sm rounded-full p-3 shadow-lg"
             whileHover={{ scale: 1.2 }}
           >
             <svg 
@@ -289,9 +240,8 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
           </motion.div>
         </Link>
       </motion.div>
-    </section>
+    </div>
   );
 };
 
 export default Hero;
-
