@@ -1,11 +1,19 @@
 
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import { motion, useTransform } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const ScrollGradientBackground = () => {
   const { scrollProgress } = useScrollAnimation();
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  
+  // Create a motion value from the scrollProgress
+  const scrollMotionValue = useMotionValue(0);
+  
+  // Update the motion value when scrollProgress changes
+  useEffect(() => {
+    scrollMotionValue.set(scrollProgress);
+  }, [scrollProgress, scrollMotionValue]);
 
   // Check user preference for reduced motion
   useEffect(() => {
@@ -28,7 +36,7 @@ const ScrollGradientBackground = () => {
   const midwayGradient = "#f0edf9";
 
   const backgroundColors = useTransform(
-    scrollProgress,
+    scrollMotionValue,
     [0, 0.5, 1],
     [lightGradient, midwayGradient, deeperGradient]
   );
