@@ -34,36 +34,37 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
   // Initialize charPositions with default values for each character
   const [charPositions, setCharPositions] = useState(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
   
-  // Explicitly separate typing sequences for each language
-  const typingSequenceEn = [
-    "Heyyyyy",
-    1500,
-    "Maybe it's random… maybe not",
-    1500,
-    "Either way, welcome!",
-    1500,
-    "I'll use this opportunity",
-    1500,
-    "To tell you I'm not bad at what I do",
-    1500,
-    "And sometimes, it even works",
-    1500,
-  ];
-  
-  const typingSequenceHe = [
-    "שלוםםםםם",
-    1500,
-    "אולי זה מקרי… ואולי לא",
-    1500,
-    "בכל מקרה, ברוך הבא!",
-    1500,
-    "אני אנצל את ההזדמנות",
-    1500,
-    "להגיד לך שאני לא רע במה שאני עושה",
-    1500,
-    "ולפעמים זה אפילו עובד",
-    1500,
-  ];
+  // Define typing sequences for each language
+  const typingSequences = {
+    en: [
+      "Heyyyyy",
+      1500,
+      "Maybe it's random… maybe not",
+      1500,
+      "Either way, welcome!",
+      1500,
+      "I'll use this opportunity",
+      1500,
+      "To tell you I'm not bad at what I do",
+      1500,
+      "And sometimes, it even works",
+      1500,
+    ],
+    he: [
+      "שלוםםםםם",
+      1500,
+      "אולי זה מקרי… ואולי לא",
+      1500,
+      "בכל מקרה, ברוך הבא!",
+      1500,
+      "אני אנצל את ההזדמנות",
+      1500,
+      "להגיד לך שאני לא רע במה שאני עושה",
+      1500,
+      "ולפעמים זה אפילו עובד",
+      1500,
+    ]
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -87,6 +88,14 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
 
   const nameContainerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
+  
+  // Set up a key state to force re-rendering the TypeAnimation component when language changes
+  const [animationKey, setAnimationKey] = useState(0);
+  
+  // Update animation key when language changes to force re-render
+  useEffect(() => {
+    setAnimationKey(prevKey => prevKey + 1);
+  }, [language]);
   
   useEffect(() => {
     // Make sure nameChars is not empty before proceeding
@@ -145,8 +154,8 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
     };
   }, [nameChars, controls]);
 
-  // Select the correct typing sequence based on language
-  const currentTypingSequence = language === "en" ? typingSequenceEn : typingSequenceHe;
+  // Select the correct typing sequence based on current language
+  const currentTypingSequence = typingSequences[language];
 
   return (
     <section 
@@ -211,7 +220,9 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
           className="text-2xl md:text-3xl font-medium mb-8 min-h-[8em] flex items-center justify-center"
           variants={itemVariants}
         >
+          {/* Use the animation key to force re-render when language changes */}
           <TypeAnimation
+            key={animationKey}
             sequence={currentTypingSequence}
             wrapper="div"
             speed={50}
