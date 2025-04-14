@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-scroll";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface TimelineProps {
   language: "en" | "he";
@@ -19,7 +20,13 @@ interface TimelineMilestone {
 const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
   const { scrollYProgress } = useScroll();
   const [activeSection, setActiveSection] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  
+  // Use the custom hook instead of useState + useEffect for detecting mobile
+  const isMobile = useIsMobile();
+  
+  // Create all transform values at the component level, before any conditionals
+  const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "30vh"]);
+  const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   
   // Define timeline milestones
   const milestones: TimelineMilestone[] = [
@@ -28,25 +35,6 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
     { sectionId: "projects", emoji: "📱", tooltipEn: "My Project", tooltipHe: "הפרויקט שלי" },
     { sectionId: "contact", emoji: "✉️", tooltipEn: "Contact", tooltipHe: "צור קשר" },
   ];
-
-  // The transformY value for the progress line
-  const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "30vh"]);
-
-  // Check screen size for responsive design
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    // Set initial state
-    handleResize();
-    
-    // Add event listener
-    window.addEventListener("resize", handleResize);
-    
-    // Clean up
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   // Track which section is currently in view
   useEffect(() => {
@@ -73,7 +61,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
     };
   }, []);
 
-  // Render the appropriate timeline based on screen size
+  // Render mobile timeline
   if (isMobile) {
     return (
       <motion.div
@@ -109,7 +97,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
           style={{
             left: 0,
             right: 0,
-            width: useTransform(scrollYProgress, [0, 1], ["0%", "100%"]),
+            width: progressWidth,
             transformOrigin: isRtl ? "right" : "left"
           }}
         />
@@ -145,7 +133,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
       />
       
       <div className="relative flex flex-col items-center gap-16">
-        {milestones.map((milestone, index) => (
+        {milestones.map((milestone) => (
           <TooltipProvider key={milestone.sectionId}>
             <Tooltip>
               <TooltipTrigger asChild>
