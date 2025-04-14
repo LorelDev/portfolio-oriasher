@@ -1,10 +1,10 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
 import { motion, useAnimation } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import HorizontalSocialIcons from "./HorizontalSocialIcons";
+import ScrollReveal from "./ScrollReveal";
 
 interface HeroProps {
   language: "en" | "he";
@@ -28,13 +28,8 @@ interface HeroProps {
 }
 
 const Hero = ({ language, currentText, isRtl }: HeroProps) => {
-  // Initialize nameChars based on language
   const nameChars = language === "en" ? ["O", "r", "i"] : ["א", "ו", "ר", "י"];
-  
-  // Initialize charPositions with default values for each character
   const [charPositions, setCharPositions] = useState(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
-  
-  // Define typing sequences for each language
   const typingSequences = {
     en: [
       "Heyyyyy",
@@ -88,73 +83,64 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
 
   const nameContainerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
-  
-  // Set up a key state to force re-rendering the TypeAnimation component when language changes
   const [animationKey, setAnimationKey] = useState(0);
-  
-  // Update animation key when language changes to force re-render
+
   useEffect(() => {
     setAnimationKey(prevKey => prevKey + 1);
   }, [language]);
-  
+
   useEffect(() => {
-    // Make sure nameChars is not empty before proceeding
     if (nameChars.length === 0) return;
-    
+
     const handleMouseMove = (event: MouseEvent) => {
       if (nameContainerRef.current) {
         const rect = nameContainerRef.current.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
-        
+
         const distanceX = event.clientX - centerX;
         const distanceY = event.clientY - centerY;
         const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-        
+
         const maxDistance = 200;
-        
+
         if (distance < maxDistance) {
           const intensity = 1 - (distance / maxDistance);
-          
-          // Generate new positions for each character
+
           const newPositions = nameChars.map((_, index) => {
             const charOffset = index - (nameChars.length - 1) / 2;
             const angleOffset = (charOffset * Math.PI / 4) + (Math.PI / 2);
-            
+
             return {
               x: intensity * (Math.sin(angleOffset) * 20 + distanceX * 0.05),
               y: intensity * (Math.cos(angleOffset) * 20 + distanceY * 0.05),
               rotate: intensity * charOffset * 5
             };
           });
-          
-          // Update positions state
+
           setCharPositions(newPositions);
           controls.start({ scale: 1 + intensity * 0.1 });
         } else {
-          // Reset positions when mouse is too far
           setCharPositions(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
           controls.start({ scale: 1 });
         }
       }
     };
-    
+
     const handleMouseLeave = () => {
-      // Reset positions on mouse leave
       setCharPositions(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
       controls.start({ scale: 1 });
     };
-    
+
     window.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseleave", handleMouseLeave);
-    
+
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, [nameChars, controls]);
 
-  // Select the correct typing sequence based on current language
   const currentTypingSequence = typingSequences[language];
 
   return (
@@ -170,100 +156,108 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
         initial="hidden"
         animate="visible"
       >
-        <motion.h1 
-          className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text"
-          variants={itemVariants}
-        >
-          {language === "en" ? "Hi, I'm " : "היי, אני "}
-          <motion.div
-            ref={nameContainerRef}
-            animate={controls}
-            className="relative inline-flex origin-center"
+        <ScrollReveal>
+          <motion.h1 
+            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text"
+            variants={itemVariants}
           >
-            {nameChars.map((char, index) => {
-              // Ensure we have valid position data for this index
-              const position = charPositions[index] || { x: 0, y: 0, rotate: 0 };
-              
-              return (
-                <motion.span
-                  key={index}
-                  className="inline-block text-purple-600"
-                  style={{ 
-                    color: '#7a3df4',
-                    opacity: 1,
-                    visibility: 'visible',
-                    textShadow: '0 0 1px rgba(122, 61, 244, 0.3)'
-                  }}
-                  animate={{
-                    x: position.x,
-                    y: position.y,
-                    rotate: position.rotate,
-                    transition: {
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 10
-                    }
-                  }}
-                  whileHover={{
-                    scale: 1.2,
-                    transition: { duration: 0.2 }
-                  }}
-                >
-                  {char}
-                </motion.span>
-              );
-            })}
-          </motion.div>
-        </motion.h1>
-
-        <motion.div 
-          className="text-2xl md:text-3xl font-medium mb-8 min-h-[8em] flex items-center justify-center"
-          variants={itemVariants}
-        >
-          {/* Use the animation key to force re-render when language changes */}
-          <TypeAnimation
-            key={animationKey}
-            sequence={currentTypingSequence}
-            wrapper="div"
-            speed={50}
-            repeat={Infinity}
-            cursor={true}
-            className="inline-block max-w-full mx-auto"
-            style={{ 
-              display: 'block', 
-              textAlign: isRtl ? 'right' : 'left',
-              direction: isRtl ? 'rtl' : 'ltr',
-            }}
-          />
-        </motion.div>
-
-        <motion.p 
-          className="text-xl md:text-2xl text-gray-700 mb-6 gradient-text-shadow"
-          variants={itemVariants}
-        >
-          {currentText.hero.tagline}
-        </motion.p>
-
-        <HorizontalSocialIcons translations={currentText.social} />
-
-        <motion.div 
-          className="flex flex-wrap gap-4 justify-center mt-12 hero-buttons-container"
-          variants={itemVariants}
-        >
-          <Link to="projects" smooth={true} duration={800} offset={-50}>
-            <Button className="text-lg px-8 py-6 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
-              {currentText.hero.cta}
-            </Button>
-          </Link>
-          <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
-            <Button 
-              variant="outline" 
-              className="text-lg px-8 py-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            {language === "en" ? "Hi, I'm " : "היי, אני "}
+            <motion.div
+              ref={nameContainerRef}
+              animate={controls}
+              className="relative inline-flex origin-center"
             >
-              {currentText.hero.downloadResume}
-            </Button>
-          </a>
-        </motion.div>
+              {nameChars.map((char, index) => {
+                const position = charPositions[index] || { x: 0, y: 0, rotate: 0 };
+                
+                return (
+                  <motion.span
+                    key={index}
+                    className="inline-block text-purple-600"
+                    style={{ 
+                      color: '#7a3df4',
+                      opacity: 1,
+                      visibility: 'visible',
+                      textShadow: '0 0 1px rgba(122, 61, 244, 0.3)'
+                    }}
+                    animate={{
+                      x: position.x,
+                      y: position.y,
+                      rotate: position.rotate,
+                      transition: {
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 10
+                      }
+                    }}
+                    whileHover={{
+                      scale: 1.2,
+                      transition: { duration: 0.2 }
+                    }}
+                  >
+                    {char}
+                  </motion.span>
+                );
+              })}
+            </motion.div>
+          </motion.h1>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.2}>
+          <motion.div 
+            className="text-2xl md:text-3xl font-medium mb-8 min-h-[8em] flex items-center justify-center"
+            variants={itemVariants}
+          >
+            <TypeAnimation
+              key={animationKey}
+              sequence={currentTypingSequence}
+              wrapper="div"
+              speed={50}
+              repeat={Infinity}
+              cursor={true}
+              className="inline-block max-w-full mx-auto"
+              style={{ 
+                display: 'block', 
+                textAlign: isRtl ? 'right' : 'left',
+                direction: isRtl ? 'rtl' : 'ltr',
+              }}
+            />
+          </motion.div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.4}>
+          <motion.p 
+            className="text-xl md:text-2xl text-gray-700 mb-6 gradient-text-shadow"
+            variants={itemVariants}
+          >
+            {currentText.hero.tagline}
+          </motion.p>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.6}>
+          <HorizontalSocialIcons translations={currentText.social} />
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.8}>
+          <motion.div 
+            className="flex flex-wrap gap-4 justify-center mt-12 hero-buttons-container"
+            variants={itemVariants}
+          >
+            <Link to="projects" smooth={true} duration={800} offset={-50}>
+              <Button className="text-lg px-8 py-6 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                {currentText.hero.cta}
+              </Button>
+            </Link>
+            <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
+              <Button 
+                variant="outline" 
+                className="text-lg px-8 py-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              >
+                {currentText.hero.downloadResume}
+              </Button>
+            </a>
+          </motion.div>
+        </ScrollReveal>
       </motion.div>
 
       <motion.div 

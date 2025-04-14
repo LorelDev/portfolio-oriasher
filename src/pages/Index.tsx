@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -6,6 +7,8 @@ import Hero from "@/components/Hero";
 import HorizontalSocialIcons from "@/components/HorizontalSocialIcons";
 import { Send, FileText, Package } from "lucide-react";
 import VerticalTimeline from "@/components/VerticalTimeline";
+import ScrollGradientBackground from "@/components/ScrollGradientBackground";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const Index = () => {
   const [language, setLanguage] = useState<"en" | "he">("en");
@@ -130,6 +133,9 @@ const Index = () => {
       className={`min-h-screen ${isRtl ? "font-assistant" : "font-poppins"}`}
       style={{ fontFamily: isRtl ? "'Assistant', sans-serif" : "'Poppins', sans-serif" }}
     >
+      {/* Add the scroll-based background gradient */}
+      <ScrollGradientBackground />
+      
       <div className={`fixed top-4 ${isRtl ? "left-4" : "right-4"} z-30`}>
         <Button 
           onClick={toggleLanguage}
@@ -155,57 +161,77 @@ const Index = () => {
 
       <section className="py-20 px-4 bg-white relative z-10" id="projects">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-            {currentText.myApp.title}
-          </h2>
-          <div className="flex justify-center">
-            <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:scale-[1.02] max-w-4xl w-full">
-              <div className="relative h-[300px] md:h-[400px] bg-gradient-to-r from-purple-400 to-indigo-500 flex items-center justify-center">
-                <div className="absolute inset-0 opacity-20 bg-cover bg-center" style={{
-                  backgroundImage: "url('https://images.unsplash.com/photo-1498050108023-c5249f4df085')"
-                }}></div>
-                <div className="relative z-10 text-white text-center px-6">
-                  <Package size={64} className="mx-auto mb-4 text-white/80" />
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                    {currentText.myApp.title}
-                  </h3>
-                  <p className="text-lg md:text-xl mb-6 text-white/90">
-                    {currentText.myApp.description}
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    className="bg-white/20 text-white hover:bg-white/30 transition-colors duration-300 flex items-center justify-center gap-2"
-                  >
-                    {currentText.myApp.comingSoon}
-                    <Package className="h-4 w-4" />
-                  </Button>
+          <ScrollReveal>
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
+              {currentText.myApp.title}
+            </h2>
+          </ScrollReveal>
+          
+          <ScrollReveal delay={0.2}>
+            <div className="flex justify-center">
+              <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:scale-[1.02] max-w-4xl w-full">
+                <div className="relative h-[300px] md:h-[400px] bg-gradient-to-r from-purple-400 to-indigo-500 flex items-center justify-center">
+                  <div className="absolute inset-0 opacity-20 bg-cover bg-center" style={{
+                    backgroundImage: "url('https://images.unsplash.com/photo-1498050108023-c5249f4df085')"
+                  }}></div>
+                  <div className="relative z-10 text-white text-center px-6">
+                    <ScrollReveal direction="down" delay={0.3}>
+                      <Package size={64} className="mx-auto mb-4 text-white/80" />
+                    </ScrollReveal>
+                    <ScrollReveal delay={0.4}>
+                      <h3 className="text-2xl md:text-3xl font-bold mb-4">
+                        {currentText.myApp.title}
+                      </h3>
+                    </ScrollReveal>
+                    <ScrollReveal delay={0.5}>
+                      <p className="text-lg md:text-xl mb-6 text-white/90">
+                        {currentText.myApp.description}
+                      </p>
+                    </ScrollReveal>
+                    <ScrollReveal delay={0.6}>
+                      <Button 
+                        variant="outline" 
+                        className="bg-white/20 text-white hover:bg-white/30 transition-colors duration-300 flex items-center justify-center gap-2"
+                      >
+                        {currentText.myApp.comingSoon}
+                        <Package className="h-4 w-4" />
+                      </Button>
+                    </ScrollReveal>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          </div>
+              </Card>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
       <section className="py-20 px-4 bg-gray-50" id="about">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-            {currentText.about.title}
-          </h2>
+          <ScrollReveal>
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
+              {currentText.about.title}
+            </h2>
+          </ScrollReveal>
+          
           <div className="flex flex-col md:flex-row gap-8 items-center">
-            <div className="w-full md:w-1/3">
+            <ScrollReveal direction="right" className="w-full md:w-1/3">
               <img 
                 src="/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png" 
                 alt="Ori Asher" 
                 className="aspect-square rounded-full object-cover shadow-lg hover:shadow-xl transition-shadow duration-300"
               />
-            </div>
+            </ScrollReveal>
             <div className="w-full md:w-2/3">
-              <p className="text-lg mb-6">{currentText.about.bio}</p>
-              <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="hover:bg-blue-50 transition-colors duration-300">
-                  {currentText.about.downloadCv}
-                </Button>
-              </a>
+              <ScrollReveal direction="left">
+                <p className="text-lg mb-6">{currentText.about.bio}</p>
+              </ScrollReveal>
+              <ScrollReveal direction="left" delay={0.2}>
+                <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" className="hover:bg-blue-50 transition-colors duration-300">
+                    {currentText.about.downloadCv}
+                  </Button>
+                </a>
+              </ScrollReveal>
             </div>
           </div>
         </div>
@@ -213,18 +239,23 @@ const Index = () => {
 
       <section className="py-20 px-4 bg-gradient-to-br from-blue-500 to-purple-600 text-white" id="contact">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
-            {currentText.contact.title}
-          </h2>
-          <p className="text-xl text-center mb-8">{currentText.contact.cta}</p>
+          <ScrollReveal>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
+              {currentText.contact.title}
+            </h2>
+          </ScrollReveal>
           
-          <div className="flex justify-center mb-8">
+          <ScrollReveal delay={0.2}>
+            <p className="text-xl text-center mb-8">{currentText.contact.cta}</p>
+          </ScrollReveal>
+          
+          <ScrollReveal delay={0.3} className="flex justify-center mb-8">
             <div className="p-2 bg-white/10 backdrop-blur-sm rounded-full">
               <HorizontalSocialIcons translations={currentText.social} />
             </div>
-          </div>
+          </ScrollReveal>
           
-          <div className="max-w-md mx-auto">
+          <ScrollReveal delay={0.4} className="max-w-md mx-auto">
             <form className="space-y-4">
               <input 
                 type="text" 
@@ -260,13 +291,15 @@ const Index = () => {
                 </Button>
               </a>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
       <footer className="py-8 px-4 bg-gray-900 text-gray-400 text-center">
-        <p className="mb-2">{currentText.footer.message}</p>
-        <p>{currentText.footer.copyright}</p>
+        <ScrollReveal direction="up">
+          <p className="mb-2">{currentText.footer.message}</p>
+          <p>{currentText.footer.copyright}</p>
+        </ScrollReveal>
       </footer>
     </div>
   );
