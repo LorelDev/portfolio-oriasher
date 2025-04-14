@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
@@ -6,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import HorizontalSocialIcons from "./HorizontalSocialIcons";
 import ScrollReveal from "./ScrollReveal";
 import { ChevronDown } from "lucide-react";
+import MatrixBackground from "./MatrixBackground";
+import ReactiveHeading from "./ReactiveHeading";
 
 interface HeroProps {
   language: "en" | "he";
@@ -29,8 +32,32 @@ interface HeroProps {
 }
 
 const Hero = ({ language, currentText, isRtl }: HeroProps) => {
-  const nameChars = language === "en" ? ["O", "r", "i"] : ["א", "ו", "ר", "י"];
-  const [charPositions, setCharPositions] = useState(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
+  const [animationKey, setAnimationKey] = useState(0);
+
+  useEffect(() => {
+    setAnimationKey(prevKey => prevKey + 1);
+  }, [language]);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.2,
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 10, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100 }
+    }
+  };
+
   const typingSequences = {
     en: [
       "Heyyyyy",
@@ -62,92 +89,15 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
     ]
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.2,
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 10, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: "spring", stiffness: 100 }
-    }
-  };
-
-  const nameContainerRef = useRef<HTMLDivElement>(null);
-  const controls = useAnimation();
-  const [animationKey, setAnimationKey] = useState(0);
-
-  useEffect(() => {
-    setAnimationKey(prevKey => prevKey + 1);
-  }, [language]);
-
-  useEffect(() => {
-    if (nameChars.length === 0) return;
-
-    const handleMouseMove = (event: MouseEvent) => {
-      if (nameContainerRef.current) {
-        const rect = nameContainerRef.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        const distanceX = event.clientX - centerX;
-        const distanceY = event.clientY - centerY;
-        const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-
-        const maxDistance = 200;
-
-        if (distance < maxDistance) {
-          const intensity = 1 - (distance / maxDistance);
-
-          const newPositions = nameChars.map((_, index) => {
-            const charOffset = index - (nameChars.length - 1) / 2;
-            const angleOffset = (charOffset * Math.PI / 4) + (Math.PI / 2);
-
-            return {
-              x: intensity * (Math.sin(angleOffset) * 20 + distanceX * 0.05),
-              y: intensity * (Math.cos(angleOffset) * 20 + distanceY * 0.05),
-              rotate: intensity * charOffset * 5
-            };
-          });
-
-          setCharPositions(newPositions);
-          controls.start({ scale: 1 + intensity * 0.1 });
-        } else {
-          setCharPositions(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
-          controls.start({ scale: 1 });
-        }
-      }
-    };
-
-    const handleMouseLeave = () => {
-      setCharPositions(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
-      controls.start({ scale: 1 });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, [nameChars, controls]);
-
   const currentTypingSequence = typingSequences[language];
 
   return (
     <div 
       className="relative min-h-screen flex flex-col justify-center items-center text-center px-4 py-10 md:py-16 overflow-hidden bg-deep-black"
     >      
+      {/* Matrix-style animated background */}
+      <MatrixBackground />
+      
       <motion.div 
         className="max-w-3xl mx-auto z-10 mt-[-6rem] md:mt-[-8rem]"
         variants={containerVariants}
@@ -155,12 +105,11 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
         animate="visible"
       >
         <ScrollReveal>
-          <motion.h1 
-            className="text-3xl md:text-4xl font-bold mb-4 text-almost-white tracking-wide"
-            variants={itemVariants}
-          >
-            {currentText.hero.greeting}
-          </motion.h1>
+          <ReactiveHeading 
+            text={currentText.hero.greeting}
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-almost-white tracking-wide"
+            isRtl={isRtl}
+          />
         </ScrollReveal>
 
         <ScrollReveal>
