@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
