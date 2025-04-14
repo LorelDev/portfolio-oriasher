@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
@@ -7,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import HorizontalSocialIcons from "./HorizontalSocialIcons";
 import ScrollReveal from "./ScrollReveal";
 import { ChevronDown } from "lucide-react";
-import DotField from "./DotField";
 import ReactiveHeading from "./ReactiveHeading";
 
 interface HeroProps {

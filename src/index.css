@@ -144,6 +144,27 @@
   transform: scale(1.03);
 }
 
+/* Magic trail animation */
+@keyframes scaleAndFade {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+.magic-dot {
+  position: fixed;
+  pointer-events: none;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  will-change: opacity, transform;
+  animation: scaleAndFade 0.4s ease-out forwards;
+}
+
 /* Global smooth scrolling */
 html {
   scroll-behavior: smooth;
