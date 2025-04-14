@@ -1,8 +1,8 @@
 
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
-import { motion } from "framer-motion";
+import { motion, useAnimation, useMotionValue, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 interface HeroProps {
@@ -21,31 +21,27 @@ interface HeroProps {
 const Hero = ({ language, currentText, isRtl }: HeroProps) => {
   const typingTexts = {
     en: [
-      "I design",
+      "I code things that work",
       2500,
-      "I code",
+      "I write clean frontend logic",
       2500,
-      "I create experiences",
+      "I solve problems with code",
       2500,
-      "I solve problems",
+      "I turn coffee into JavaScript",
       2500,
-      "I love technology",
-      2500,
-      "I build with passion",
+      "I build interactive experiences",
       2500,
     ],
     he: [
-      "אני מעצב",
+      "אני מקודד דברים שעובדים",
       2500,
-      "אני מתכנת",
+      "אני כותב לוגיקת פרונטאנד נקייה",
       2500,
-      "אני יוצר חוויות",
+      "אני פותר בעיות עם קוד",
       2500,
-      "אני פותר בעיות",
+      "אני הופך קפה לג'אווהסקריפט",
       2500,
-      "אני אוהב טכנולוגיה",
-      2500,
-      "אני בונה עם תשוקה",
+      "אני בונה חוויות אינטראקטיביות",
       2500,
     ],
   };
@@ -70,6 +66,65 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
     }
   };
 
+  // Reference for the name element
+  const nameRef = useRef<HTMLSpanElement>(null);
+  const controls = useAnimation();
+  
+  // Set up motion values for the magnetic effect
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useTransform(y, [-30, 30], [10, -10]);
+  const rotateY = useTransform(x, [-30, 30], [-10, 10]);
+
+  // Handle mouse movement for magnetic effect
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      if (nameRef.current) {
+        const { left, top, width, height } = nameRef.current.getBoundingClientRect();
+        const centerX = left + width / 2;
+        const centerY = top + height / 2;
+        
+        const distanceX = event.clientX - centerX;
+        const distanceY = event.clientY - centerY;
+        
+        // Check if mouse is close enough to activate the effect
+        const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+        const maxDistance = 200;
+        
+        if (distance < maxDistance) {
+          // Scale the effect based on proximity
+          const factor = 1 - distance / maxDistance;
+          x.set(distanceX * factor * 0.3);
+          y.set(distanceY * factor * 0.3);
+          controls.start({
+            scale: 1 + factor * 0.1,
+            transition: { type: "spring", stiffness: 300, damping: 15 }
+          });
+        } else {
+          // Reset position when mouse is far away
+          x.set(0);
+          y.set(0);
+          controls.start({ scale: 1 });
+        }
+      }
+    };
+
+    // Reset on mouse leave
+    const handleMouseLeave = () => {
+      x.set(0);
+      y.set(0);
+      controls.start({ scale: 1 });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    nameRef.current?.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      nameRef.current?.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [controls, x, y]);
+
   return (
     <section 
       id="hero"
@@ -87,7 +142,21 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
           className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text"
           variants={itemVariants}
         >
-          {currentText.hero.greeting}
+          {language === "en" ? "Hi, I'm " : "היי, אני "}
+          <motion.span
+            ref={nameRef}
+            animate={controls}
+            style={{
+              display: "inline-block",
+              x,
+              y,
+              rotateX,
+              rotateY
+            }}
+            className="relative origin-center"
+          >
+            {language === "en" ? "Ori" : "אורי"}
+          </motion.span>
         </motion.h1>
 
         <motion.div 
@@ -120,12 +189,14 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
               {currentText.hero.cta}
             </Button>
           </Link>
-          <Button 
-            variant="outline" 
-            className="text-lg px-8 py-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
-          >
-            {currentText.hero.downloadResume}
-          </Button>
+          <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
+            <Button 
+              variant="outline" 
+              className="text-lg px-8 py-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            >
+              {currentText.hero.downloadResume}
+            </Button>
+          </a>
         </motion.div>
       </motion.div>
 
