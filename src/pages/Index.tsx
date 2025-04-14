@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -30,9 +29,7 @@ const Index = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Force rerender of sections
   useEffect(() => {
-    // Add a small delay to ensure DOM is ready
     const timer = setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
     }, 500);
@@ -40,22 +37,50 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, [language]);
 
-  const enBioLines = [
-    "I'm a computer science student at Sapir College.",
-    "Still learning. Still experimenting.",
-    "But always trying to build things that work —",
-    "both technically and emotionally.",
-    "Every line of code I write teaches me something new.",
-    "And I believe I already have a lot to offer."
+  const enBioContent = [
+    {
+      text: "I'm a computer science student at Sapir College.",
+      imagePath: "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"
+    },
+    {
+      text: "Still learning. Still experimenting.",
+      imagePath: "/lovable-uploads/3f39d795-4004-43f6-b168-58f95dcba0f0.png"
+    },
+    {
+      text: "But always trying to build things that work — both technically and emotionally.",
+      imagePath: "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"
+    },
+    {
+      text: "Every line of code I write teaches me something new.",
+      imagePath: "/lovable-uploads/3f39d795-4004-43f6-b168-58f95dcba0f0.png"
+    },
+    {
+      text: "And I believe I already have a lot to offer.",
+      imagePath: "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"
+    }
   ];
   
-  const heBioLines = [
-    "אני סטודנט למדעי המחשב במכללת ספיר.",
-    "עדיין לומד. עדיין מתנסה.",
-    "אבל תמיד מנסה לבנות דברים שעובדים —",
-    "גם טכנית, גם רגשית.",
-    "כל שורת קוד שאני כותב מלמדת אותי משהו חדש.",
-    "ואני מאמין שיש לי כבר הרבה מה להציע."
+  const heBioContent = [
+    {
+      text: "אני סטודנט למדעי המחשב במכללת ספיר.",
+      imagePath: "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"
+    },
+    {
+      text: "עדיין לומד. עדיין מתנסה.",
+      imagePath: "/lovable-uploads/3f39d795-4004-43f6-b168-58f95dcba0f0.png"
+    },
+    {
+      text: "אבל תמיד מנסה לבנות דברים שעובדים — גם טכנית, גם רגשית.",
+      imagePath: "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"
+    },
+    {
+      text: "כל שורת קוד שאני כותב מלמדת אותי משהו חדש.",
+      imagePath: "/lovable-uploads/3f39d795-4004-43f6-b168-58f95dcba0f0.png"
+    },
+    {
+      text: "ואני מאמין שיש לי כבר הרבה מה להציע.",
+      imagePath: "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"
+    }
   ];
 
   const content = {
@@ -115,7 +140,7 @@ const Index = () => {
       },
       about: {
         title: "קצת עלי",
-        bio: "אני סטודנט למדעי המחשב במכללת ספיר, ומפתח פרונטאנד בתחילת הדרך. אני עדיין לומד, עדיין מתנסה, אבל עם רצון ברור לבנות דברים שעובדים באמת – גם טכנית, גם אנושית. הקוד שאני כותב משתפר משורה לשורה, ואני משתדל לשמור על ראש פתוח וסטנדרטים גבוהים. יש לי הרבה מה ללמוד, אבל גם לא מעט מה להציע כבר עכשיו.",
+        bio: "אני סטודנט למדעי המחשב במכללת ספיר, ומפתח פרונטאנד בתחילת הדרך. אני עדיין לומד, עדיין מתנסה, אבל עם רצון ברור לבנות דברים שעובדים באמת – גם טכנית, גם אנושית. הקוד שאני כותב משתפר משורה לשורה, ואני משתדל לשמור על ראש פתוח וסטנדרטים גבוהים. יש לי הרבה מה ללמוד, אבל גם לא מעט מה להציע עכשיו.",
         downloadCv: "הורד קו״ח",
         showAll: "הצג הכל"
       },
@@ -157,7 +182,7 @@ const Index = () => {
 
   const currentText = content[language];
   const isRtl = language === "he";
-  const currentBioLines = language === "en" ? enBioLines : heBioLines;
+  const currentBioContent = language === "en" ? enBioContent : heBioContent;
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -241,9 +266,8 @@ const Index = () => {
 
       <Separator className="border-dark-gray relative z-10" />
 
-      {/* The About section with the ScrollingBio component */}
       <ScrollingBio 
-        bioLines={currentBioLines}
+        bioContent={currentBioContent}
         language={language}
         isRtl={isRtl}
         title={currentText.about.title}

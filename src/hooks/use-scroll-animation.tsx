@@ -6,6 +6,8 @@ export function useScrollAnimation() {
   const [viewportHeight, setViewportHeight] = useState(0);
   const [documentHeight, setDocumentHeight] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isScrollingDown, setIsScrollingDown] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     // Set initial values
@@ -13,9 +15,17 @@ export function useScrollAnimation() {
     setDocumentHeight(document.body.scrollHeight);
     
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      const currentScrollY = window.scrollY;
+      
+      // Detect scroll direction
+      setIsScrollingDown(currentScrollY > lastScrollY);
+      setLastScrollY(currentScrollY);
+      
+      // Update scroll position
+      setScrollY(currentScrollY);
+      
       // Calculate scroll progress as a percentage (0 to 1)
-      const progress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+      const progress = currentScrollY / (document.body.scrollHeight - window.innerHeight);
       setScrollProgress(Math.min(Math.max(progress, 0), 1));
     };
     
@@ -33,12 +43,13 @@ export function useScrollAnimation() {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [lastScrollY]);
 
   return {
     scrollY,
     viewportHeight,
     documentHeight,
     scrollProgress,
+    isScrollingDown,
   };
 }

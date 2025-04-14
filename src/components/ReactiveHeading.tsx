@@ -34,10 +34,9 @@ const ReactiveHeading: React.FC<ReactiveHeadingProps> = ({ text, className, isRt
       if (distance < maxDistance) {
         const intensity = 1 - (distance / maxDistance);
 
-        const newPositions = Array.from({ length: text.length }).map((_, index) => {
+        const newPositions = text.split('').map((_, index) => {
           // For RTL, we need to adjust the character position calculations
-          const adjustedIndex = isRtl ? text.length - 1 - index : index;
-          const charOffset = adjustedIndex - (text.length - 1) / 2;
+          const charOffset = index - (text.length - 1) / 2;
           const angleOffset = (charOffset * Math.PI / 4) + (Math.PI / 2);
 
           // Reduced maximum movement to 5px
@@ -48,8 +47,7 @@ const ReactiveHeading: React.FC<ReactiveHeadingProps> = ({ text, className, isRt
           };
         });
 
-        // For RTL text, we need to reverse the positions array to match character order
-        setCharPositions(isRtl ? newPositions.reverse() : newPositions);
+        setCharPositions(newPositions);
       } else {
         setCharPositions(Array(text.length).fill({ x: 0, y: 0, rotate: 0 }));
       }
@@ -68,35 +66,43 @@ const ReactiveHeading: React.FC<ReactiveHeadingProps> = ({ text, className, isRt
     };
   }, [text.length, isRtl]);
 
+  // Correctly display RTL text by rendering characters in visual order
+  const characters = isRtl ? text.split('').reverse() : text.split('');
+
   return (
     <h1
       ref={headingRef}
-      className={`flex justify-center items-center ${isRtl ? 'flex-row-reverse' : 'flex-row'} ${className}`}
+      className={`flex ${isRtl ? 'flex-row-reverse' : 'flex-row'} justify-center items-center ${className}`}
       style={{ direction: isRtl ? 'rtl' : 'ltr' }}
     >
-      {text.split('').map((char, index) => (
-        <motion.span
-          key={index}
-          animate={{
-            x: charPositions[index]?.x || 0,
-            y: charPositions[index]?.y || 0,
-            rotate: charPositions[index]?.rotate || 0,
-          }}
-          transition={{
-            type: "spring",
-            stiffness: 60, // Reduced stiffness for smoother animation
-            damping: 20    // Increased damping for less bounciness
-          }}
-          className="inline-block"
-          style={{ 
-            originX: 0.5, 
-            originY: 0.5,
-            display: 'inline-block', // Ensure proper display for RTL
-          }}
-        >
-          {char === ' ' ? '\u00A0' : char}
-        </motion.span>
-      ))}
+      {characters.map((char, index) => {
+        // For RTL text, we need to reverse the index for animation positions
+        const animIndex = isRtl ? text.length - 1 - index : index;
+        
+        return (
+          <motion.span
+            key={index}
+            animate={{
+              x: charPositions[animIndex]?.x || 0,
+              y: charPositions[animIndex]?.y || 0,
+              rotate: charPositions[animIndex]?.rotate || 0,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 60, // Reduced stiffness for smoother animation
+              damping: 20    // Increased damping for less bounciness
+            }}
+            className="inline-block"
+            style={{ 
+              originX: 0.5, 
+              originY: 0.5,
+              display: 'inline-block', // Ensure proper display for RTL
+            }}
+          >
+            {char === ' ' ? '\u00A0' : char}
+          </motion.span>
+        );
+      })}
     </h1>
   );
 };

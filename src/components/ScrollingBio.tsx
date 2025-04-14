@@ -1,11 +1,15 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "./ScrollReveal";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ScrollingBioProps {
-  bioLines: string[];
+  bioContent: {
+    text: string;
+    imagePath?: string;
+  }[];
   language: "en" | "he";
   isRtl: boolean;
   title: string;
@@ -13,61 +17,58 @@ interface ScrollingBioProps {
 }
 
 const ScrollingBio: React.FC<ScrollingBioProps> = ({
-  bioLines,
+  bioContent,
   language,
   isRtl,
   title,
   showAllLabel
 }) => {
-  const [visibleLines, setVisibleLines] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [isScrollLocked, setIsScrollLocked] = useState(true);
   const [hasShownAll, setHasShownAll] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const previousScrollY = useRef(0);
-
+  const scrollThresholdRef = useRef<number>(0);
+  const accumulatedDeltaRef = useRef<number>(0);
+  
+  // Higher number means less sensitive scroll
+  const scrollSensitivity = 120; 
+  
+  const isMobile = useIsMobile();
+  
   // Background color steps from dark to lighter
   const backgroundSteps = [
-    "#0f0f0f", "#131313", "#161616", "#1a1a1a", "#1d1d1d", "#212121", "#222222"
+    "#0f0f0f", "#131313", "#161616", "#1a1a1a", "#1d1d1d", "#212121", "#222222", 
+    "#262626", "#2a2a2a", "#2e2e2e", "#323232", "#363636", "#3a3a3a", "#3e3e3e"
   ];
 
-  // Get the current background color based on visible lines
+  // Get current background color based on current slide
   const currentBgColor = backgroundSteps[
-    Math.min(visibleLines, backgroundSteps.length - 1)
+    Math.min(currentSlide, backgroundSteps.length - 1)
   ];
 
-  // Display the first line after component mounts
+  // Display the first slide after component mounts
   useEffect(() => {
-    // Small delay to ensure things are set up
     const timer = setTimeout(() => {
-      if (visibleLines === 0) {
-        setVisibleLines(1);
+      if (currentSlide === 0) {
+        setCurrentSlide(1);
       }
     }, 500);
     
     return () => clearTimeout(timer);
   }, []);
 
-  // Release scroll lock after component mounts if on mobile
+  // Auto-advance for mobile users
   useEffect(() => {
-    const checkIfMobile = () => {
-      if (window.innerWidth < 768) {
-        // On mobile, show all content immediately after a short delay
-        setTimeout(() => {
-          setVisibleLines(bioLines.length);
-          setIsScrollLocked(false);
-          setHasShownAll(true);
-        }, 1000);
-      }
-    };
-    
-    checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
-    
-    return () => {
-      window.removeEventListener('resize', checkIfMobile);
-    };
-  }, [bioLines.length]);
+    if (isMobile) {
+      const timer = setTimeout(() => {
+        setCurrentSlide(bioContent.length);
+        setIsScrollLocked(false);
+        setHasShownAll(true);
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isMobile, bioContent.length]);
 
   // Handle manual wheel events
   useEffect(() => {
@@ -76,28 +77,31 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
       
       e.preventDefault();
       
-      // Detect scroll direction
-      if (e.deltaY > 0 && visibleLines < bioLines.length) {
-        // Scrolling down - reveal next line
-        setVisibleLines(prev => Math.min(prev + 1, bioLines.length));
-        
-        // Log for debugging
-        console.log('Revealing line', visibleLines + 1, 'of', bioLines.length);
-        console.log('New background color:', backgroundSteps[Math.min(visibleLines + 1, backgroundSteps.length - 1)]);
-      } else if (e.deltaY < 0 && visibleLines > 0) {
-        // Scrolling up - hide last line
-        setVisibleLines(prev => Math.max(prev - 1, 0));
-      }
+      // Accumulate delta Y for less sensitive scrolling
+      accumulatedDeltaRef.current += e.deltaY;
       
-      // Check if all lines are revealed
-      if (visibleLines >= bioLines.length - 1) {
-        setTimeout(() => {
-          setIsScrollLocked(false);
-          setHasShownAll(true);
-          
-          // Log for debugging
-          console.log('All lines revealed, unlocking scroll');
-        }, 1000);
+      // Only proceed if we've accumulated enough scroll
+      if (Math.abs(accumulatedDeltaRef.current) >= scrollSensitivity) {
+        // Detect scroll direction
+        if (accumulatedDeltaRef.current > 0 && currentSlide < bioContent.length) {
+          // Scrolling down - advance to next slide
+          setCurrentSlide(prev => Math.min(prev + 1, bioContent.length));
+          console.log(`Advancing to slide ${currentSlide + 1} of ${bioContent.length}`);
+        } else if (accumulatedDeltaRef.current < 0 && currentSlide > 0) {
+          // Scrolling up - go back a slide
+          setCurrentSlide(prev => Math.max(prev - 1, 0));
+        }
+        
+        // Reset accumulated delta
+        accumulatedDeltaRef.current = 0;
+        
+        // Check if all slides are revealed
+        if (currentSlide >= bioContent.length - 1) {
+          setTimeout(() => {
+            setIsScrollLocked(false);
+            setHasShownAll(true);
+          }, 1000);
+        }
       }
     };
     
@@ -111,7 +115,7 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
         element.removeEventListener('wheel', handleWheel);
       }
     };
-  }, [isScrollLocked, visibleLines, bioLines.length, backgroundSteps]);
+  }, [isScrollLocked, currentSlide, bioContent.length]);
 
   // Handle touch events for mobile
   useEffect(() => {
@@ -130,19 +134,19 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
       const diff = touchStartY - touchY;
       
       // Threshold to determine if it's a significant swipe
-      if (Math.abs(diff) > 20) {
-        if (diff > 0 && visibleLines < bioLines.length) {
-          // Swiping up - reveal next line
-          setVisibleLines(prev => Math.min(prev + 1, bioLines.length));
-        } else if (diff < 0 && visibleLines > 0) {
-          // Swiping down - hide last line
-          setVisibleLines(prev => Math.max(prev - 1, 0));
+      if (Math.abs(diff) > 50) {
+        if (diff > 0 && currentSlide < bioContent.length) {
+          // Swiping up - advance to next slide
+          setCurrentSlide(prev => Math.min(prev + 1, bioContent.length));
+        } else if (diff < 0 && currentSlide > 0) {
+          // Swiping down - go back a slide
+          setCurrentSlide(prev => Math.max(prev - 1, 0));
         }
         
         touchStartY = touchY;
         
-        // Check if all lines are revealed
-        if (visibleLines >= bioLines.length - 1) {
+        // Check if all slides are revealed
+        if (currentSlide >= bioContent.length - 1) {
           setTimeout(() => {
             setIsScrollLocked(false);
             setHasShownAll(true);
@@ -163,19 +167,24 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
         element.removeEventListener('touchmove', handleTouchMove);
       }
     };
-  }, [isScrollLocked, visibleLines, bioLines.length]);
+  }, [isScrollLocked, currentSlide, bioContent.length]);
 
-  // Show all lines function
+  // Show all slides function
   const handleShowAll = () => {
-    setVisibleLines(bioLines.length);
+    setCurrentSlide(bioContent.length);
     setIsScrollLocked(false);
     setHasShownAll(true);
   };
 
-  // Animation variants for text lines
-  const lineVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  // Animation variants for slide content
+  const slideVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } }
+  };
+
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: "easeOut" } }
   };
 
   return (
@@ -185,51 +194,83 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
       id="about"
       style={{ 
         backgroundColor: currentBgColor,
-        transition: "background-color 0.7s ease-out",
+        transition: "background-color 0.8s ease-out",
       }}
     >
-      <div 
-        ref={containerRef}
-        className="container mx-auto px-4"
-      >
+      <div className="container mx-auto px-4">
         <ScrollReveal>
           <h2 className="text-3xl md:text-4xl font-medium mb-12 text-center tracking-wide">
             {title}
           </h2>
         </ScrollReveal>
         
-        <div className="py-8 flex flex-col md:flex-row gap-12 items-center">
-          <ScrollReveal direction="right" className="w-full md:w-1/3">
-            <div className="relative overflow-hidden">
-              <img 
-                src="/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png" 
-                alt="Profile" 
-                className="aspect-square object-cover grayscale hover:grayscale-0 transition-all duration-500"
-              />
-              <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
-            </div>
-          </ScrollReveal>
-          
-          <div className={`w-full md:w-2/3 space-y-6 py-8 ${isRtl ? "text-right" : "text-left"}`}>
-            {bioLines.map((line, index) => (
-              <motion.p
-                key={index}
-                variants={lineVariants}
+        <div className={`flex flex-col lg:flex-row gap-12 items-center py-8 ${isRtl ? "lg:flex-row-reverse" : ""}`}>
+          {/* Image Column */}
+          <div className="w-full lg:w-1/2 flex justify-center">
+            {bioContent.map((slide, index) => (
+              <motion.div
+                key={`img-${index}`}
+                className="relative w-full max-w-md aspect-square"
                 initial="hidden"
-                animate={visibleLines > index ? "visible" : "hidden"}
-                className="text-lg text-almost-white leading-relaxed"
+                animate={currentSlide > index ? "visible" : "hidden"}
+                variants={imageVariants}
+                style={{ 
+                  display: currentSlide > index ? 'block' : 'none',
+                  position: currentSlide > index ? 'absolute' : 'relative',
+                  zIndex: index,
+                }}
+              >
+                {slide.imagePath && (
+                  <div className="relative overflow-hidden">
+                    <img 
+                      src={slide.imagePath || "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"} 
+                      alt={`Slide ${index + 1}`} 
+                      className="w-full aspect-square object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                    />
+                    <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+            {/* Default profile image when no slides are shown */}
+            <motion.div
+              className="relative w-full max-w-md aspect-square"
+              initial={{ opacity: 1 }}
+              animate={{ opacity: currentSlide > 0 ? 0 : 1 }}
+              style={{ display: currentSlide > 0 ? 'none' : 'block' }}
+            >
+              <div className="relative overflow-hidden">
+                <img 
+                  src="/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png" 
+                  alt="Profile" 
+                  className="w-full aspect-square object-cover grayscale"
+                />
+                <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
+              </div>
+            </motion.div>
+          </div>
+          
+          {/* Text Column */}
+          <div className={`w-full lg:w-1/2 space-y-6 ${isRtl ? "text-right" : "text-left"}`}>
+            {bioContent.map((slide, index) => (
+              <motion.p
+                key={`text-${index}`}
+                variants={slideVariants}
+                initial="hidden"
+                animate={currentSlide > index ? "visible" : "hidden"}
+                className="text-lg md:text-xl text-almost-white leading-relaxed"
                 style={{ 
                   direction: isRtl ? "rtl" : "ltr",
                 }}
               >
-                {line}
+                {slide.text}
               </motion.p>
             ))}
             
             {!hasShownAll && (
               <motion.div
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                animate={{ opacity: currentSlide > 0 ? 1 : 0 }}
                 transition={{ delay: 1, duration: 0.5 }}
                 className="mt-8 flex justify-center"
               >
@@ -242,7 +283,7 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
         </div>
       </div>
       
-      {!hasShownAll && visibleLines === 0 && (
+      {!hasShownAll && currentSlide === 0 && (
         <motion.div 
           className="absolute bottom-12 w-full flex justify-center"
           initial={{ opacity: 0, y: 10 }}
@@ -253,6 +294,20 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
             {isRtl ? "גלול למטה כדי להמשיך" : "Scroll down to continue"}
           </div>
         </motion.div>
+      )}
+      
+      {/* Slide indicators */}
+      {!hasShownAll && bioContent.length > 1 && (
+        <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2">
+          {bioContent.map((_, index) => (
+            <div 
+              key={`indicator-${index}`}
+              className={`w-2 h-2 rounded-full transition-all ${
+                currentSlide > index ? "bg-white" : "bg-gray-600"
+              }`}
+            />
+          ))}
+        </div>
       )}
     </div>
   );
