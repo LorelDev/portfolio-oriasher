@@ -47,16 +47,18 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
       2500,
     ],
     he: [
-      "אני מקודד דברים שעובדים",
-      2500,
-      "אני כותב לוגיקת פרונטאנד נקייה",
-      2500,
-      "אני פותר בעיות עם קוד",
-      2500,
-      "אני הופך קפה לג'אווהסקריפט",
-      2500,
-      "אני בונה חוויות אינטראקטיביות",
-      2500,
+      "שלוםםםםם",
+      1500,
+      "אולי זה מקרי… ואולי לא",
+      1500,
+      "בכל מקרה, ברוך הבא!",
+      1500,
+      "אני אנצל את ההזדמנות",
+      1500,
+      "להגיד לך שאני לא רע במה שאני עושה",
+      1500,
+      "ולפעמים זה אפילו עובד",
+      1500,
     ],
   };
 
@@ -200,16 +202,21 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
         </motion.h1>
 
         <motion.div 
-          className="text-2xl md:text-3xl font-medium mb-8 min-h-[2em] flex items-center justify-center"
+          className={`text-2xl md:text-3xl font-medium mb-8 min-h-[8em] flex items-center justify-center ${isRtl ? "text-right" : "text-left"}`}
           variants={itemVariants}
         >
           <TypeAnimation
             sequence={typingTexts[language]}
-            wrapper="span"
+            wrapper="div"
             speed={50}
             repeat={Infinity}
             cursor={true}
-            className={`inline-block ${isRtl ? "text-right" : "text-left"}`}
+            className={`inline-block max-w-full ${isRtl ? "text-right" : "text-left"} mx-auto`}
+            style={{ 
+              display: 'block', 
+              textAlign: isRtl ? 'right' : 'left',
+              direction: isRtl ? 'rtl' : 'ltr',
+            }}
           />
         </motion.div>
 

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -124,7 +125,11 @@ const Index = () => {
   const bgOpacity = Math.min(scrollPosition / 1000, 0.2);
 
   return (
-    <div dir={isRtl ? "rtl" : "ltr"} className={`min-h-screen ${isRtl ? "font-assistant" : "font-poppins"}`}>
+    <div 
+      dir={isRtl ? "rtl" : "ltr"} 
+      className={`min-h-screen ${isRtl ? "font-assistant" : "font-poppins"}`}
+      style={{ fontFamily: isRtl ? "'Assistant', sans-serif" : "'Poppins', sans-serif" }}
+    >
       <div className={`fixed top-4 ${isRtl ? "left-4" : "right-4"} z-30`}>
         <Button 
           onClick={toggleLanguage}
