@@ -1,10 +1,9 @@
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "./ScrollReveal";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, ArrowDownIcon } from "lucide-react";
 
 interface ScrollingBioProps {
   bioContent: {
@@ -14,357 +13,246 @@ interface ScrollingBioProps {
   language: "en" | "he";
   isRtl: boolean;
   title: string;
-  showAllLabel: string;
+  showAllLabel?: string;
 }
-
-// Color palette for text variation (soft, elegant, dark-friendly)
-const colorPalette = [
-  "#F2F2F2", // white
-  "#7AD3F4", // soft blue
-  "#F0B37E", // amber
-  "#A3E3A1", // mint green
-  "#F97AA8", // light rose
-  "#C4B5FD", // lavender
-  "#F9D56E", // soft yellow
-];
-
-// Font variations for text rhythm
-const fontVariations = [
-  { weight: 400, size: "text-lg md:text-xl", spacing: "tracking-normal" },
-  { weight: 500, size: "text-lg md:text-xl", spacing: "tracking-wide" },
-  { weight: 300, size: "text-xl md:text-2xl", spacing: "tracking-normal" },
-  { weight: 600, size: "text-base md:text-lg", spacing: "tracking-tight" },
-  { weight: 400, size: "text-lg md:text-xl", spacing: "tracking-wider" },
-];
-
-// Background steps from dark to lighter
-const backgroundSteps = [
-  "#0f0f0f", "#131313", "#161616", "#1a1a1a", "#1d1d1d", "#212121", "#222222", 
-  "#262626", "#2a2a2a", "#2e2e2e", "#323232", "#363636", "#3a3a3a", "#3e3e3e"
-];
 
 const ScrollingBio: React.FC<ScrollingBioProps> = ({
   bioContent,
   language,
   isRtl,
   title,
-  showAllLabel
+  showAllLabel = "Show All"
 }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isScrollLocked, setIsScrollLocked] = useState(true);
-  const [hasShownAll, setHasShownAll] = useState(false);
-  const [isReplaying, setIsReplaying] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [viewMode, setViewMode] = useState<'preview' | 'all'>('preview');
+  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const accumulatedDeltaRef = useRef<number>(0);
   
-  // Higher number means less sensitive scroll (adjusted up from 120)
-  const scrollSensitivity = 180; 
-  
-  const isMobile = useIsMobile();
-  
-  // Get current background color based on current slide
-  const currentBgColor = backgroundSteps[
-    Math.min(currentSlide, backgroundSteps.length - 1)
+  // Color palette for text variation
+  const colorPalette = [
+    "#F2F2F2", // white
+    "#7AD3F4", // soft blue
+    "#F0B37E", // amber
+    "#A3E3A1", // mint green
+    "#F97AA8", // light rose
+    "#C4B5FD", // lavender
   ];
 
-  // Reset the experience
-  const handleReplay = () => {
-    setCurrentSlide(1);
-    setIsScrollLocked(true);
-    setHasShownAll(false);
-    setIsReplaying(true);
-    
-    // Smooth scroll back to the top of the section
-    sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-    
-    // Set replaying state back to false after animation completes
-    setTimeout(() => {
-      setIsReplaying(false);
-    }, 1000);
-  };
-
-  // Display the first slide after component mounts
+  // Track section visibility for animations
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (currentSlide === 0) {
-        setCurrentSlide(1);
-      }
-    }, 500);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.25 }
+    );
     
-    return () => clearTimeout(timer);
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
   }, []);
 
-  // Auto-advance for mobile users (but not immediately)
+  // Auto-advance text for initial display
   useEffect(() => {
-    if (isMobile) {
-      const timer = setTimeout(() => {
-        if (currentSlide <= 1) {
-          setCurrentSlide(2); // Just advance to the second slide to get started
-        }
-      }, 1200);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [isMobile, currentSlide]);
+    if (!isVisible || viewMode === 'all') return;
+    
+    const timer = setTimeout(() => {
+      if (activeIndex < bioContent.length - 1) {
+        setActiveIndex(prev => prev + 1);
+      }
+    }, 3000);
+    
+    return () => clearTimeout(timer);
+  }, [activeIndex, isVisible, bioContent.length, viewMode]);
 
-  // Handle manual wheel events
-  useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      if (!isScrollLocked || !sectionRef.current || isReplaying) return;
-      
-      e.preventDefault();
-      
-      // Accumulate delta Y for less sensitive scrolling
-      accumulatedDeltaRef.current += e.deltaY;
-      
-      // Only proceed if we've accumulated enough scroll
-      if (Math.abs(accumulatedDeltaRef.current) >= scrollSensitivity) {
-        // Detect scroll direction
-        if (accumulatedDeltaRef.current > 0 && currentSlide < bioContent.length) {
-          // Scrolling down - advance to next slide
-          setCurrentSlide(prev => Math.min(prev + 1, bioContent.length));
-        } else if (accumulatedDeltaRef.current < 0 && currentSlide > 0) {
-          // Scrolling up - go back a slide
-          setCurrentSlide(prev => Math.max(prev - 1, 0));
-        }
-        
-        // Reset accumulated delta
-        accumulatedDeltaRef.current = 0;
-        
-        // Check if all slides are revealed
-        if (currentSlide >= bioContent.length - 1) {
-          setTimeout(() => {
-            setIsScrollLocked(false);
-            setHasShownAll(true);
-          }, 1000);
-        }
-      }
-    };
-    
-    const element = sectionRef.current;
-    if (element && isScrollLocked) {
-      element.addEventListener('wheel', handleWheel, { passive: false });
+  // Handle next/prev navigation
+  const handleNext = () => {
+    if (activeIndex < bioContent.length - 1) {
+      setActiveIndex(prev => prev + 1);
     }
-    
-    return () => {
-      if (element) {
-        element.removeEventListener('wheel', handleWheel);
-      }
-    };
-  }, [isScrollLocked, currentSlide, bioContent.length, isReplaying]);
-
-  // Handle touch events for mobile
-  useEffect(() => {
-    let touchStartY = 0;
-    
-    const handleTouchStart = (e: TouchEvent) => {
-      if (!isScrollLocked || isReplaying) return;
-      touchStartY = e.touches[0].clientY;
-    };
-    
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!isScrollLocked || !sectionRef.current || isReplaying) return;
-      
-      e.preventDefault();
-      const touchY = e.touches[0].clientY;
-      const diff = touchStartY - touchY;
-      
-      // Use a gentler threshold for mobile (down from 50)
-      if (Math.abs(diff) > 30) {
-        if (diff > 0 && currentSlide < bioContent.length) {
-          // Swiping up - advance to next slide
-          setCurrentSlide(prev => Math.min(prev + 1, bioContent.length));
-        } else if (diff < 0 && currentSlide > 0) {
-          // Swiping down - go back a slide
-          setCurrentSlide(prev => Math.max(prev - 1, 0));
-        }
-        
-        touchStartY = touchY;
-        
-        // Check if all slides are revealed
-        if (currentSlide >= bioContent.length - 1) {
-          setTimeout(() => {
-            setIsScrollLocked(false);
-            setHasShownAll(true);
-          }, 1000);
-        }
-      }
-    };
-    
-    const element = sectionRef.current;
-    if (element && isScrollLocked) {
-      element.addEventListener('touchstart', handleTouchStart, { passive: true });
-      element.addEventListener('touchmove', handleTouchMove, { passive: false });
+  };
+  
+  const handlePrev = () => {
+    if (activeIndex > 0) {
+      setActiveIndex(prev => prev - 1);
     }
-    
-    return () => {
-      if (element) {
-        element.removeEventListener('touchstart', handleTouchStart);
-        element.removeEventListener('touchmove', handleTouchMove);
-      }
-    };
-  }, [isScrollLocked, currentSlide, bioContent.length, isReplaying]);
-
-  // Show all slides function
+  };
+  
+  // Show all text
   const handleShowAll = () => {
-    setCurrentSlide(bioContent.length);
-    setIsScrollLocked(false);
-    setHasShownAll(true);
+    setViewMode('all');
+  };
+  
+  // Reset to preview mode
+  const handleReset = () => {
+    setActiveIndex(0);
+    setViewMode('preview');
   };
 
-  // Animation variants for text lines
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({ 
-      opacity: 1, 
-      y: 0, 
-      transition: { 
-        duration: 0.7, 
-        delay: i * 0.15,
-        ease: [0.22, 1, 0.36, 1] 
-      } 
-    })
-  };
-
-  const fadeVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 0.7, transition: { duration: 0.5 } }
-  };
-
-  // Get background image path from first slide (if available)
-  const backgroundImagePath = bioContent[0].imagePath || "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png";
+  // Get background image from first slide
+  const backgroundImageUrl = bioContent[0]?.imagePath || "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png";
 
   return (
     <div 
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col items-center justify-center py-16 z-10 overflow-hidden"
+      className="relative min-h-screen flex flex-col items-center justify-center py-16 z-10 bg-deep-black overflow-hidden"
       id="about"
-      style={{ 
-        backgroundColor: currentBgColor,
-        transition: "background-color 0.8s ease-out",
-      }}
+      dir={isRtl ? "rtl" : "ltr"}
     >
-      {/* Background Image Layer */}
+      {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
-        <motion.img
-          src={backgroundImagePath}
-          alt="Background"
-          className="object-cover w-full h-full opacity-30 blur-[2px]"
+        <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: Math.max(0.15, 0.3 - (currentSlide * 0.03)) }}
-          transition={{ duration: 0.8 }}
-        />
-        <motion.div 
-          initial="hidden"
-          animate={currentSlide > 0 ? "visible" : "hidden"}
-          variants={fadeVariants}
-          className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0f0f0fa0] to-[#0f0f0f] z-10"
-        />
+          animate={{ opacity: isVisible ? 1 : 0 }}
+          transition={{ duration: 1 }}
+          className="relative w-full h-full"
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent from-10% via-deep-black/80 via-50% to-deep-black to-90% z-10" />
+          <img
+            src={backgroundImageUrl}
+            alt="Background"
+            className="object-cover object-center w-full h-full opacity-40"
+          />
+        </motion.div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-20">
+      {/* Content Container */}
+      <div className="container mx-auto px-4 relative z-20 max-w-4xl">
         <ScrollReveal>
           <h2 className="text-3xl md:text-4xl font-medium mb-12 text-center tracking-wide">
             {title}
           </h2>
         </ScrollReveal>
         
-        <div className={`flex flex-col-reverse items-center justify-center py-8 max-w-3xl mx-auto`}>
-          {/* Text Column */}
-          <div 
-            className={`w-full space-y-6 ${isRtl ? "text-right" : "text-left"} pt-10`}
-            style={{ direction: isRtl ? "rtl" : "ltr" }}
-          >
-            {bioContent.map((slide, index) => {
-              // Get text style variations for this line
-              const variation = fontVariations[index % fontVariations.length];
-              const textColor = colorPalette[index % colorPalette.length];
+        <div className="flex flex-col items-center justify-center">
+          {/* Preview Mode */}
+          {viewMode === 'preview' && (
+            <div className="relative text-center space-y-4 min-h-[300px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.6 }}
+                  className="mb-8 px-4"
+                >
+                  <p
+                    className="text-xl md:text-2xl leading-relaxed"
+                    style={{
+                      color: colorPalette[activeIndex % colorPalette.length],
+                      textShadow: "0px 0px 15px rgba(0,0,0,0.5)"
+                    }}
+                  >
+                    {bioContent[activeIndex].text}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
               
-              return (
-                <motion.p
-                  key={`text-${index}`}
-                  custom={index}
-                  variants={textVariants}
-                  initial="hidden"
-                  animate={currentSlide > index ? "visible" : "hidden"}
-                  className={`${variation.size} ${variation.spacing} leading-relaxed text-center`}
-                  style={{ 
-                    direction: isRtl ? "rtl" : "ltr",
-                    fontWeight: variation.weight,
-                    color: textColor,
-                    textShadow: "0px 0px 2px rgba(0,0,0,0.5)" // Light text shadow for readability
-                  }}
+              {/* Navigation Indicators */}
+              <div className="flex justify-center space-x-2 mt-8">
+                {bioContent.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === activeIndex 
+                        ? `bg-${colorPalette[index % colorPalette.length].substring(1)} scale-125` 
+                        : "bg-gray-500/50"
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+              
+              {/* Navigation Buttons */}
+              <div className="flex justify-center gap-4 mt-8">
+                <Button 
+                  onClick={handlePrev}
+                  disabled={activeIndex === 0}
+                  variant="outline"
+                  className="mono-button"
                 >
-                  {slide.text}
-                </motion.p>
-              )
-            })}
-            
-            <div className="flex justify-center mt-12">
-              {!hasShownAll ? (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: currentSlide > 0 ? 1 : 0 }}
-                  transition={{ delay: 1, duration: 0.5 }}
+                  {isRtl ? "הקודם" : "Previous"}
+                </Button>
+                
+                <Button 
+                  onClick={handleShowAll}
+                  className="mono-button"
                 >
-                  <Button 
-                    onClick={handleShowAll} 
-                    className="mono-button"
-                  >
-                    {showAllLabel}
-                  </Button>
-                </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
+                  {showAllLabel}
+                </Button>
+                
+                <Button 
+                  onClick={handleNext}
+                  disabled={activeIndex === bioContent.length - 1}
+                  variant="outline"
+                  className="mono-button"
                 >
-                  <Button 
-                    onClick={handleReplay} 
-                    className="mono-button flex items-center gap-2"
-                  >
-                    <RefreshCw className="h-4 w-4" />
-                    {isRtl ? "שחזר" : "Replay"}
-                  </Button>
-                </motion.div>
-              )}
+                  {isRtl ? "הבא" : "Next"}
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
+          
+          {/* Show All Mode */}
+          {viewMode === 'all' && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="space-y-8 text-center"
+            >
+              {bioContent.map((slide, index) => (
+                <ScrollReveal key={index} delay={index * 0.2}>
+                  <p
+                    className="text-xl md:text-2xl leading-relaxed mb-6"
+                    style={{ 
+                      color: colorPalette[index % colorPalette.length],
+                      textShadow: "0px 0px 15px rgba(0,0,0,0.5)"
+                    }}
+                  >
+                    {slide.text}
+                  </p>
+                </ScrollReveal>
+              ))}
+              
+              <div className="mt-12">
+                <Button
+                  onClick={handleReset}
+                  className="mono-button flex items-center gap-2"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  {isRtl ? "שחזר" : "Reset"}
+                </Button>
+              </div>
+            </motion.div>
+          )}
         </div>
       </div>
       
-      {/* Scroll down indicator */}
-      {!hasShownAll && currentSlide === 0 && (
-        <motion.div 
-          className="absolute bottom-12 w-full flex justify-center"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.5 }}
+      {/* Scroll indicator */}
+      {viewMode === 'preview' && activeIndex === 0 && (
+        <motion.div
+          className="absolute bottom-8 w-full flex justify-center"
+          animate={{ 
+            y: [0, 10, 0],
+            opacity: [0.5, 1, 0.5] 
+          }}
+          transition={{ 
+            repeat: Infinity, 
+            duration: 2 
+          }}
         >
-          <div className="text-light-gray text-sm animate-bounce">
-            {isRtl ? "גלול למטה כדי להמשיך" : "Scroll down to continue"}
-          </div>
+          <ArrowDownIcon className="h-6 w-6 text-light-gray" />
         </motion.div>
-      )}
-      
-      {/* Slide indicators */}
-      {!hasShownAll && bioContent.length > 1 && (
-        <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-20">
-          {bioContent.map((_, index) => (
-            <motion.div 
-              key={`indicator-${index}`}
-              className={`w-2 h-2 rounded-full transition-all`}
-              animate={{
-                backgroundColor: currentSlide > index 
-                  ? colorPalette[index % colorPalette.length] 
-                  : "rgba(100, 100, 100, 0.4)",
-                scale: currentSlide === index + 1 ? 1.2 : 1
-              }}
-              transition={{ duration: 0.3 }}
-            />
-          ))}
-        </div>
       )}
     </div>
   );

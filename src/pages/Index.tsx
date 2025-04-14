@@ -9,7 +9,7 @@ import VerticalTimeline from "@/components/VerticalTimeline";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
-import EnhancedScrollingBio from "@/components/EnhancedScrollingBio";
+import ScrollingBio from "@/components/ScrollingBio";
 import ConversationalContactForm from "@/components/ConversationalContactForm";
 
 const Index = () => {
@@ -259,11 +259,12 @@ const Index = () => {
 
       <Separator className="border-dark-gray relative z-10" />
 
-      <EnhancedScrollingBio 
+      <ScrollingBio 
         bioContent={currentBioContent}
         language={language}
         isRtl={isRtl}
         title={currentText.about.title}
+        showAllLabel={currentText.about.showAll}
       />
 
       <Separator className="border-dark-gray relative z-10" />
