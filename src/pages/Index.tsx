@@ -6,6 +6,7 @@ import { Link } from "react-scroll";
 import Hero from "@/components/Hero";
 import HorizontalSocialIcons from "@/components/HorizontalSocialIcons";
 import { Send, FileText, Package } from "lucide-react";
+import VerticalTimeline from "@/components/VerticalTimeline";
 
 const Index = () => {
   const [language, setLanguage] = useState<"en" | "he">("en");
@@ -139,6 +140,8 @@ const Index = () => {
           {language === "en" ? "עברית" : "English"}
         </Button>
       </div>
+      
+      <VerticalTimeline language={language} isRtl={isRtl} />
 
       <Hero 
         language={language} 
