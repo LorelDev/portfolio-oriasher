@@ -57,18 +57,26 @@ const DotField = () => {
         const dist = Math.sqrt(dx * dx + dy * dy);
         const force = Math.max((radius - dist) / radius, 0);
 
-        // Limit maximum movement to 5px
-        const maxOffset = 5;
+        // Increased maximum movement to 15px for more reactivity
+        const maxOffset = 15;
         let offsetX = (dx / (dist || 1)) * force * maxOffset;
         let offsetY = (dy / (dist || 1)) * force * maxOffset;
+        
+        // Make dots move away from cursor (reversed direction)
+        offsetX = -offsetX;
+        offsetY = -offsetY;
 
-        // Apply easing for smoother movement
-        dot.x += (dot.baseX - offsetX - dot.x) * 0.1;
-        dot.y += (dot.baseY - offsetY - dot.y) * 0.1;
+        // Faster animation response (increased from 0.1 to 0.2)
+        dot.x += (dot.baseX + offsetX - dot.x) * 0.2;
+        dot.y += (dot.baseY + offsetY - dot.y) * 0.2;
 
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, dotSize, 0, Math.PI * 2);
-        ctx.fillStyle = "#2a2a2a";
+        
+        // Add subtle color variation based on movement
+        const intensity = force * 25;
+        const dotColor = `rgba(42, 42, 42, ${0.8 + force * 0.2})`;
+        ctx.fillStyle = dotColor;
         ctx.fill();
       });
 
