@@ -152,7 +152,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
       <div className="absolute inset-0 bg-gradient-animated" />
       
       <motion.div 
-        className="max-w-3xl mx-auto z-10 mt-[-4rem] md:mt-[-6rem]"  // Further lifted content
+        className="max-w-3xl mx-auto z-10 mt-[-6rem] md:mt-[-8rem]"  // Adjusted negative margin
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -262,14 +262,14 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
       </motion.div>
 
       <motion.div 
-        className="absolute bottom-24 w-full flex justify-center"  // Increased bottom space
+        className="absolute bottom-12 w-full flex justify-center z-20"  // Adjusted bottom positioning and added z-index
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2, duration: 0.5 }}
       >
         <Link to="projects" smooth={true} duration={800} offset={-50}>
           <motion.div 
-            className="animate-bounce cursor-pointer text-gray-500 hover:text-gray-700"
+            className="animate-bounce cursor-pointer text-gray-500 hover:text-gray-700 bg-white/30 backdrop-blur-sm rounded-full p-3 shadow-lg"  // Added background, backdrop blur, and shadow
             whileHover={{ scale: 1.2 }}
           >
             <svg 
