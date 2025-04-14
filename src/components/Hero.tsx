@@ -156,6 +156,15 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
         animate="visible"
       >
         <ScrollReveal>
+          <motion.h1 
+            className="text-3xl md:text-4xl font-bold mb-4"
+            variants={itemVariants}
+          >
+            {currentText.hero.greeting}
+          </motion.h1>
+        </ScrollReveal>
+
+        <ScrollReveal>
           <motion.div 
             className="text-2xl md:text-3xl font-medium mb-8 min-h-[8em] flex items-center justify-center"
             variants={itemVariants}
