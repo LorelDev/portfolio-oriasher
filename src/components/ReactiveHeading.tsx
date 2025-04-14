@@ -35,7 +35,9 @@ const ReactiveHeading: React.FC<ReactiveHeadingProps> = ({ text, className, isRt
         const intensity = 1 - (distance / maxDistance);
 
         const newPositions = Array.from({ length: text.length }).map((_, index) => {
-          const charOffset = index - (text.length - 1) / 2;
+          // For RTL, we need to adjust the character position calculations
+          const adjustedIndex = isRtl ? text.length - 1 - index : index;
+          const charOffset = adjustedIndex - (text.length - 1) / 2;
           const angleOffset = (charOffset * Math.PI / 4) + (Math.PI / 2);
 
           // Reduced maximum movement to 5px
@@ -46,7 +48,8 @@ const ReactiveHeading: React.FC<ReactiveHeadingProps> = ({ text, className, isRt
           };
         });
 
-        setCharPositions(newPositions);
+        // For RTL text, we need to reverse the positions array to match character order
+        setCharPositions(isRtl ? newPositions.reverse() : newPositions);
       } else {
         setCharPositions(Array(text.length).fill({ x: 0, y: 0, rotate: 0 }));
       }
@@ -63,7 +66,7 @@ const ReactiveHeading: React.FC<ReactiveHeadingProps> = ({ text, className, isRt
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [text.length]);
+  }, [text.length, isRtl]);
 
   return (
     <h1
@@ -85,7 +88,11 @@ const ReactiveHeading: React.FC<ReactiveHeadingProps> = ({ text, className, isRt
             damping: 20    // Increased damping for less bounciness
           }}
           className="inline-block"
-          style={{ originX: 0.5, originY: 0.5 }}
+          style={{ 
+            originX: 0.5, 
+            originY: 0.5,
+            display: 'inline-block', // Ensure proper display for RTL
+          }}
         >
           {char === ' ' ? '\u00A0' : char}
         </motion.span>
