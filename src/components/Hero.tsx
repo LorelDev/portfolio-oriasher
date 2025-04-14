@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
@@ -35,16 +36,18 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
   
   const typingTexts = {
     en: [
-      "I code things that work",
-      2500,
-      "I write clean frontend logic",
-      2500,
-      "I solve problems with code",
-      2500,
-      "I turn coffee into JavaScript",
-      2500,
-      "I build interactive experiences",
-      2500,
+      "Heyyyyy",
+      1500,
+      "Maybe it's random… maybe not",
+      1500,
+      "Either way, welcome!",
+      1500,
+      "I'll use this opportunity",
+      1500,
+      "To tell you I'm not bad at what I do",
+      1500,
+      "And sometimes, it even works",
+      1500,
     ],
     he: [
       "שלוםםםםם",
