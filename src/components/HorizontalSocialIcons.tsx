@@ -99,40 +99,42 @@ const HorizontalSocialIcons = ({ translations }: HorizontalSocialIconsProps) => 
   return (
     <TooltipProvider>
       <motion.div 
-        className="flex justify-center gap-5 mt-8"
+        className="flex justify-center items-center bg-purple-500/20 backdrop-blur-sm rounded-full px-6 py-3 shadow-md"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        {socialLinks.map((link) => (
-          <motion.div 
-            key={link.name} 
-            variants={itemVariants}
-            whileHover={{ scale: 1.2 }}
-            className="relative"
-          >
-            <Tooltip delayDuration={100}>
-              <TooltipTrigger asChild>
-                <a 
-                  href={link.href} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 bg-white/20 backdrop-blur-sm text-white/70 rounded-full hover:bg-white/30 hover:text-white hover:shadow-glow transition-all duration-300"
+        <div className="flex justify-center gap-5">
+          {socialLinks.map((link) => (
+            <motion.div 
+              key={link.name} 
+              variants={itemVariants}
+              whileHover={{ scale: 1.2 }}
+              className="relative"
+            >
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger asChild>
+                  <a 
+                    href={link.href} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-10 h-10 bg-white/20 backdrop-blur-sm text-white/70 rounded-full hover:bg-white/30 hover:text-white hover:shadow-glow transition-all duration-300"
+                  >
+                    {link.icon}
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent 
+                  side="top"
+                  align="center"
+                  className="bg-gray-800/90 backdrop-blur-md text-white text-sm font-medium px-3 py-2 z-50 shadow-xl border-none"
+                  sideOffset={5}
                 >
-                  {link.icon}
-                </a>
-              </TooltipTrigger>
-              <TooltipContent 
-                side="top"
-                align="center"
-                className="bg-gray-800/90 backdrop-blur-md text-white text-sm font-medium px-3 py-2 z-50 shadow-xl border-none"
-                sideOffset={5}
-              >
-                <p>{link.name}</p>
-              </TooltipContent>
-            </Tooltip>
-          </motion.div>
-        ))}
+                  <p>{link.name}</p>
+                </TooltipContent>
+              </Tooltip>
+            </motion.div>
+          ))}
+        </div>
       </motion.div>
     </TooltipProvider>
   );
