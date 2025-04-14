@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -150,28 +149,34 @@
   transform: scale(1.05);
 }
 
-/* Animated background gradient */
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
+/* Improved section contrast */
 .bg-gradient-animated {
   background: linear-gradient(270deg, #c1c8f1, #a8c0ff, #3f5efb);
   background-size: 400% 400%;
   animation: gradient-shift 15s ease infinite;
 }
 
-/* Social icon glow effect */
-.hover\:shadow-glow:hover {
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+/* Add shadow to text in gradient backgrounds for better readability */
+.gradient-text-shadow {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Add better contrast to sections with colored backgrounds */
+section.bg-gradient-to-br {
+  position: relative;
+}
+
+section.bg-gradient-to-br::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+}
+
+/* Higher contrast on form elements */
+input, textarea {
+  text-shadow: none !important;
 }
 
 /* Global smooth scrolling */

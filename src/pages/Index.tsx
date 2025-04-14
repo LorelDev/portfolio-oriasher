@@ -111,7 +111,8 @@ const Index = () => {
   const currentText = content[language];
   const isRtl = language === "he";
 
-  const bgOpacity = Math.min(scrollPosition / 500, 0.5);
+  // Limit the background opacity to a much lower value to prevent excessive blurriness
+  const bgOpacity = Math.min(scrollPosition / 1000, 0.2);
 
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className={`min-h-screen ${isRtl ? "font-assistant" : "font-poppins"}`}>
