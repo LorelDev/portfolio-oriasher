@@ -106,8 +106,10 @@ const EnhancedScrollingBio = ({ bioContent, language, isRtl, title }: EnhancedSc
         if (entries[0].isIntersecting) {
           setIsLocked(true);
           setCurrentIndex(0);
+          document.body.style.overflow = 'hidden'; // Lock the body scroll
         } else {
           setIsLocked(false);
+          document.body.style.overflow = ''; // Restore scrolling
           // Reset the index when scrolling away
           if (entries[0].boundingClientRect.top > 0) {
             setCurrentIndex(-1); // Reset when scrolling up past the section
@@ -125,6 +127,7 @@ const EnhancedScrollingBio = ({ bioContent, language, isRtl, title }: EnhancedSc
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
+      document.body.style.overflow = ''; // Ensure scroll is restored on unmount
     };
   }, []);
   
@@ -176,6 +179,12 @@ const EnhancedScrollingBio = ({ bioContent, language, isRtl, title }: EnhancedSc
     }, 400);
   };
   
+  // Add unlock function to continue scrolling
+  const handleUnlock = () => {
+    setIsLocked(false);
+    document.body.style.overflow = '';
+  };
+  
   return (
     <section 
       id="about" 
@@ -219,7 +228,7 @@ const EnhancedScrollingBio = ({ bioContent, language, isRtl, title }: EnhancedSc
               <motion.img
                 key={`img-${currentIndex}`}
                 ref={imageRef}
-                src={bioContent[currentIndex]?.imagePath}
+                src={bioContent[0]?.imagePath} // Use the first image for all slides
                 alt="Background"
                 className="w-full h-full object-cover opacity-50"
                 initial={{ scale: 1.1, opacity: 0.3 }}
@@ -311,7 +320,7 @@ const EnhancedScrollingBio = ({ bioContent, language, isRtl, title }: EnhancedSc
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="mt-12"
+              className="mt-12 flex gap-4"
             >
               <Button 
                 className="mono-button flex items-center gap-2"
@@ -319,6 +328,14 @@ const EnhancedScrollingBio = ({ bioContent, language, isRtl, title }: EnhancedSc
               >
                 <RefreshCw className="w-4 h-4" />
                 {isRtl ? "הפעל מחדש" : "Replay"}
+              </Button>
+              
+              <Button
+                variant="outline"
+                className="mono-button"
+                onClick={handleUnlock}
+              >
+                {isRtl ? "המשך לגלול" : "Continue scrolling"}
               </Button>
             </motion.div>
           )}
