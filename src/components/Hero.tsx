@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
@@ -204,16 +205,16 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
         </motion.h1>
 
         <motion.div 
-          className={`text-2xl md:text-3xl font-medium mb-8 min-h-[8em] flex items-center justify-center ${isRtl ? "text-right" : "text-left"}`}
+          className={`text-2xl md:text-3xl font-medium mb-8 min-h-[8em] flex items-center justify-center`}
           variants={itemVariants}
         >
           <TypeAnimation
-            sequence={typingTexts[language]}
+            sequence={language === 'en' ? typingTexts.en : typingTexts.he}
             wrapper="div"
             speed={50}
             repeat={Infinity}
             cursor={true}
-            className={`inline-block max-w-full ${isRtl ? "text-right" : "text-left"} mx-auto`}
+            className="inline-block max-w-full mx-auto"
             style={{ 
               display: 'block', 
               textAlign: isRtl ? 'right' : 'left',
