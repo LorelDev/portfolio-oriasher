@@ -34,36 +34,36 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
   // Initialize charPositions with default values for each character
   const [charPositions, setCharPositions] = useState(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
   
-  const typingTexts = {
-    en: [
-      "Heyyyyy",
-      1500,
-      "Maybe it's random… maybe not",
-      1500,
-      "Either way, welcome!",
-      1500,
-      "I'll use this opportunity",
-      1500,
-      "To tell you I'm not bad at what I do",
-      1500,
-      "And sometimes, it even works",
-      1500,
-    ],
-    he: [
-      "שלוםםםםם",
-      1500,
-      "אולי זה מקרי… ואולי לא",
-      1500,
-      "בכל מקרה, ברוך הבא!",
-      1500,
-      "אני אנצל את ההזדמנות",
-      1500,
-      "להגיד לך שאני לא רע במה שאני עושה",
-      1500,
-      "ולפעמים זה אפילו עובד",
-      1500,
-    ],
-  };
+  // Explicitly separate typing sequences for each language
+  const typingSequenceEn = [
+    "Heyyyyy",
+    1500,
+    "Maybe it's random… maybe not",
+    1500,
+    "Either way, welcome!",
+    1500,
+    "I'll use this opportunity",
+    1500,
+    "To tell you I'm not bad at what I do",
+    1500,
+    "And sometimes, it even works",
+    1500,
+  ];
+  
+  const typingSequenceHe = [
+    "שלוםםםםם",
+    1500,
+    "אולי זה מקרי… ואולי לא",
+    1500,
+    "בכל מקרה, ברוך הבא!",
+    1500,
+    "אני אנצל את ההזדמנות",
+    1500,
+    "להגיד לך שאני לא רע במה שאני עושה",
+    1500,
+    "ולפעמים זה אפילו עובד",
+    1500,
+  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -145,6 +145,9 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
     };
   }, [nameChars, controls]);
 
+  // Select the correct typing sequence based on language
+  const currentTypingSequence = language === "en" ? typingSequenceEn : typingSequenceHe;
+
   return (
     <section 
       id="hero"
@@ -209,7 +212,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
           variants={itemVariants}
         >
           <TypeAnimation
-            sequence={language === 'en' ? typingTexts.en : typingTexts.he}
+            sequence={currentTypingSequence}
             wrapper="div"
             speed={50}
             repeat={Infinity}

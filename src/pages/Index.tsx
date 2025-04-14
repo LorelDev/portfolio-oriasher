@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Link } from "react-scroll";
 import Hero from "@/components/Hero";
 import HorizontalSocialIcons from "@/components/HorizontalSocialIcons";
@@ -112,7 +112,7 @@ const Index = () => {
         copyright: "© 2025 אורי אשר. כל הזכויות שמורות."
       },
       myApp: {
-        title: "האפליקציה שלי",
+        title: "האפליקציה העתידית שלי",
         description: "הצצה לפרויקט חדשני שאני מפתח. המשך יבוא!",
         comingSoon: "בקרוב"
       }
@@ -258,39 +258,6 @@ const Index = () => {
                 </Button>
               </a>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 px-4 bg-soft-purple relative z-10" id="my-app">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-            {currentText.myApp.title}
-          </h2>
-          <div className="flex justify-center">
-            <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:scale-[1.02] max-w-4xl w-full">
-              <div className="relative h-[300px] md:h-[400px] bg-gradient-to-r from-purple-400 to-indigo-500 flex items-center justify-center">
-                <div className="absolute inset-0 opacity-20 bg-cover bg-center" style={{
-                  backgroundImage: "url('https://images.unsplash.com/photo-1498050108023-c5249f4df085')"
-                }}></div>
-                <div className="relative z-10 text-white text-center px-6">
-                  <Package size={64} className="mx-auto mb-4 text-white/80" />
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                    {currentText.myApp.title}
-                  </h3>
-                  <p className="text-lg md:text-xl mb-6 text-white/90">
-                    {currentText.myApp.description}
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    className="bg-white/20 text-white hover:bg-white/30 transition-colors duration-300 flex items-center justify-center gap-2"
-                  >
-                    {currentText.myApp.comingSoon}
-                    <Package className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </Card>
           </div>
         </div>
       </section>
