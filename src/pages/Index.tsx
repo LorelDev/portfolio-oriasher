@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -112,12 +111,10 @@ const Index = () => {
   const currentText = content[language];
   const isRtl = language === "he";
 
-  // Calculate background opacity based on scroll position
   const bgOpacity = Math.min(scrollPosition / 500, 0.5);
 
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className={`min-h-screen ${isRtl ? "font-assistant" : "font-poppins"}`}>
-      {/* Language Toggle */}
       <div className={`fixed top-4 ${isRtl ? "left-4" : "right-4"} z-30`}>
         <Button 
           onClick={toggleLanguage}
@@ -128,32 +125,19 @@ const Index = () => {
         </Button>
       </div>
 
-      {/* Add a small geeky icon at the top */}
-      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-20">
-        <img 
-          src="/lovable-uploads/8a99639b-86a4-452f-a8a1-a84ff2793156.png"
-          alt="Tech icon" 
-          className="w-10 h-10 object-contain filter drop-shadow-lg"
-        />
-      </div>
-
-      {/* Social Icons */}
       <SocialIcons isRtl={isRtl} translations={currentText.social} />
 
-      {/* Hero Section with Animation */}
       <Hero 
         language={language} 
         currentText={currentText} 
         isRtl={isRtl} 
       />
 
-      {/* Background overlay that becomes more visible as you scroll */}
       <div 
         className="fixed inset-0 bg-white pointer-events-none z-0" 
         style={{ opacity: bgOpacity }}
       />
 
-      {/* Projects Section - Single Project Focus */}
       <section className="py-20 px-4 bg-white relative z-10" id="projects">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
@@ -162,7 +146,6 @@ const Index = () => {
           <div className="flex justify-center">
             <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:scale-[1.02] max-w-4xl w-full">
               <div className="relative h-[300px] md:h-[400px] bg-gradient-to-r from-blue-400 to-purple-500">
-                {/* Project mockup image would go here */}
                 <div className="absolute inset-0 flex items-center justify-center text-white text-2xl font-medium">
                   Interactive Portfolio Project
                 </div>
@@ -192,7 +175,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* About Section */}
       <section className="py-20 px-4 bg-gray-50" id="about">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
@@ -218,7 +200,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Contact Section */}
       <section className="py-20 px-4 bg-gradient-to-br from-blue-500 to-purple-600 text-white" id="contact">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
@@ -266,7 +247,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-8 px-4 bg-gray-900 text-gray-400 text-center">
         <p className="mb-2">{currentText.footer.message}</p>
         <p>{currentText.footer.copyright}</p>
