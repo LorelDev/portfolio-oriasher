@@ -1,5 +1,4 @@
-
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
 import { motion, useAnimation, useMotionValue, useTransform } from "framer-motion";
@@ -19,6 +18,9 @@ interface HeroProps {
 }
 
 const Hero = ({ language, currentText, isRtl }: HeroProps) => {
+  const nameChars = language === "en" ? ["O", "r", "i"] : ["א", "ו", "ר", "י"];
+  const [charPositions, setCharPositions] = useState(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
+  
   const typingTexts = {
     en: [
       "I code things that work",
@@ -66,64 +68,58 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
     }
   };
 
-  // Reference for the name element
-  const nameRef = useRef<HTMLSpanElement>(null);
+  const nameContainerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
   
-  // Set up motion values for the magnetic effect
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useTransform(y, [-30, 30], [10, -10]);
-  const rotateY = useTransform(x, [-30, 30], [-10, 10]);
-
-  // Handle mouse movement for magnetic effect
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      if (nameRef.current) {
-        const { left, top, width, height } = nameRef.current.getBoundingClientRect();
-        const centerX = left + width / 2;
-        const centerY = top + height / 2;
+      if (nameContainerRef.current) {
+        const rect = nameContainerRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
         
         const distanceX = event.clientX - centerX;
         const distanceY = event.clientY - centerY;
-        
-        // Check if mouse is close enough to activate the effect
         const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+        
         const maxDistance = 200;
         
         if (distance < maxDistance) {
-          // Scale the effect based on proximity
-          const factor = 1 - distance / maxDistance;
-          x.set(distanceX * factor * 0.3);
-          y.set(distanceY * factor * 0.3);
-          controls.start({
-            scale: 1 + factor * 0.1,
-            transition: { type: "spring", stiffness: 300, damping: 15 }
+          const intensity = 1 - (distance / maxDistance);
+          
+          const newPositions = nameChars.map((_, index) => {
+            const charOffset = index - (nameChars.length - 1) / 2;
+            const angleOffset = (charOffset * Math.PI / 4) + (Math.PI / 2);
+            
+            return {
+              x: intensity * (Math.sin(angleOffset) * 20 + distanceX * 0.05),
+              y: intensity * (Math.cos(angleOffset) * 20 + distanceY * 0.05),
+              rotate: intensity * charOffset * 5
+            };
           });
+          
+          setCharPositions(newPositions);
+          controls.start({ scale: 1 + intensity * 0.1 });
         } else {
-          // Reset position when mouse is far away
-          x.set(0);
-          y.set(0);
+          setCharPositions(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
           controls.start({ scale: 1 });
         }
       }
     };
-
-    // Reset on mouse leave
+    
     const handleMouseLeave = () => {
-      x.set(0);
-      y.set(0);
+      setCharPositions(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
       controls.start({ scale: 1 });
     };
-
+    
     window.addEventListener("mousemove", handleMouseMove);
-    nameRef.current?.addEventListener("mouseleave", handleMouseLeave);
-
+    document.addEventListener("mouseleave", handleMouseLeave);
+    
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      nameRef.current?.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [controls, x, y]);
+  }, [nameChars, controls]);
 
   return (
     <section 
@@ -143,20 +139,34 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
           variants={itemVariants}
         >
           {language === "en" ? "Hi, I'm " : "היי, אני "}
-          <motion.span
-            ref={nameRef}
+          <motion.div
+            ref={nameContainerRef}
             animate={controls}
-            style={{
-              display: "inline-block",
-              x,
-              y,
-              rotateX,
-              rotateY
-            }}
-            className="relative origin-center"
+            className="relative inline-flex origin-center"
           >
-            {language === "en" ? "Ori" : "אורי"}
-          </motion.span>
+            {nameChars.map((char, index) => (
+              <motion.span
+                key={index}
+                className="inline-block"
+                animate={{
+                  x: charPositions[index].x,
+                  y: charPositions[index].y,
+                  rotate: charPositions[index].rotate,
+                  transition: {
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 10
+                  }
+                }}
+                whileHover={{
+                  scale: 1.2,
+                  transition: { duration: 0.2 }
+                }}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </motion.div>
         </motion.h1>
 
         <motion.div 
