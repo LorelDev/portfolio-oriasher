@@ -28,7 +28,8 @@ const ReactiveHeading: React.FC<ReactiveHeadingProps> = ({ text, className, isRt
       const distanceY = event.clientY - centerY;
       const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-      const maxDistance = 300;
+      // Reduced maxDistance for more subtle effect
+      const maxDistance = 200;
 
       if (distance < maxDistance) {
         const intensity = 1 - (distance / maxDistance);
@@ -37,10 +38,11 @@ const ReactiveHeading: React.FC<ReactiveHeadingProps> = ({ text, className, isRt
           const charOffset = index - (text.length - 1) / 2;
           const angleOffset = (charOffset * Math.PI / 4) + (Math.PI / 2);
 
+          // Reduced maximum movement to 5px
           return {
-            x: intensity * (Math.sin(angleOffset) * 30 + distanceX * 0.07),
-            y: intensity * (Math.cos(angleOffset) * 30 + distanceY * 0.07),
-            rotate: intensity * charOffset * 8
+            x: intensity * (Math.sin(angleOffset) * 5 + distanceX * 0.02),
+            y: intensity * (Math.cos(angleOffset) * 5 + distanceY * 0.02),
+            rotate: intensity * charOffset * 3 // Reduced rotation
           };
         });
 
@@ -79,8 +81,8 @@ const ReactiveHeading: React.FC<ReactiveHeadingProps> = ({ text, className, isRt
           }}
           transition={{
             type: "spring",
-            stiffness: 150,
-            damping: 15
+            stiffness: 60, // Reduced stiffness for smoother animation
+            damping: 20    // Increased damping for less bounciness
           }}
           className="inline-block"
           style={{ originX: 0.5, originY: 0.5 }}
