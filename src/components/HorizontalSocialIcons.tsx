@@ -123,8 +123,10 @@ const HorizontalSocialIcons = ({ translations }: HorizontalSocialIconsProps) => 
                 </a>
               </TooltipTrigger>
               <TooltipContent 
-                side="bottom"
-                className="bg-gray-800 text-white text-sm"
+                side="top"
+                align="center"
+                className="bg-gray-800/90 backdrop-blur-md text-white text-sm font-medium px-3 py-2 z-50 shadow-xl border-none"
+                sideOffset={5}
               >
                 <p>{link.name}</p>
               </TooltipContent>

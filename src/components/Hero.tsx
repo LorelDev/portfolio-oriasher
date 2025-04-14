@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
@@ -84,7 +83,6 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
   const nameContainerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
   
-  // Effect to handle mouse movement and update char positions
   useEffect(() => {
     // Make sure nameChars is not empty before proceeding
     if (nameChars.length === 0) return;
@@ -222,11 +220,10 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
           {currentText.hero.tagline}
         </motion.p>
 
-        {/* Add Horizontal Social Icons */}
         <HorizontalSocialIcons translations={currentText.social} />
 
         <motion.div 
-          className="flex flex-wrap gap-4 justify-center mt-8"
+          className="flex flex-wrap gap-4 justify-center mt-12 hero-buttons-container"
           variants={itemVariants}
         >
           <Link to="projects" smooth={true} duration={800} offset={-50}>

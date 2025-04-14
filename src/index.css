@@ -197,3 +197,27 @@ input, textarea {
 html {
   scroll-behavior: smooth;
 }
+
+/* Custom tooltip styles to prevent overlapping */
+.tooltip-content {
+  z-index: 50 !important;
+  pointer-events: none;
+}
+
+/* Add a glow effect for social icons on hover */
+.hover-shadow-glow:hover {
+  box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Modify element arrangement for better tooltip visibility */
+.hero-buttons-container {
+  position: relative;
+  margin-top: 1.5rem;
+  z-index: 5;
+}
+
+[data-state="delayed-open"],
+[data-state="open"] {
+  z-index: 9999 !important;
+}
+
