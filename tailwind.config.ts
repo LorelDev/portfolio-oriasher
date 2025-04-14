@@ -19,6 +19,9 @@ export default {
 			}
 		},
 		extend: {
+			backgroundImage: {
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+			},
 			colors: {
 				// Custom monochrome theme colors
 				"deep-black": "#0f0f0f",

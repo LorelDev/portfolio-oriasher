@@ -9,7 +9,7 @@ import VerticalTimeline from "@/components/VerticalTimeline";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
-import ScrollingBio from "@/components/ScrollingBio";
+import EnhancedAboutMe from "@/components/EnhancedAboutMe";
 import ConversationalContactForm from "@/components/ConversationalContactForm";
 
 const Index = () => {
@@ -37,6 +37,10 @@ const Index = () => {
     
     return () => clearTimeout(timer);
   }, [language]);
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const enBioContent = [
     {
@@ -209,6 +213,15 @@ const Index = () => {
         isRtl={isRtl} 
       />
 
+      <EnhancedAboutMe 
+        bioContent={currentBioContent}
+        language={language}
+        isRtl={isRtl}
+        title={currentText.about.title}
+      />
+
+      <Separator className="border-dark-gray relative z-10" />
+
       <section className="mono-section px-4 z-10 relative" id="projects">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
@@ -256,15 +269,6 @@ const Index = () => {
           </ScrollReveal>
         </div>
       </section>
-
-      <Separator className="border-dark-gray relative z-10" />
-
-      <ScrollingBio 
-        bioContent={currentBioContent}
-        language={language}
-        isRtl={isRtl}
-        title={currentText.about.title}
-      />
 
       <Separator className="border-dark-gray relative z-10" />
 
