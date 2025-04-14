@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -195,7 +194,7 @@ const Index = () => {
           <div className="flex flex-col md:flex-row gap-8 items-center">
             <div className="w-full md:w-1/3">
               <img 
-                src="/lovable-uploads/7effd597-fcde-41dd-b9af-ed895d5dd42b.png" 
+                src="/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png" 
                 alt="Ori Asher" 
                 className="aspect-square rounded-full object-cover shadow-lg hover:shadow-xl transition-shadow duration-300"
               />
