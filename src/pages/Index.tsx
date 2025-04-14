@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-scroll";
 import Hero from "@/components/Hero";
 import SocialIcons from "@/components/SocialIcons";
-import { Send } from "lucide-react";
+import { Send, FileText } from "lucide-react";
 
 const Index = () => {
   const [language, setLanguage] = useState<"en" | "he">("en");
