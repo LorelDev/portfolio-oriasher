@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-scroll";
@@ -22,7 +23,8 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
   
   const isMobile = useIsMobile();
   
-  const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "30vh"]);
+  // Modified to extend full page height
+  const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   
   const milestones: TimelineMilestone[] = [
@@ -99,32 +101,40 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
     );
   }
 
+  // Calculate positions for the timeline elements
+  const totalHeight = milestones.length * 100; // Use percentage for better responsiveness
+  
   return (
     <motion.div
-      className={`fixed top-1/2 transform -translate-y-1/2 ${isRtl ? "right-8" : "left-8"} z-20 hidden md:block`}
+      className={`fixed top-0 h-full ${isRtl ? "right-8" : "left-8"} z-20 hidden md:flex flex-col items-center justify-center`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 1, duration: 0.8 }}
     >
-      <div className="absolute w-0.5 bg-white/20 h-[30vh] rounded-full" style={{ 
-        left: "50%", 
-        transform: "translateX(-50%)",
-        top: "-15vh"
-      }} />
+      {/* Full-height background line */}
+      <div className="absolute w-0.5 bg-white/20 h-full rounded-full" 
+        style={{ 
+          top: 0,
+          left: "50%", 
+          transform: "translateX(-50%)",
+        }} 
+      />
       
+      {/* Progress indicator */}
       <motion.div 
         className="absolute w-0.5 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full" 
         style={{ 
           left: "50%", 
           transform: "translateX(-50%)",
-          top: "-15vh",
+          top: 0,
           height: progressHeight,
           originY: 0
         }}
       />
       
-      <div className="relative flex flex-col items-center gap-16">
-        {milestones.map((milestone) => (
+      {/* Milestone indicators positioned evenly along the timeline */}
+      <div className="h-full flex flex-col items-center justify-around py-[15vh]">
+        {milestones.map((milestone, index) => (
           <TooltipProvider key={milestone.sectionId}>
             <Tooltip>
               <TooltipTrigger asChild>
