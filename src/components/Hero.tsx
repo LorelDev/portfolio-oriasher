@@ -93,6 +93,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
   return (
     <div 
       className="relative min-h-screen flex flex-col justify-center items-center text-center px-4 py-10 md:py-16 overflow-hidden bg-deep-black"
+      id="hero"
     >      
       
       <motion.div 
@@ -149,7 +150,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
             className="flex flex-wrap gap-4 justify-center mt-12 hero-buttons-container"
             variants={itemVariants}
           >
-            <Link to="projects" smooth={true} duration={800} offset={-50}>
+            <Link to="projects" spy={true} smooth={true} duration={800} offset={-50}>
               <Button className="mono-button">
                 {currentText.hero.cta}
               </Button>
@@ -172,7 +173,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2, duration: 0.5 }}
       >
-        <Link to="projects" smooth={true} duration={800} offset={-50}>
+        <Link to="projects" spy={true} smooth={true} duration={800} offset={-50}>
           <motion.div 
             className="cursor-pointer text-light-gray hover:text-almost-white p-3 transition-colors"
             whileHover={{ y: 3 }}

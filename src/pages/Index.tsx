@@ -9,10 +9,12 @@ import { Send, FileText, Package } from "lucide-react";
 import VerticalTimeline from "@/components/VerticalTimeline";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/components/ui/use-toast";
 
 const Index = () => {
   const [language, setLanguage] = useState<"en" | "he">("en");
   const [scrollPosition, setScrollPosition] = useState(0);
+  const { toast } = useToast();
 
   const toggleLanguage = () => {
     setLanguage(prevLang => prevLang === "en" ? "he" : "en");
@@ -26,6 +28,16 @@ const Index = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Force rerender of sections
+  useEffect(() => {
+    // Add a small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, [language]);
 
   const content = {
     en: {
@@ -125,6 +137,14 @@ const Index = () => {
   const currentText = content[language];
   const isRtl = language === "he";
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: isRtl ? "ההודעה נשלחה!" : "Message sent!",
+      description: isRtl ? "תודה על פנייתך, אחזור אליך בהקדם." : "Thank you for your message. I'll get back to you soon.",
+    });
+  };
+
   return (
     <div 
       dir={isRtl ? "rtl" : "ltr"} 
@@ -178,6 +198,12 @@ const Index = () => {
                     <ScrollReveal delay={0.6}>
                       <Button 
                         className="mono-button"
+                        onClick={() => {
+                          toast({
+                            title: isRtl ? "בקרוב!" : "Coming Soon!",
+                            description: isRtl ? "עדיין עובדים על זה..." : "We're still working on it...",
+                          });
+                        }}
                       >
                         {currentText.myApp.comingSoon}
                         <Package className="h-4 w-4 ml-2" />
@@ -253,21 +279,24 @@ const Index = () => {
           </ScrollReveal>
           
           <ScrollReveal delay={0.4} className="max-w-md mx-auto">
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleFormSubmit}>
               <input 
                 type="text" 
                 placeholder={currentText.contact.name} 
                 className="w-full p-3 mono-input" 
+                required
               />
               <input 
                 type="email" 
                 placeholder={currentText.contact.email} 
                 className="w-full p-3 mono-input" 
+                required
               />
               <textarea 
                 rows={4} 
                 placeholder={currentText.contact.message} 
                 className="w-full p-3 mono-input resize-none"
+                required
               ></textarea>
               <Button 
                 type="submit" 
