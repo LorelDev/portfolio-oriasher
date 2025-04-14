@@ -40,46 +40,46 @@ const Index = () => {
   const enBioContent = [
     {
       text: "I'm a computer science student at Sapir College.",
-      imagePath: "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"
+      imagePath: "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png"
     },
     {
       text: "Still learning. Still experimenting.",
-      imagePath: "/lovable-uploads/3f39d795-4004-43f6-b168-58f95dcba0f0.png"
+      imagePath: "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png"
     },
     {
       text: "But always trying to build things that work — both technically and emotionally.",
-      imagePath: "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"
+      imagePath: "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png"
     },
     {
       text: "Every line of code I write teaches me something new.",
-      imagePath: "/lovable-uploads/3f39d795-4004-43f6-b168-58f95dcba0f0.png"
+      imagePath: "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png"
     },
     {
       text: "And I believe I already have a lot to offer.",
-      imagePath: "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"
+      imagePath: "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png"
     }
   ];
   
   const heBioContent = [
     {
       text: "אני סטודנט למדעי המחשב במכללת ספיר.",
-      imagePath: "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"
+      imagePath: "/lovable-uploads/1f4db796-1fa1-4727-8fb8-1860d579e610.png"
     },
     {
       text: "עדיין לומד. עדיין מתנסה.",
-      imagePath: "/lovable-uploads/3f39d795-4004-43f6-b168-58f95dcba0f0.png"
+      imagePath: "/lovable-uploads/1f4db796-1fa1-4727-8fb8-1860d579e610.png"
     },
     {
       text: "אבל תמיד מנסה לבנות דברים שעובדים — גם טכנית, גם רגשית.",
-      imagePath: "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"
+      imagePath: "/lovable-uploads/1f4db796-1fa1-4727-8fb8-1860d579e610.png"
     },
     {
       text: "כל שורת קוד שאני כותב מלמדת אותי משהו חדש.",
-      imagePath: "/lovable-uploads/3f39d795-4004-43f6-b168-58f95dcba0f0.png"
+      imagePath: "/lovable-uploads/1f4db796-1fa1-4727-8fb8-1860d579e610.png"
     },
     {
       text: "ואני מאמין שיש לי כבר הרבה מה להציע.",
-      imagePath: "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"
+      imagePath: "/lovable-uploads/1f4db796-1fa1-4727-8fb8-1860d579e610.png"
     }
   ];
 

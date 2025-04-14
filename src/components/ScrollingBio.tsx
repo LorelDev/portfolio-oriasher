@@ -226,161 +226,53 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
     })
   };
 
-  // Image animation variants
-  const imageVariants = {
-    hidden: { opacity: 0, scale: 0.95, filter: "blur(8px)" },
-    visible: (i: number) => ({ 
-      opacity: 1, 
-      scale: 1, 
-      filter: "blur(0px)",
-      transition: { 
-        duration: 0.8,
-        delay: i * 0.1,
-        ease: [0.22, 1, 0.36, 1]
-      } 
-    })
-  };
-
   const fadeVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 0.7, transition: { duration: 0.5 } }
   };
 
+  // Get background image path from first slide (if available)
+  const backgroundImagePath = bioContent[0].imagePath || "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png";
+
   return (
     <div 
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col lg:flex-row items-center py-16 z-10 overflow-hidden"
+      className="relative min-h-screen flex flex-col items-center justify-center py-16 z-10 overflow-hidden"
       id="about"
       style={{ 
         backgroundColor: currentBgColor,
         transition: "background-color 0.8s ease-out",
       }}
     >
-      <div className="absolute inset-0 pointer-events-none">
-        {bioContent[0].imagePath && (
-          <div className="absolute inset-0 w-full h-full opacity-30">
-            <motion.div 
-              initial="hidden"
-              animate={currentSlide > 0 ? "visible" : "hidden"}
-              variants={fadeVariants}
-              className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0f0f0f] z-10"
-            />
-            <motion.img
-              src={bioContent[0].imagePath}
-              alt="Background"
-              className="object-cover w-full h-full opacity-40 blur-[3px]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: Math.max(0.2, 0.4 - (currentSlide * 0.06)) }}
-              transition={{ duration: 0.8 }}
-            />
-          </div>
-        )}
+      {/* Background Image Layer */}
+      <div className="absolute inset-0 w-full h-full">
+        <motion.img
+          src={backgroundImagePath}
+          alt="Background"
+          className="object-cover w-full h-full opacity-30 blur-[2px]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: Math.max(0.15, 0.3 - (currentSlide * 0.03)) }}
+          transition={{ duration: 0.8 }}
+        />
+        <motion.div 
+          initial="hidden"
+          animate={currentSlide > 0 ? "visible" : "hidden"}
+          variants={fadeVariants}
+          className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0f0f0fa0] to-[#0f0f0f] z-10"
+        />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-20">
         <ScrollReveal>
           <h2 className="text-3xl md:text-4xl font-medium mb-12 text-center tracking-wide">
             {title}
           </h2>
         </ScrollReveal>
         
-        <div className={`flex flex-col lg:flex-row gap-12 items-center py-8 ${isRtl ? "lg:flex-row-reverse" : ""}`}>
-          {/* Image Column - Desktop only */}
-          <div className="w-full lg:w-1/2 flex justify-center lg:block hidden">
-            <div className="sticky top-24">
-              {bioContent.map((slide, index) => (
-                <motion.div
-                  key={`img-${index}`}
-                  custom={index}
-                  className="relative w-full max-w-md aspect-square"
-                  initial="hidden"
-                  animate={currentSlide > index ? "visible" : "hidden"}
-                  variants={imageVariants}
-                  style={{ 
-                    display: currentSlide > index ? (index === currentSlide - 1 ? 'block' : 'none') : 'none',
-                    position: currentSlide > index ? 'absolute' : 'relative',
-                    zIndex: index,
-                  }}
-                >
-                  {slide.imagePath && (
-                    <div className="relative overflow-hidden rounded-lg">
-                      <img 
-                        src={slide.imagePath || "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"} 
-                        alt={`Slide ${index + 1}`} 
-                        className="w-full aspect-square object-cover hover:scale-105 transition-all duration-1000"
-                      />
-                      <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-              {/* Default profile image when no slides are shown */}
-              <motion.div
-                className="relative w-full max-w-md aspect-square"
-                initial={{ opacity: 1 }}
-                animate={{ opacity: currentSlide > 0 ? 0 : 1 }}
-                style={{ display: currentSlide > 0 ? 'none' : 'block' }}
-              >
-                <div className="relative overflow-hidden rounded-lg">
-                  <img 
-                    src="/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png" 
-                    alt="Profile" 
-                    className="w-full aspect-square object-cover"
-                  />
-                  <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-          
-          {/* Mobile Image - Only visible on mobile */}
-          <div className="lg:hidden w-full flex justify-center mb-8">
-            {bioContent.map((slide, index) => (
-              <motion.div
-                key={`mobile-img-${index}`}
-                custom={index}
-                initial="hidden"
-                animate={currentSlide > index ? "visible" : "hidden"}
-                variants={imageVariants}
-                className="w-full max-w-[250px] aspect-square"
-                style={{ 
-                  display: currentSlide > index ? (index === currentSlide - 1 ? 'block' : 'none') : 'none',
-                  position: "absolute",
-                }}
-              >
-                {slide.imagePath && (
-                  <div className="relative overflow-hidden rounded-lg shadow-lg">
-                    <img 
-                      src={slide.imagePath || "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"} 
-                      alt={`Mobile Slide ${index + 1}`} 
-                      className="w-full aspect-square object-cover"
-                    />
-                    <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
-                  </div>
-                )}
-              </motion.div>
-            ))}
-            {/* Default mobile profile image when no slides are shown */}
-            <motion.div
-              className="w-full max-w-[250px] aspect-square"
-              initial={{ opacity: 1 }}
-              animate={{ opacity: currentSlide > 0 ? 0 : 1 }}
-              style={{ display: currentSlide > 0 ? 'none' : 'block' }}
-            >
-              <div className="relative overflow-hidden rounded-lg">
-                <img 
-                  src="/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png" 
-                  alt="Mobile Profile" 
-                  className="w-full aspect-square object-cover"
-                />
-                <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
-              </div>
-            </motion.div>
-          </div>
-          
+        <div className={`flex flex-col-reverse items-center justify-center py-8 max-w-3xl mx-auto`}>
           {/* Text Column */}
           <div 
-            className={`w-full lg:w-1/2 space-y-6 ${isRtl ? "text-right" : "text-left"} pt-10 lg:pt-0`}
+            className={`w-full space-y-6 ${isRtl ? "text-right" : "text-left"} pt-10`}
             style={{ direction: isRtl ? "rtl" : "ltr" }}
           >
             {bioContent.map((slide, index) => {
@@ -395,7 +287,7 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
                   variants={textVariants}
                   initial="hidden"
                   animate={currentSlide > index ? "visible" : "hidden"}
-                  className={`${variation.size} ${variation.spacing} leading-relaxed`}
+                  className={`${variation.size} ${variation.spacing} leading-relaxed text-center`}
                   style={{ 
                     direction: isRtl ? "rtl" : "ltr",
                     fontWeight: variation.weight,
@@ -458,7 +350,7 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
       
       {/* Slide indicators */}
       {!hasShownAll && bioContent.length > 1 && (
-        <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2">
+        <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-20">
           {bioContent.map((_, index) => (
             <motion.div 
               key={`indicator-${index}`}
