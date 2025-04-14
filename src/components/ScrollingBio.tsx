@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "./ScrollReveal";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { RefreshCw } from "lucide-react";
 
 interface ScrollingBioProps {
   bioContent: {
@@ -16,6 +17,32 @@ interface ScrollingBioProps {
   showAllLabel: string;
 }
 
+// Color palette for text variation (soft, elegant, dark-friendly)
+const colorPalette = [
+  "#F2F2F2", // white
+  "#7AD3F4", // soft blue
+  "#F0B37E", // amber
+  "#A3E3A1", // mint green
+  "#F97AA8", // light rose
+  "#C4B5FD", // lavender
+  "#F9D56E", // soft yellow
+];
+
+// Font variations for text rhythm
+const fontVariations = [
+  { weight: 400, size: "text-lg md:text-xl", spacing: "tracking-normal" },
+  { weight: 500, size: "text-lg md:text-xl", spacing: "tracking-wide" },
+  { weight: 300, size: "text-xl md:text-2xl", spacing: "tracking-normal" },
+  { weight: 600, size: "text-base md:text-lg", spacing: "tracking-tight" },
+  { weight: 400, size: "text-lg md:text-xl", spacing: "tracking-wider" },
+];
+
+// Background steps from dark to lighter
+const backgroundSteps = [
+  "#0f0f0f", "#131313", "#161616", "#1a1a1a", "#1d1d1d", "#212121", "#222222", 
+  "#262626", "#2a2a2a", "#2e2e2e", "#323232", "#363636", "#3a3a3a", "#3e3e3e"
+];
+
 const ScrollingBio: React.FC<ScrollingBioProps> = ({
   bioContent,
   language,
@@ -26,25 +53,35 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isScrollLocked, setIsScrollLocked] = useState(true);
   const [hasShownAll, setHasShownAll] = useState(false);
+  const [isReplaying, setIsReplaying] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const scrollThresholdRef = useRef<number>(0);
   const accumulatedDeltaRef = useRef<number>(0);
   
-  // Higher number means less sensitive scroll
-  const scrollSensitivity = 120; 
+  // Higher number means less sensitive scroll (adjusted up from 120)
+  const scrollSensitivity = 180; 
   
   const isMobile = useIsMobile();
   
-  // Background color steps from dark to lighter
-  const backgroundSteps = [
-    "#0f0f0f", "#131313", "#161616", "#1a1a1a", "#1d1d1d", "#212121", "#222222", 
-    "#262626", "#2a2a2a", "#2e2e2e", "#323232", "#363636", "#3a3a3a", "#3e3e3e"
-  ];
-
   // Get current background color based on current slide
   const currentBgColor = backgroundSteps[
     Math.min(currentSlide, backgroundSteps.length - 1)
   ];
+
+  // Reset the experience
+  const handleReplay = () => {
+    setCurrentSlide(1);
+    setIsScrollLocked(true);
+    setHasShownAll(false);
+    setIsReplaying(true);
+    
+    // Smooth scroll back to the top of the section
+    sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+    
+    // Set replaying state back to false after animation completes
+    setTimeout(() => {
+      setIsReplaying(false);
+    }, 1000);
+  };
 
   // Display the first slide after component mounts
   useEffect(() => {
@@ -57,23 +94,23 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-advance for mobile users
+  // Auto-advance for mobile users (but not immediately)
   useEffect(() => {
     if (isMobile) {
       const timer = setTimeout(() => {
-        setCurrentSlide(bioContent.length);
-        setIsScrollLocked(false);
-        setHasShownAll(true);
-      }, 1000);
+        if (currentSlide <= 1) {
+          setCurrentSlide(2); // Just advance to the second slide to get started
+        }
+      }, 1200);
       
       return () => clearTimeout(timer);
     }
-  }, [isMobile, bioContent.length]);
+  }, [isMobile, currentSlide]);
 
   // Handle manual wheel events
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      if (!isScrollLocked || !sectionRef.current) return;
+      if (!isScrollLocked || !sectionRef.current || isReplaying) return;
       
       e.preventDefault();
       
@@ -86,7 +123,6 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
         if (accumulatedDeltaRef.current > 0 && currentSlide < bioContent.length) {
           // Scrolling down - advance to next slide
           setCurrentSlide(prev => Math.min(prev + 1, bioContent.length));
-          console.log(`Advancing to slide ${currentSlide + 1} of ${bioContent.length}`);
         } else if (accumulatedDeltaRef.current < 0 && currentSlide > 0) {
           // Scrolling up - go back a slide
           setCurrentSlide(prev => Math.max(prev - 1, 0));
@@ -115,26 +151,26 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
         element.removeEventListener('wheel', handleWheel);
       }
     };
-  }, [isScrollLocked, currentSlide, bioContent.length]);
+  }, [isScrollLocked, currentSlide, bioContent.length, isReplaying]);
 
   // Handle touch events for mobile
   useEffect(() => {
     let touchStartY = 0;
     
     const handleTouchStart = (e: TouchEvent) => {
-      if (!isScrollLocked) return;
+      if (!isScrollLocked || isReplaying) return;
       touchStartY = e.touches[0].clientY;
     };
     
     const handleTouchMove = (e: TouchEvent) => {
-      if (!isScrollLocked || !sectionRef.current) return;
+      if (!isScrollLocked || !sectionRef.current || isReplaying) return;
       
       e.preventDefault();
       const touchY = e.touches[0].clientY;
       const diff = touchStartY - touchY;
       
-      // Threshold to determine if it's a significant swipe
-      if (Math.abs(diff) > 50) {
+      // Use a gentler threshold for mobile (down from 50)
+      if (Math.abs(diff) > 30) {
         if (diff > 0 && currentSlide < bioContent.length) {
           // Swiping up - advance to next slide
           setCurrentSlide(prev => Math.min(prev + 1, bioContent.length));
@@ -167,7 +203,7 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
         element.removeEventListener('touchmove', handleTouchMove);
       }
     };
-  }, [isScrollLocked, currentSlide, bioContent.length]);
+  }, [isScrollLocked, currentSlide, bioContent.length, isReplaying]);
 
   // Show all slides function
   const handleShowAll = () => {
@@ -176,28 +212,72 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
     setHasShownAll(true);
   };
 
-  // Animation variants for slide content
-  const slideVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } }
+  // Animation variants for text lines
+  const textVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({ 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        duration: 0.7, 
+        delay: i * 0.15,
+        ease: [0.22, 1, 0.36, 1] 
+      } 
+    })
   };
 
+  // Image animation variants
   const imageVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: "easeOut" } }
+    hidden: { opacity: 0, scale: 0.95, filter: "blur(8px)" },
+    visible: (i: number) => ({ 
+      opacity: 1, 
+      scale: 1, 
+      filter: "blur(0px)",
+      transition: { 
+        duration: 0.8,
+        delay: i * 0.1,
+        ease: [0.22, 1, 0.36, 1]
+      } 
+    })
+  };
+
+  const fadeVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 0.7, transition: { duration: 0.5 } }
   };
 
   return (
     <div 
       ref={sectionRef}
-      className="relative min-h-screen flex items-center py-16 z-10 overflow-hidden"
+      className="relative min-h-screen flex flex-col lg:flex-row items-center py-16 z-10 overflow-hidden"
       id="about"
       style={{ 
         backgroundColor: currentBgColor,
         transition: "background-color 0.8s ease-out",
       }}
     >
-      <div className="container mx-auto px-4">
+      <div className="absolute inset-0 pointer-events-none">
+        {bioContent[0].imagePath && (
+          <div className="absolute inset-0 w-full h-full opacity-30">
+            <motion.div 
+              initial="hidden"
+              animate={currentSlide > 0 ? "visible" : "hidden"}
+              variants={fadeVariants}
+              className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0f0f0f] z-10"
+            />
+            <motion.img
+              src={bioContent[0].imagePath}
+              alt="Background"
+              className="object-cover w-full h-full opacity-40 blur-[3px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: Math.max(0.2, 0.4 - (currentSlide * 0.06)) }}
+              transition={{ duration: 0.8 }}
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <ScrollReveal>
           <h2 className="text-3xl md:text-4xl font-medium mb-12 text-center tracking-wide">
             {title}
@@ -205,45 +285,93 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
         </ScrollReveal>
         
         <div className={`flex flex-col lg:flex-row gap-12 items-center py-8 ${isRtl ? "lg:flex-row-reverse" : ""}`}>
-          {/* Image Column */}
-          <div className="w-full lg:w-1/2 flex justify-center">
+          {/* Image Column - Desktop only */}
+          <div className="w-full lg:w-1/2 flex justify-center lg:block hidden">
+            <div className="sticky top-24">
+              {bioContent.map((slide, index) => (
+                <motion.div
+                  key={`img-${index}`}
+                  custom={index}
+                  className="relative w-full max-w-md aspect-square"
+                  initial="hidden"
+                  animate={currentSlide > index ? "visible" : "hidden"}
+                  variants={imageVariants}
+                  style={{ 
+                    display: currentSlide > index ? (index === currentSlide - 1 ? 'block' : 'none') : 'none',
+                    position: currentSlide > index ? 'absolute' : 'relative',
+                    zIndex: index,
+                  }}
+                >
+                  {slide.imagePath && (
+                    <div className="relative overflow-hidden rounded-lg">
+                      <img 
+                        src={slide.imagePath || "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"} 
+                        alt={`Slide ${index + 1}`} 
+                        className="w-full aspect-square object-cover hover:scale-105 transition-all duration-1000"
+                      />
+                      <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+              {/* Default profile image when no slides are shown */}
+              <motion.div
+                className="relative w-full max-w-md aspect-square"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: currentSlide > 0 ? 0 : 1 }}
+                style={{ display: currentSlide > 0 ? 'none' : 'block' }}
+              >
+                <div className="relative overflow-hidden rounded-lg">
+                  <img 
+                    src="/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png" 
+                    alt="Profile" 
+                    className="w-full aspect-square object-cover"
+                  />
+                  <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+          
+          {/* Mobile Image - Only visible on mobile */}
+          <div className="lg:hidden w-full flex justify-center mb-8">
             {bioContent.map((slide, index) => (
               <motion.div
-                key={`img-${index}`}
-                className="relative w-full max-w-md aspect-square"
+                key={`mobile-img-${index}`}
+                custom={index}
                 initial="hidden"
                 animate={currentSlide > index ? "visible" : "hidden"}
                 variants={imageVariants}
+                className="w-full max-w-[250px] aspect-square"
                 style={{ 
-                  display: currentSlide > index ? 'block' : 'none',
-                  position: currentSlide > index ? 'absolute' : 'relative',
-                  zIndex: index,
+                  display: currentSlide > index ? (index === currentSlide - 1 ? 'block' : 'none') : 'none',
+                  position: "absolute",
                 }}
               >
                 {slide.imagePath && (
-                  <div className="relative overflow-hidden">
+                  <div className="relative overflow-hidden rounded-lg shadow-lg">
                     <img 
                       src={slide.imagePath || "/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png"} 
-                      alt={`Slide ${index + 1}`} 
-                      className="w-full aspect-square object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                      alt={`Mobile Slide ${index + 1}`} 
+                      className="w-full aspect-square object-cover"
                     />
                     <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
                   </div>
                 )}
               </motion.div>
             ))}
-            {/* Default profile image when no slides are shown */}
+            {/* Default mobile profile image when no slides are shown */}
             <motion.div
-              className="relative w-full max-w-md aspect-square"
+              className="w-full max-w-[250px] aspect-square"
               initial={{ opacity: 1 }}
               animate={{ opacity: currentSlide > 0 ? 0 : 1 }}
               style={{ display: currentSlide > 0 ? 'none' : 'block' }}
             >
-              <div className="relative overflow-hidden">
+              <div className="relative overflow-hidden rounded-lg">
                 <img 
                   src="/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png" 
-                  alt="Profile" 
-                  className="w-full aspect-square object-cover grayscale"
+                  alt="Mobile Profile" 
+                  className="w-full aspect-square object-cover"
                 />
                 <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
               </div>
@@ -251,38 +379,70 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
           </div>
           
           {/* Text Column */}
-          <div className={`w-full lg:w-1/2 space-y-6 ${isRtl ? "text-right" : "text-left"}`}>
-            {bioContent.map((slide, index) => (
-              <motion.p
-                key={`text-${index}`}
-                variants={slideVariants}
-                initial="hidden"
-                animate={currentSlide > index ? "visible" : "hidden"}
-                className="text-lg md:text-xl text-almost-white leading-relaxed"
-                style={{ 
-                  direction: isRtl ? "rtl" : "ltr",
-                }}
-              >
-                {slide.text}
-              </motion.p>
-            ))}
+          <div 
+            className={`w-full lg:w-1/2 space-y-6 ${isRtl ? "text-right" : "text-left"} pt-10 lg:pt-0`}
+            style={{ direction: isRtl ? "rtl" : "ltr" }}
+          >
+            {bioContent.map((slide, index) => {
+              // Get text style variations for this line
+              const variation = fontVariations[index % fontVariations.length];
+              const textColor = colorPalette[index % colorPalette.length];
+              
+              return (
+                <motion.p
+                  key={`text-${index}`}
+                  custom={index}
+                  variants={textVariants}
+                  initial="hidden"
+                  animate={currentSlide > index ? "visible" : "hidden"}
+                  className={`${variation.size} ${variation.spacing} leading-relaxed`}
+                  style={{ 
+                    direction: isRtl ? "rtl" : "ltr",
+                    fontWeight: variation.weight,
+                    color: textColor,
+                    textShadow: "0px 0px 2px rgba(0,0,0,0.5)" // Light text shadow for readability
+                  }}
+                >
+                  {slide.text}
+                </motion.p>
+              )
+            })}
             
-            {!hasShownAll && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: currentSlide > 0 ? 1 : 0 }}
-                transition={{ delay: 1, duration: 0.5 }}
-                className="mt-8 flex justify-center"
-              >
-                <Button onClick={handleShowAll} className="mono-button">
-                  {showAllLabel}
-                </Button>
-              </motion.div>
-            )}
+            <div className="flex justify-center mt-12">
+              {!hasShownAll ? (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: currentSlide > 0 ? 1 : 0 }}
+                  transition={{ delay: 1, duration: 0.5 }}
+                >
+                  <Button 
+                    onClick={handleShowAll} 
+                    className="mono-button"
+                  >
+                    {showAllLabel}
+                  </Button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                >
+                  <Button 
+                    onClick={handleReplay} 
+                    className="mono-button flex items-center gap-2"
+                  >
+                    <RefreshCw className="h-4 w-4" />
+                    {isRtl ? "שחזר" : "Replay"}
+                  </Button>
+                </motion.div>
+              )}
+            </div>
           </div>
         </div>
       </div>
       
+      {/* Scroll down indicator */}
       {!hasShownAll && currentSlide === 0 && (
         <motion.div 
           className="absolute bottom-12 w-full flex justify-center"
@@ -300,11 +460,16 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
       {!hasShownAll && bioContent.length > 1 && (
         <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2">
           {bioContent.map((_, index) => (
-            <div 
+            <motion.div 
               key={`indicator-${index}`}
-              className={`w-2 h-2 rounded-full transition-all ${
-                currentSlide > index ? "bg-white" : "bg-gray-600"
-              }`}
+              className={`w-2 h-2 rounded-full transition-all`}
+              animate={{
+                backgroundColor: currentSlide > index 
+                  ? colorPalette[index % colorPalette.length] 
+                  : "rgba(100, 100, 100, 0.4)",
+                scale: currentSlide === index + 1 ? 1.2 : 1
+              }}
+              transition={{ duration: 0.3 }}
             />
           ))}
         </div>

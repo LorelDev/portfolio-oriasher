@@ -8,8 +8,12 @@ export function useScrollAnimation() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isScrollingDown, setIsScrollingDown] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
+    // Check if device is touch-enabled
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    
     // Set initial values
     setViewportHeight(window.innerHeight);
     setDocumentHeight(document.body.scrollHeight);
@@ -51,5 +55,6 @@ export function useScrollAnimation() {
     documentHeight,
     scrollProgress,
     isScrollingDown,
+    isTouchDevice,
   };
 }
