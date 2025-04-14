@@ -1,7 +1,8 @@
+
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
-import { motion, useAnimation, useMotionValue, useTransform } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 interface HeroProps {
@@ -18,7 +19,10 @@ interface HeroProps {
 }
 
 const Hero = ({ language, currentText, isRtl }: HeroProps) => {
+  // Initialize nameChars based on language
   const nameChars = language === "en" ? ["O", "r", "i"] : ["א", "ו", "ר", "י"];
+  
+  // Initialize charPositions with default values for each character
   const [charPositions, setCharPositions] = useState(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
   
   const typingTexts = {
@@ -71,7 +75,11 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
   const nameContainerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
   
+  // Effect to handle mouse movement and update char positions
   useEffect(() => {
+    // Make sure nameChars is not empty before proceeding
+    if (nameChars.length === 0) return;
+    
     const handleMouseMove = (event: MouseEvent) => {
       if (nameContainerRef.current) {
         const rect = nameContainerRef.current.getBoundingClientRect();
@@ -87,6 +95,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
         if (distance < maxDistance) {
           const intensity = 1 - (distance / maxDistance);
           
+          // Generate new positions for each character
           const newPositions = nameChars.map((_, index) => {
             const charOffset = index - (nameChars.length - 1) / 2;
             const angleOffset = (charOffset * Math.PI / 4) + (Math.PI / 2);
@@ -98,9 +107,11 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
             };
           });
           
+          // Update positions state
           setCharPositions(newPositions);
           controls.start({ scale: 1 + intensity * 0.1 });
         } else {
+          // Reset positions when mouse is too far
           setCharPositions(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
           controls.start({ scale: 1 });
         }
@@ -108,6 +119,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
     };
     
     const handleMouseLeave = () => {
+      // Reset positions on mouse leave
       setCharPositions(nameChars.map(() => ({ x: 0, y: 0, rotate: 0 })));
       controls.start({ scale: 1 });
     };
@@ -144,28 +156,33 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
             animate={controls}
             className="relative inline-flex origin-center"
           >
-            {nameChars.map((char, index) => (
-              <motion.span
-                key={index}
-                className="inline-block"
-                animate={{
-                  x: charPositions[index].x,
-                  y: charPositions[index].y,
-                  rotate: charPositions[index].rotate,
-                  transition: {
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 10
-                  }
-                }}
-                whileHover={{
-                  scale: 1.2,
-                  transition: { duration: 0.2 }
-                }}
-              >
-                {char}
-              </motion.span>
-            ))}
+            {nameChars.map((char, index) => {
+              // Ensure we have valid position data for this index
+              const position = charPositions[index] || { x: 0, y: 0, rotate: 0 };
+              
+              return (
+                <motion.span
+                  key={index}
+                  className="inline-block"
+                  animate={{
+                    x: position.x,
+                    y: position.y,
+                    rotate: position.rotate,
+                    transition: {
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 10
+                    }
+                  }}
+                  whileHover={{
+                    scale: 1.2,
+                    transition: { duration: 0.2 }
+                  }}
+                >
+                  {char}
+                </motion.span>
+              );
+            })}
           </motion.div>
         </motion.h1>
 
