@@ -36,6 +36,18 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
     Math.min(visibleLines, backgroundSteps.length - 1)
   ];
 
+  // Display the first line after component mounts
+  useEffect(() => {
+    // Small delay to ensure things are set up
+    const timer = setTimeout(() => {
+      if (visibleLines === 0) {
+        setVisibleLines(1);
+      }
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   // Release scroll lock after component mounts if on mobile
   useEffect(() => {
     const checkIfMobile = () => {
@@ -68,6 +80,10 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
       if (e.deltaY > 0 && visibleLines < bioLines.length) {
         // Scrolling down - reveal next line
         setVisibleLines(prev => Math.min(prev + 1, bioLines.length));
+        
+        // Log for debugging
+        console.log('Revealing line', visibleLines + 1, 'of', bioLines.length);
+        console.log('New background color:', backgroundSteps[Math.min(visibleLines + 1, backgroundSteps.length - 1)]);
       } else if (e.deltaY < 0 && visibleLines > 0) {
         // Scrolling up - hide last line
         setVisibleLines(prev => Math.max(prev - 1, 0));
@@ -78,6 +94,9 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
         setTimeout(() => {
           setIsScrollLocked(false);
           setHasShownAll(true);
+          
+          // Log for debugging
+          console.log('All lines revealed, unlocking scroll');
         }, 1000);
       }
     };
@@ -92,7 +111,7 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
         element.removeEventListener('wheel', handleWheel);
       }
     };
-  }, [isScrollLocked, visibleLines, bioLines.length]);
+  }, [isScrollLocked, visibleLines, bioLines.length, backgroundSteps]);
 
   // Handle touch events for mobile
   useEffect(() => {
@@ -162,21 +181,16 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
   return (
     <div 
       ref={sectionRef}
-      className="mono-section relative px-4 overflow-hidden transition-colors duration-700"
+      className="relative min-h-screen flex items-center py-16 z-10 overflow-hidden"
       id="about"
       style={{ 
         backgroundColor: currentBgColor,
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        position: "relative",
-        zIndex: 5
+        transition: "background-color 0.7s ease-out",
       }}
     >
       <div 
         ref={containerRef}
-        className="max-w-4xl mx-auto w-full"
+        className="container mx-auto px-4"
       >
         <ScrollReveal>
           <h2 className="text-3xl md:text-4xl font-medium mb-12 text-center tracking-wide">
@@ -206,7 +220,6 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
                 className="text-lg text-almost-white leading-relaxed"
                 style={{ 
                   direction: isRtl ? "rtl" : "ltr",
-                  opacity: visibleLines > index ? 1 : 0
                 }}
               >
                 {line}

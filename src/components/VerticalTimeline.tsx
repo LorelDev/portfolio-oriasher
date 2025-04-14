@@ -48,14 +48,14 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
 
     // Slight delay to ensure all sections are properly rendered
     setTimeout(() => {
-      const sections = document.querySelectorAll("section[id], div[id='hero'], div[id='about']");
+      const sections = document.querySelectorAll("section[id], div[id='hero'], div[id='about'], div[id='contact']");
       sections.forEach((section) => {
         observer.observe(section);
       });
     }, 500);
 
     return () => {
-      const sections = document.querySelectorAll("section[id], div[id='hero'], div[id='about']");
+      const sections = document.querySelectorAll("section[id], div[id='hero'], div[id='about'], div[id='contact']");
       sections.forEach((section) => {
         observer.unobserve(section);
       });
@@ -105,13 +105,15 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
     );
   }
 
-  // Desktop timeline
+  // Desktop timeline - updated with pointer-events-none on the timeline elements 
+  // but pointer-events-auto on the clickable links
   return (
     <motion.div
       className={`fixed top-0 h-full ${isRtl ? "right-8" : "left-8"} z-50 hidden md:flex flex-col items-center justify-center pointer-events-none`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 1, duration: 0.8 }}
+      style={{ width: "auto" }} // Ensure width is minimal
     >
       {/* Full-height background line */}
       <div className="absolute w-0.5 bg-white/20 h-full rounded-full" 
@@ -135,7 +137,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
       />
       
       {/* Milestone indicators positioned evenly along the timeline */}
-      <div className="h-full flex flex-col items-center justify-around py-[15vh]">
+      <div className="h-full flex flex-col items-center justify-around py-[15vh] w-10">
         {milestones.map((milestone, index) => (
           <TooltipProvider key={milestone.sectionId}>
             <Tooltip>
