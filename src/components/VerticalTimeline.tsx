@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-scroll";
@@ -21,22 +20,18 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
   const { scrollYProgress } = useScroll();
   const [activeSection, setActiveSection] = useState<string | null>(null);
   
-  // Use the custom hook instead of useState + useEffect for detecting mobile
   const isMobile = useIsMobile();
   
-  // Create all transform values at the component level, before any conditionals
   const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "30vh"]);
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   
-  // Define timeline milestones
   const milestones: TimelineMilestone[] = [
     { sectionId: "hero", emoji: "👋", tooltipEn: "Hello", tooltipHe: "שלום" },
-    { sectionId: "about", emoji: "👨‍💻", tooltipEn: "About Me", tooltipHe: "קצת עלי" },
     { sectionId: "projects", emoji: "📱", tooltipEn: "My Project", tooltipHe: "הפרויקט שלי" },
+    { sectionId: "about", emoji: "👨‍💻", tooltipEn: "About Me", tooltipHe: "קצת עלי" },
     { sectionId: "contact", emoji: "✉️", tooltipEn: "Contact", tooltipHe: "צור קשר" },
   ];
 
-  // Track which section is currently in view
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -61,7 +56,6 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
     };
   }, []);
 
-  // Render mobile timeline
   if (isMobile) {
     return (
       <motion.div
@@ -105,7 +99,6 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
     );
   }
 
-  // Desktop vertical timeline
   return (
     <motion.div
       className={`fixed top-1/2 transform -translate-y-1/2 ${isRtl ? "right-8" : "left-8"} z-20 hidden md:block`}
@@ -113,14 +106,12 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
       animate={{ opacity: 1 }}
       transition={{ delay: 1, duration: 0.8 }}
     >
-      {/* Vertical line background */}
       <div className="absolute w-0.5 bg-white/20 h-[30vh] rounded-full" style={{ 
         left: "50%", 
         transform: "translateX(-50%)",
         top: "-15vh"
       }} />
       
-      {/* Progress fill */}
       <motion.div 
         className="absolute w-0.5 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full" 
         style={{ 
