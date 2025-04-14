@@ -172,7 +172,13 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
               return (
                 <motion.span
                   key={index}
-                  className="inline-block"
+                  className="inline-block text-purple-600"
+                  style={{ 
+                    color: '#7a3df4',
+                    opacity: 1, // Explicitly set opacity to ensure visibility
+                    visibility: 'visible', // Ensure visibility
+                    textShadow: '0 0 1px rgba(122, 61, 244, 0.3)' // Add slight text shadow for better visibility
+                  }}
                   animate={{
                     x: position.x,
                     y: position.y,
@@ -210,7 +216,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
         </motion.div>
 
         <motion.p 
-          className="text-xl md:text-2xl text-gray-700 mb-6"
+          className="text-xl md:text-2xl text-gray-700 mb-6 gradient-text-shadow"
           variants={itemVariants}
         >
           {currentText.hero.tagline}
