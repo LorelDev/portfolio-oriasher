@@ -4,12 +4,13 @@ import { Card } from "@/components/ui/card";
 import { Link } from "react-scroll";
 import Hero from "@/components/Hero";
 import HorizontalSocialIcons from "@/components/HorizontalSocialIcons";
-import { Send, FileText, Package } from "lucide-react";
+import { FileText, Package } from "lucide-react";
 import VerticalTimeline from "@/components/VerticalTimeline";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import EnhancedScrollingBio from "@/components/EnhancedScrollingBio";
+import ConversationalContactForm from "@/components/ConversationalContactForm";
 
 const Index = () => {
   const [language, setLanguage] = useState<"en" | "he">("en");
@@ -184,14 +185,6 @@ const Index = () => {
   const isRtl = language === "he";
   const currentBioContent = language === "en" ? enBioContent : heBioContent;
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: isRtl ? "ההודעה נשלחה!" : "Message sent!",
-      description: isRtl ? "תודה על פנייתך, אחזור אליך בהקדם." : "Thank you for your message. I'll get back to you soon.",
-    });
-  };
-
   return (
     <div 
       dir={isRtl ? "rtl" : "ltr"} 
@@ -284,55 +277,30 @@ const Index = () => {
           </ScrollReveal>
           
           <ScrollReveal delay={0.2}>
-            <p className="text-xl text-center mb-8 text-light-gray max-content-width mx-auto">
+            <p className="text-xl text-center mb-12 text-light-gray max-content-width mx-auto">
               {currentText.contact.cta}
             </p>
           </ScrollReveal>
           
-          <ScrollReveal delay={0.3} className="flex justify-center mb-8">
+          <ScrollReveal delay={0.3}>
+            <ConversationalContactForm isRtl={isRtl} currentText={currentText} />
+          </ScrollReveal>
+          
+          <ScrollReveal delay={0.4} className="mt-12 flex justify-center">
             <div className="p-4">
               <HorizontalSocialIcons translations={currentText.social} />
             </div>
           </ScrollReveal>
           
-          <ScrollReveal delay={0.4} className="max-w-md mx-auto">
-            <form className="space-y-6" onSubmit={handleFormSubmit}>
-              <input 
-                type="text" 
-                placeholder={currentText.contact.name} 
-                className="w-full p-3 mono-input" 
-                required
-              />
-              <input 
-                type="email" 
-                placeholder={currentText.contact.email} 
-                className="w-full p-3 mono-input" 
-                required
-              />
-              <textarea 
-                rows={4} 
-                placeholder={currentText.contact.message} 
-                className="w-full p-3 mono-input resize-none"
-                required
-              ></textarea>
+          <ScrollReveal delay={0.5} className="mt-8 flex justify-center">
+            <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
               <Button 
-                type="submit" 
-                className="mono-button w-full flex items-center justify-center gap-2 group"
+                className="mono-button flex items-center gap-2"
               >
-                {currentText.contact.submit}
-                <Send className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                <FileText className="h-4 w-4" />
+                {currentText.about.downloadCv}
               </Button>
-            </form>
-            <div className="mt-8 flex justify-center">
-              <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
-                <Button 
-                  className="mono-button flex items-center gap-2"
-                >
-                  <FileText className="h-4 w-4" />
-                  {currentText.about.downloadCv}
-                </Button>
-              </a>
-            </div>
+            </a>
           </ScrollReveal>
         </div>
       </section>
