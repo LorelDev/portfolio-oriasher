@@ -5,6 +5,7 @@ import { motion, useAnimation } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import HorizontalSocialIcons from "./HorizontalSocialIcons";
 import ScrollReveal from "./ScrollReveal";
+import { ChevronDown } from "lucide-react";
 
 interface HeroProps {
   language: "en" | "he";
@@ -66,14 +67,14 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
     visible: {
       opacity: 1,
       transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2
+        delayChildren: 0.2,
+        staggerChildren: 0.1
       }
     }
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 10, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
@@ -145,10 +146,8 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
 
   return (
     <div 
-      className="relative min-h-screen flex flex-col justify-center items-center text-center px-4 py-10 md:py-16 overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-gradient-animated" />
-      
+      className="relative min-h-screen flex flex-col justify-center items-center text-center px-4 py-10 md:py-16 overflow-hidden bg-deep-black"
+    >      
       <motion.div 
         className="max-w-3xl mx-auto z-10 mt-[-6rem] md:mt-[-8rem]"
         variants={containerVariants}
@@ -157,7 +156,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
       >
         <ScrollReveal>
           <motion.h1 
-            className="text-3xl md:text-4xl font-bold mb-4"
+            className="text-3xl md:text-4xl font-bold mb-4 text-almost-white tracking-wide"
             variants={itemVariants}
           >
             {currentText.hero.greeting}
@@ -176,7 +175,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
               speed={50}
               repeat={Infinity}
               cursor={true}
-              className="inline-block max-w-full mx-auto"
+              className="inline-block max-w-full mx-auto text-almost-white"
               style={{ 
                 display: 'block', 
                 textAlign: isRtl ? 'right' : 'left',
@@ -186,33 +185,33 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
           </motion.div>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.4}>
+        <ScrollReveal delay={0.3}>
           <motion.p 
-            className="text-xl md:text-2xl text-gray-700 mb-6 gradient-text-shadow"
+            className="text-xl md:text-2xl text-light-gray mb-8 max-w-2xl mx-auto leading-relaxed"
             variants={itemVariants}
           >
             {currentText.hero.tagline}
           </motion.p>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.6}>
+        <ScrollReveal delay={0.4}>
           <HorizontalSocialIcons translations={currentText.social} />
         </ScrollReveal>
 
-        <ScrollReveal delay={0.8}>
+        <ScrollReveal delay={0.5}>
           <motion.div 
             className="flex flex-wrap gap-4 justify-center mt-12 hero-buttons-container"
             variants={itemVariants}
           >
             <Link to="projects" smooth={true} duration={800} offset={-50}>
-              <Button className="text-lg px-8 py-6 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+              <Button className="mono-button">
                 {currentText.hero.cta}
               </Button>
             </Link>
             <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
               <Button 
                 variant="outline" 
-                className="text-lg px-8 py-6 transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                className="mono-button"
               >
                 {currentText.hero.downloadResume}
               </Button>
@@ -229,23 +228,10 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
       >
         <Link to="projects" smooth={true} duration={800} offset={-50}>
           <motion.div 
-            className="animate-bounce cursor-pointer text-gray-500 hover:text-gray-700 bg-white/30 backdrop-blur-sm rounded-full p-3 shadow-lg"
-            whileHover={{ scale: 1.2 }}
+            className="cursor-pointer text-light-gray hover:text-almost-white p-3 transition-colors"
+            whileHover={{ y: 3 }}
           >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="h-8 w-8" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M19 14l-7 7m0 0l-7-7m7 7V3" 
-              />
-            </svg>
+            <ChevronDown className="h-8 w-8" />
           </motion.div>
         </Link>
       </motion.div>

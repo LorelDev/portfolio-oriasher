@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -6,8 +7,8 @@ import Hero from "@/components/Hero";
 import HorizontalSocialIcons from "@/components/HorizontalSocialIcons";
 import { Send, FileText, Package } from "lucide-react";
 import VerticalTimeline from "@/components/VerticalTimeline";
-import ScrollGradientBackground from "@/components/ScrollGradientBackground";
 import ScrollReveal from "@/components/ScrollReveal";
+import { Separator } from "@/components/ui/separator";
 
 const Index = () => {
   const [language, setLanguage] = useState<"en" | "he">("en");
@@ -124,21 +125,17 @@ const Index = () => {
   const currentText = content[language];
   const isRtl = language === "he";
 
-  const bgOpacity = Math.min(scrollPosition / 1000, 0.2);
-
   return (
     <div 
       dir={isRtl ? "rtl" : "ltr"} 
-      className={`min-h-screen ${isRtl ? "font-assistant" : "font-poppins"}`}
+      className={`min-h-screen bg-deep-black ${isRtl ? "font-assistant" : "font-poppins"}`}
       style={{ fontFamily: isRtl ? "'Assistant', sans-serif" : "'Poppins', sans-serif" }}
     >
-      <ScrollGradientBackground />
-      
       <div className={`fixed top-4 ${isRtl ? "left-4" : "right-4"} z-30`}>
         <Button 
           onClick={toggleLanguage}
           variant="outline" 
-          className="rounded-full px-4 py-2 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-all duration-300 hover:shadow-md"
+          className="mono-button rounded-none"
         >
           {language === "en" ? "עברית" : "English"}
         </Button>
@@ -152,47 +149,38 @@ const Index = () => {
         isRtl={isRtl} 
       />
 
-      <div 
-        className="fixed inset-0 bg-white pointer-events-none z-0" 
-        style={{ opacity: bgOpacity }}
-      />
-
-      <section className="py-20 px-4 bg-white relative z-10" id="projects">
+      <section className="mono-section px-4 z-10 relative" id="projects">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
+            <h2 className="text-3xl md:text-4xl font-medium mb-12 text-center tracking-wide">
               {currentText.myApp.title}
             </h2>
           </ScrollReveal>
           
           <ScrollReveal delay={0.2}>
             <div className="flex justify-center">
-              <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:scale-[1.02] max-w-4xl w-full">
-                <div className="relative h-[300px] md:h-[400px] bg-gradient-to-r from-purple-400 to-indigo-500 flex items-center justify-center">
-                  <div className="absolute inset-0 opacity-20 bg-cover bg-center" style={{
-                    backgroundImage: "url('https://images.unsplash.com/photo-1498050108023-c5249f4df085')"
-                  }}></div>
-                  <div className="relative z-10 text-white text-center px-6">
+              <Card className="mono-card overflow-hidden transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.03)] max-w-4xl w-full rounded-none">
+                <div className="relative h-[300px] md:h-[400px] bg-soft-black flex items-center justify-center">
+                  <div className="relative z-10 text-center px-6">
                     <ScrollReveal direction="down" delay={0.3}>
-                      <Package size={64} className="mx-auto mb-4 text-white/80" />
+                      <Package size={64} className="mx-auto mb-4 text-light-gray" />
                     </ScrollReveal>
                     <ScrollReveal delay={0.4}>
-                      <h3 className="text-2xl md:text-3xl font-bold mb-4">
+                      <h3 className="text-2xl md:text-3xl font-medium mb-4 text-almost-white tracking-wide">
                         {currentText.myApp.title}
                       </h3>
                     </ScrollReveal>
                     <ScrollReveal delay={0.5}>
-                      <p className="text-lg md:text-xl mb-6 text-white/90">
+                      <p className="text-lg md:text-xl mb-6 text-light-gray max-content-width">
                         {currentText.myApp.description}
                       </p>
                     </ScrollReveal>
                     <ScrollReveal delay={0.6}>
                       <Button 
-                        variant="outline" 
-                        className="bg-white/20 text-white hover:bg-white/30 transition-colors duration-300 flex items-center justify-center gap-2"
+                        className="mono-button"
                       >
                         {currentText.myApp.comingSoon}
-                        <Package className="h-4 w-4" />
+                        <Package className="h-4 w-4 ml-2" />
                       </Button>
                     </ScrollReveal>
                   </div>
@@ -203,29 +191,36 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gray-50" id="about">
+      <Separator className="border-dark-gray" />
+
+      <section className="mono-section px-4 relative" id="about">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
+            <h2 className="text-3xl md:text-4xl font-medium mb-12 text-center tracking-wide">
               {currentText.about.title}
             </h2>
           </ScrollReveal>
           
-          <div className="flex flex-col md:flex-row gap-8 items-center">
+          <div className="flex flex-col md:flex-row gap-12 items-center">
             <ScrollReveal direction="right" className="w-full md:w-1/3">
-              <img 
-                src="/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png" 
-                alt="Ori Asher" 
-                className="aspect-square rounded-full object-cover shadow-lg hover:shadow-xl transition-shadow duration-300"
-              />
+              <div className="relative overflow-hidden">
+                <img 
+                  src="/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png" 
+                  alt="Ori Asher" 
+                  className="aspect-square object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                />
+                <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
+              </div>
             </ScrollReveal>
             <div className="w-full md:w-2/3">
               <ScrollReveal direction="left">
-                <p className="text-lg mb-6">{currentText.about.bio}</p>
+                <p className="text-lg mb-6 text-light-gray leading-relaxed max-content-width">
+                  {currentText.about.bio}
+                </p>
               </ScrollReveal>
               <ScrollReveal direction="left" delay={0.2}>
                 <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" className="hover:bg-blue-50 transition-colors duration-300">
+                  <Button className="mono-button">
                     {currentText.about.downloadCv}
                   </Button>
                 </a>
@@ -235,44 +230,48 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gradient-to-br from-blue-500 to-purple-600 text-white" id="contact">
+      <Separator className="border-dark-gray" />
+
+      <section className="mono-section px-4 relative" id="contact">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
+            <h2 className="text-3xl md:text-4xl font-medium mb-4 text-center tracking-wide">
               {currentText.contact.title}
             </h2>
           </ScrollReveal>
           
           <ScrollReveal delay={0.2}>
-            <p className="text-xl text-center mb-8">{currentText.contact.cta}</p>
+            <p className="text-xl text-center mb-8 text-light-gray max-content-width mx-auto">
+              {currentText.contact.cta}
+            </p>
           </ScrollReveal>
           
           <ScrollReveal delay={0.3} className="flex justify-center mb-8">
-            <div className="p-2 bg-white/10 backdrop-blur-sm rounded-full">
+            <div className="p-4">
               <HorizontalSocialIcons translations={currentText.social} />
             </div>
           </ScrollReveal>
           
           <ScrollReveal delay={0.4} className="max-w-md mx-auto">
-            <form className="space-y-4">
+            <form className="space-y-6">
               <input 
                 type="text" 
                 placeholder={currentText.contact.name} 
-                className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder:text-white/70" 
+                className="w-full p-3 mono-input" 
               />
               <input 
                 type="email" 
                 placeholder={currentText.contact.email} 
-                className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder:text-white/70" 
+                className="w-full p-3 mono-input" 
               />
               <textarea 
                 rows={4} 
                 placeholder={currentText.contact.message} 
-                className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder:text-white/70"
+                className="w-full p-3 mono-input resize-none"
               ></textarea>
               <Button 
                 type="submit" 
-                className="w-full bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-300 group flex items-center justify-center gap-2"
+                className="mono-button w-full flex items-center justify-center gap-2 group"
               >
                 {currentText.contact.submit}
                 <Send className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -281,8 +280,7 @@ const Index = () => {
             <div className="mt-8 flex justify-center">
               <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
                 <Button 
-                  variant="outline" 
-                  className="border-white text-white hover:bg-white/10 transition-colors duration-300 flex items-center gap-2"
+                  className="mono-button flex items-center gap-2"
                 >
                   <FileText className="h-4 w-4" />
                   {currentText.about.downloadCv}
@@ -293,7 +291,9 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="py-8 px-4 bg-gray-900 text-gray-400 text-center">
+      <Separator className="border-dark-gray" />
+
+      <footer className="py-8 px-4 bg-deep-black text-light-gray text-center">
         <ScrollReveal direction="up">
           <p className="mb-2">{currentText.footer.message}</p>
           <p>{currentText.footer.copyright}</p>

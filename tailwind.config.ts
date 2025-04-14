@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +20,15 @@ export default {
 		},
 		extend: {
 			colors: {
+				// Custom monochrome theme colors
+				"deep-black": "#0f0f0f",
+				"soft-black": "#181818",
+				"almost-white": "#f2f2f2",
+				"light-gray": "#a0a0a0",
+				"dark-gray": "#2c2c2c",
+				"softer-black": "#1e1e1e",
+				
+				// Original shadcn colors
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -84,11 +94,31 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'fade-in': {
+                    from: {
+                        opacity: '0',
+                        transform: 'translateY(10px)'
+                    },
+                    to: {
+                        opacity: '1',
+                        transform: 'translateY(0)'
+                    }
+                },
+                'subtle-glow': {
+                    '0%, 100%': {
+                        boxShadow: '0 0 20px rgba(255, 255, 255, 0.02)'
+                    },
+                    '50%': {
+                        boxShadow: '0 0 20px rgba(255, 255, 255, 0.08)'
+                    }
+                }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'fade-in': 'fade-in 0.5s ease-out forwards',
+                'subtle-glow': 'subtle-glow 4s ease-in-out infinite'
 			}
 		}
 	},
