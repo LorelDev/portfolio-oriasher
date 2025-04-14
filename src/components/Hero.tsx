@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
@@ -146,12 +147,12 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
   return (
     <section 
       id="hero"
-      className="relative min-h-screen flex flex-col justify-center items-center text-center px-4 py-20 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-center items-center text-center px-4 py-10 md:py-16 overflow-hidden"  // Reduced vertical padding
     >
       <div className="absolute inset-0 bg-gradient-animated" />
       
       <motion.div 
-        className="max-w-3xl mx-auto z-10"
+        className="max-w-3xl mx-auto z-10 mt-[-2rem] md:mt-[-4rem]"  // Lift content upwards
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -261,7 +262,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
       </motion.div>
 
       <motion.div 
-        className="absolute bottom-10 w-full flex justify-center"
+        className="absolute bottom-16 w-full flex justify-center"  // Increased bottom space
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2, duration: 0.5 }}
