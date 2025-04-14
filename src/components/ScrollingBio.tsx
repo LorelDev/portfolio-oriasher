@@ -36,6 +36,27 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
     Math.min(visibleLines, backgroundSteps.length - 1)
   ];
 
+  // Release scroll lock after component mounts if on mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      if (window.innerWidth < 768) {
+        // On mobile, show all content immediately after a short delay
+        setTimeout(() => {
+          setVisibleLines(bioLines.length);
+          setIsScrollLocked(false);
+          setHasShownAll(true);
+        }, 1000);
+      }
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
+    };
+  }, [bioLines.length]);
+
   // Handle manual wheel events
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
@@ -148,7 +169,9 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center"
+        justifyContent: "center",
+        position: "relative",
+        zIndex: 5
       }}
     >
       <div 
@@ -206,12 +229,12 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
         </div>
       </div>
       
-      {!hasShownAll && (
+      {!hasShownAll && visibleLines === 0 && (
         <motion.div 
           className="absolute bottom-12 w-full flex justify-center"
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: visibleLines === 0 ? 1 : 0, y: visibleLines === 0 ? 0 : 10 }}
-          transition={{ duration: 0.3 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.5 }}
         >
           <div className="text-light-gray text-sm animate-bounce">
             {isRtl ? "גלול למטה כדי להמשיך" : "Scroll down to continue"}

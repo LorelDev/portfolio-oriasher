@@ -170,7 +170,7 @@ const Index = () => {
   return (
     <div 
       dir={isRtl ? "rtl" : "ltr"} 
-      className={`min-h-screen bg-deep-black ${isRtl ? "font-assistant" : "font-poppins"}`}
+      className={`min-h-screen bg-deep-black overflow-x-hidden ${isRtl ? "font-assistant" : "font-poppins"}`}
       style={{ fontFamily: isRtl ? "'Assistant', sans-serif" : "'Poppins', sans-serif" }}
     >
       <div className={`fixed top-4 ${isRtl ? "left-4" : "right-4"} z-30`}>
@@ -239,9 +239,9 @@ const Index = () => {
         </div>
       </section>
 
-      <Separator className="border-dark-gray" />
+      <Separator className="border-dark-gray relative z-10" />
 
-      {/* Replace the old About section with our new ScrollingBio component */}
+      {/* The About section with the ScrollingBio component */}
       <ScrollingBio 
         bioLines={currentBioLines}
         language={language}
@@ -250,9 +250,9 @@ const Index = () => {
         showAllLabel={currentText.about.showAll}
       />
 
-      <Separator className="border-dark-gray" />
+      <Separator className="border-dark-gray relative z-10" />
 
-      <section className="mono-section px-4 relative" id="contact">
+      <section className="mono-section px-4 relative z-10" id="contact">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
             <h2 className="text-3xl md:text-4xl font-medium mb-4 text-center tracking-wide">
@@ -314,9 +314,9 @@ const Index = () => {
         </div>
       </section>
 
-      <Separator className="border-dark-gray" />
+      <Separator className="border-dark-gray relative z-10" />
 
-      <footer className="py-8 px-4 bg-deep-black text-light-gray text-center">
+      <footer className="py-8 px-4 bg-deep-black text-light-gray text-center relative z-10">
         <ScrollReveal direction="up">
           <p className="mb-2">{currentText.footer.message}</p>
           <p>{currentText.footer.copyright}</p>
