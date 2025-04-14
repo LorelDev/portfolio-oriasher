@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "react-scroll";
+import Hero from "@/components/Hero";
 
 const Index = () => {
   const [language, setLanguage] = useState<"en" | "he">("en");
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const toggleLanguage = () => {
     setLanguage(prevLang => prevLang === "en" ? "he" : "en");
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const content = {
     en: {
@@ -73,48 +86,53 @@ const Index = () => {
   const currentText = content[language];
   const isRtl = language === "he";
 
+  // Calculate background opacity based on scroll position
+  const bgOpacity = Math.min(scrollPosition / 500, 0.5);
+
   return (
-    <div dir={isRtl ? "rtl" : "ltr"} className={`min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 ${isRtl ? "font-assistant" : "font-poppins"}`}>
+    <div dir={isRtl ? "rtl" : "ltr"} className={`min-h-screen ${isRtl ? "font-assistant" : "font-poppins"}`}>
       {/* Language Toggle */}
-      <div className={`fixed top-4 ${isRtl ? "left-4" : "right-4"} z-10`}>
+      <div className={`fixed top-4 ${isRtl ? "left-4" : "right-4"} z-30`}>
         <Button 
           onClick={toggleLanguage}
           variant="outline" 
-          className="rounded-full px-4 py-2 bg-white/80 backdrop-blur-sm hover:bg-white/90"
+          className="rounded-full px-4 py-2 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-all duration-300 hover:shadow-md"
         >
           {language === "en" ? "עברית" : "English"}
         </Button>
       </div>
 
-      {/* Hero Section */}
-      <section className="min-h-screen flex flex-col justify-center items-center text-center px-4 py-20">
-        <div className="max-w-3xl mx-auto animate-fade-in">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
-            {currentText.hero.greeting}
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-700 mb-10">
-            {currentText.hero.tagline}
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button className="text-lg px-8 py-6 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
-              {currentText.hero.cta}
-            </Button>
-            <Button variant="outline" className="text-lg px-8 py-6">
-              {currentText.hero.downloadResume}
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* Add a small geeky icon at the top */}
+      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-20">
+        <img 
+          src="/lovable-uploads/8a99639b-86a4-452f-a8a1-a84ff2793156.png"
+          alt="Tech icon" 
+          className="w-10 h-10 object-contain filter drop-shadow-lg"
+        />
+      </div>
+
+      {/* Hero Section with Animation */}
+      <Hero 
+        language={language} 
+        currentText={currentText} 
+        isRtl={isRtl} 
+      />
+
+      {/* Background overlay that becomes more visible as you scroll */}
+      <div 
+        className="fixed inset-0 bg-white pointer-events-none z-0" 
+        style={{ opacity: bgOpacity }}
+      />
 
       {/* Projects Section */}
-      <section className="py-20 px-4 bg-white" id="projects">
+      <section className="py-20 px-4 bg-white relative z-10" id="projects">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
             {currentText.projects.title}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((project) => (
-              <Card key={project} className="overflow-hidden transition-all duration-300 hover:shadow-xl">
+              <Card key={project} className="overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:scale-[1.02]">
                 <div className="h-56 bg-gradient-to-r from-blue-400 to-purple-500"></div>
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold mb-2">Project {project}</h3>
@@ -126,7 +144,7 @@ const Index = () => {
                     <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Tailwind</span>
                     <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Figma</span>
                   </div>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" className="hover:bg-blue-50 transition-colors duration-300">
                     {currentText.projects.viewProject}
                   </Button>
                 </CardContent>
@@ -147,12 +165,14 @@ const Index = () => {
               <img 
                 src="/lovable-uploads/7effd597-fcde-41dd-b9af-ed895d5dd42b.png" 
                 alt="Ori Asher" 
-                className="aspect-square rounded-full object-cover shadow-lg"
+                className="aspect-square rounded-full object-cover shadow-lg hover:shadow-xl transition-shadow duration-300"
               />
             </div>
             <div className="w-full md:w-2/3">
               <p className="text-lg mb-6">{currentText.about.bio}</p>
-              <Button variant="outline">{currentText.about.downloadCv}</Button>
+              <Button variant="outline" className="hover:bg-blue-50 transition-colors duration-300">
+                {currentText.about.downloadCv}
+              </Button>
             </div>
           </div>
         </div>
@@ -189,19 +209,19 @@ const Index = () => {
             <div>
               <h3 className="text-xl font-bold mb-4">Social</h3>
               <div className="space-y-4">
-                <a href="https://www.linkedin.com/in/%D7%90%D7%95%D7%A8%D7%99-%D7%90%D7%A9%D7%A8-b88690339/" className="flex items-center gap-2 hover:text-blue-200" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.linkedin.com/in/%D7%90%D7%95%D7%A8%D7%99-%D7%90%D7%A9%D7%A8-b88690339/" className="flex items-center gap-2 hover:text-blue-200 transition-colors duration-300" target="_blank" rel="noopener noreferrer">
                   <span>LinkedIn</span>
                 </a>
-                <a href="https://www.instagram.com/ori.asher/" className="flex items-center gap-2 hover:text-blue-200" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.instagram.com/ori.asher/" className="flex items-center gap-2 hover:text-blue-200 transition-colors duration-300" target="_blank" rel="noopener noreferrer">
                   <span>Instagram</span>
                 </a>
-                <a href="https://wa.me/+972552285564" className="flex items-center gap-2 hover:text-blue-200" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/+972552285564" className="flex items-center gap-2 hover:text-blue-200 transition-colors duration-300" target="_blank" rel="noopener noreferrer">
                   <span>WhatsApp</span>
                 </a>
-                <a href="https://www.upwork.com/freelancers/oria3?mp_source=share" className="flex items-center gap-2 hover:text-blue-200" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.upwork.com/freelancers/oria3?mp_source=share" className="flex items-center gap-2 hover:text-blue-200 transition-colors duration-300" target="_blank" rel="noopener noreferrer">
                   <span>Upwork</span>
                 </a>
-                <a href="tel:+972552285564" className="flex items-center gap-2 hover:text-blue-200">
+                <a href="tel:+972552285564" className="flex items-center gap-2 hover:text-blue-200 transition-colors duration-300">
                   <span>+972 55-228-5564</span>
                 </a>
               </div>
@@ -211,7 +231,7 @@ const Index = () => {
                 <input type="text" placeholder="Name" className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder:text-white/70" />
                 <input type="email" placeholder="Email" className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder:text-white/70" />
                 <textarea rows={4} placeholder="Message" className="w-full p-3 rounded bg-white/10 border border-white/20 text-white placeholder:text-white/70"></textarea>
-                <Button type="submit" className="w-full bg-white text-blue-600 hover:bg-blue-50">
+                <Button type="submit" className="w-full bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-300">
                   {currentText.contact.submit}
                 </Button>
               </form>
