@@ -264,7 +264,6 @@ const Index = () => {
         language={language}
         isRtl={isRtl}
         title={currentText.about.title}
-        showAllLabel={currentText.about.showAll}
       />
 
       <Separator className="border-dark-gray relative z-10" />
