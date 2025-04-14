@@ -10,6 +10,7 @@ import VerticalTimeline from "@/components/VerticalTimeline";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
+import ScrollingBio from "@/components/ScrollingBio";
 
 const Index = () => {
   const [language, setLanguage] = useState<"en" | "he">("en");
@@ -39,6 +40,24 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, [language]);
 
+  const enBioLines = [
+    "I'm a computer science student at Sapir College.",
+    "Still learning. Still experimenting.",
+    "But always trying to build things that work —",
+    "both technically and emotionally.",
+    "Every line of code I write teaches me something new.",
+    "And I believe I already have a lot to offer."
+  ];
+  
+  const heBioLines = [
+    "אני סטודנט למדעי המחשב במכללת ספיר.",
+    "עדיין לומד. עדיין מתנסה.",
+    "אבל תמיד מנסה לבנות דברים שעובדים —",
+    "גם טכנית, גם רגשית.",
+    "כל שורת קוד שאני כותב מלמדת אותי משהו חדש.",
+    "ואני מאמין שיש לי כבר הרבה מה להציע."
+  ];
+
   const content = {
     en: {
       hero: {
@@ -50,7 +69,8 @@ const Index = () => {
       about: {
         title: "About Me",
         bio: "I'm a frontend developer who loves building sleek, fast UIs with clean code. When I'm not debugging, you'll find me experimenting with new JavaScript frameworks or optimizing load times. My code is as clean as my desk is messy, and I believe the best interfaces are the ones users don't even notice they're using.",
-        downloadCv: "Download CV"
+        downloadCv: "Download CV",
+        showAll: "Show All"
       },
       projects: {
         title: "My Project",
@@ -96,7 +116,8 @@ const Index = () => {
       about: {
         title: "קצת עלי",
         bio: "אני סטודנט למדעי המחשב במכללת ספיר, ומפתח פרונטאנד בתחילת הדרך. אני עדיין לומד, עדיין מתנסה, אבל עם רצון ברור לבנות דברים שעובדים באמת – גם טכנית, גם אנושית. הקוד שאני כותב משתפר משורה לשורה, ואני משתדל לשמור על ראש פתוח וסטנדרטים גבוהים. יש לי הרבה מה ללמוד, אבל גם לא מעט מה להציע כבר עכשיו.",
-        downloadCv: "הורד קו״ח"
+        downloadCv: "הורד קו״ח",
+        showAll: "הצג הכל"
       },
       projects: {
         title: "הפרויקט שלי",
@@ -136,6 +157,7 @@ const Index = () => {
 
   const currentText = content[language];
   const isRtl = language === "he";
+  const currentBioLines = language === "en" ? enBioLines : heBioLines;
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -219,42 +241,14 @@ const Index = () => {
 
       <Separator className="border-dark-gray" />
 
-      <section className="mono-section px-4 relative" id="about">
-        <div className="max-w-4xl mx-auto">
-          <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl font-medium mb-12 text-center tracking-wide">
-              {currentText.about.title}
-            </h2>
-          </ScrollReveal>
-          
-          <div className="flex flex-col md:flex-row gap-12 items-center">
-            <ScrollReveal direction="right" className="w-full md:w-1/3">
-              <div className="relative overflow-hidden">
-                <img 
-                  src="/lovable-uploads/22a4f7cb-fbc2-4f89-a11d-b9f00b04e073.png" 
-                  alt="Ori Asher" 
-                  className="aspect-square object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                />
-                <div className="absolute inset-0 border border-dark-gray pointer-events-none"></div>
-              </div>
-            </ScrollReveal>
-            <div className="w-full md:w-2/3">
-              <ScrollReveal direction="left">
-                <p className="text-lg mb-6 text-light-gray leading-relaxed max-content-width">
-                  {currentText.about.bio}
-                </p>
-              </ScrollReveal>
-              <ScrollReveal direction="left" delay={0.2}>
-                <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
-                  <Button className="mono-button">
-                    {currentText.about.downloadCv}
-                  </Button>
-                </a>
-              </ScrollReveal>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Replace the old About section with our new ScrollingBio component */}
+      <ScrollingBio 
+        bioLines={currentBioLines}
+        language={language}
+        isRtl={isRtl}
+        title={currentText.about.title}
+        showAllLabel={currentText.about.showAll}
+      />
 
       <Separator className="border-dark-gray" />
 
