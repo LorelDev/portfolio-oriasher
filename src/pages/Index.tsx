@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Link } from "react-scroll";
 import Hero from "@/components/Hero";
 import HorizontalSocialIcons from "@/components/HorizontalSocialIcons";
-import { FileText, Package } from "lucide-react";
+import { FileText, Package, Code } from "lucide-react";
 import VerticalTimeline from "@/components/VerticalTimeline";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Separator } from "@/components/ui/separator";
@@ -130,10 +130,10 @@ const Index = () => {
         message: "Built with React & Framer Motion by Ori Asher",
         copyright: "© 2025 Ori Asher. All rights reserved."
       },
-      myApp: {
-        title: "My Future Application",
-        description: "A glimpse into an innovative project I'm developing. Stay tuned for details!",
-        comingSoon: "Coming Soon"
+      myProjects: {
+        title: "My Future Projects",
+        description: "A glimpse into innovative projects I'm developing. Cutting-edge ideas in progress!",
+        comingSoon: "Explore Projects"
       }
     },
     he: {
@@ -177,10 +177,10 @@ const Index = () => {
         message: "נבנה עם React ו־Framer Motion על ידי אורי אשר",
         copyright: "© 2025 אורי אשר. כל הזכויות שמורות."
       },
-      myApp: {
-        title: "האפליקציה העתידית שלי",
-        description: "הצצה לפרויקט חדשני שאני מפתח. המשך יבוא!",
-        comingSoon: "בקרוב"
+      myProjects: {
+        title: "הפרויקטים העתידיים שלי",
+        description: "הצצה לפרויקטים חדשניים שאני מפתח. רעיונות מתקדמים בתהליך!",
+        comingSoon: "גלה פרויקטים"
       }
     }
   };
@@ -226,26 +226,34 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
             <h2 className="text-3xl md:text-4xl font-medium mb-12 text-center tracking-wide">
-              {currentText.myApp.title}
+              {currentText.myProjects.title}
             </h2>
           </ScrollReveal>
           
           <ScrollReveal delay={0.2}>
             <div className="flex justify-center">
               <Card className="mono-card overflow-hidden transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.03)] max-w-4xl w-full rounded-none">
-                <div className="relative h-[300px] md:h-[400px] bg-soft-black flex items-center justify-center">
-                  <div className="relative z-10 text-center px-6">
+                <div 
+                  className="relative h-[300px] md:h-[400px] bg-soft-black flex items-center justify-center" 
+                  style={{
+                    backgroundImage: 'url(https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundBlendMode: 'overlay'
+                  }}
+                >
+                  <div className="relative z-10 text-center px-6 bg-black/50 backdrop-blur-sm p-8 rounded-lg">
                     <ScrollReveal direction="down" delay={0.3}>
-                      <Package size={64} className="mx-auto mb-4 text-light-gray" />
+                      <Code size={64} className="mx-auto mb-4 text-light-gray" />
                     </ScrollReveal>
                     <ScrollReveal delay={0.4}>
                       <h3 className="text-2xl md:text-3xl font-medium mb-4 text-almost-white tracking-wide">
-                        {currentText.myApp.title}
+                        {currentText.myProjects.title}
                       </h3>
                     </ScrollReveal>
                     <ScrollReveal delay={0.5}>
                       <p className="text-lg md:text-xl mb-6 text-light-gray max-content-width">
-                        {currentText.myApp.description}
+                        {currentText.myProjects.description}
                       </p>
                     </ScrollReveal>
                     <ScrollReveal delay={0.6}>
@@ -254,12 +262,12 @@ const Index = () => {
                         onClick={() => {
                           toast({
                             title: isRtl ? "בקרוב!" : "Coming Soon!",
-                            description: isRtl ? "עדיין עובדים על זה..." : "We're still working on it...",
+                            description: isRtl ? "הפרויקטים שלי בהמשך..." : "My projects coming up...",
                           });
                         }}
                       >
-                        {currentText.myApp.comingSoon}
-                        <Package className="h-4 w-4 ml-2" />
+                        {currentText.myProjects.comingSoon}
+                        <Code className="h-4 w-4 ml-2" />
                       </Button>
                     </ScrollReveal>
                   </div>
