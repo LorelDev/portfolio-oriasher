@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-scroll";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Mail, Phone, Laptop, Hand } from "lucide-react";
 
 interface TimelineProps {
   language: "en" | "he";
@@ -12,7 +13,7 @@ interface TimelineProps {
 
 interface TimelineMilestone {
   sectionId: string;
-  emoji: string;
+  icon: React.ReactNode;
   tooltipEn: string;
   tooltipHe: string;
 }
@@ -27,11 +28,12 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
   const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   
+  // Reordered milestones according to the specified order: Mail, Phone, Laptop, Hand
   const milestones: TimelineMilestone[] = [
-    { sectionId: "hero", emoji: "👋", tooltipEn: "Hello", tooltipHe: "שלום" },
-    { sectionId: "projects", emoji: "📱", tooltipEn: "My Project", tooltipHe: "הפרויקט שלי" },
-    { sectionId: "about", emoji: "👨‍💻", tooltipEn: "About Me", tooltipHe: "קצת עלי" },
-    { sectionId: "contact", emoji: "✉️", tooltipEn: "Contact", tooltipHe: "צור קשר" },
+    { sectionId: "contact", icon: <Mail size={18} />, tooltipEn: "Contact", tooltipHe: "צור קשר" },
+    { sectionId: "hero", icon: <Phone size={18} />, tooltipEn: "Hello", tooltipHe: "שלום" },
+    { sectionId: "about", icon: <Laptop size={18} />, tooltipEn: "About Me", tooltipHe: "קצת עלי" },
+    { sectionId: "projects", icon: <Hand size={18} />, tooltipEn: "My Project", tooltipHe: "הפרויקט שלי" },
   ];
 
   useEffect(() => {
@@ -82,18 +84,18 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
             <motion.div
               className={`rounded-full w-8 h-8 flex items-center justify-center cursor-pointer transition-all duration-300 ${
                 activeSection === milestone.sectionId
-                  ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+                  ? "bg-neutral-300 text-black"
                   : "bg-white/20 text-white/70"
               }`}
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span>{milestone.emoji}</span>
+              {milestone.icon}
             </motion.div>
           </Link>
         ))}
         <motion.div
-          className="absolute bottom-0 h-1 bg-gradient-to-r from-blue-500 to-purple-600"
+          className="absolute bottom-0 h-1 bg-neutral-300"
           style={{
             left: 0,
             right: 0,
@@ -126,7 +128,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
       
       {/* Progress indicator */}
       <motion.div 
-        className="absolute w-0.5 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full" 
+        className="absolute w-0.5 bg-neutral-300 rounded-full" 
         style={{ 
           left: "50%", 
           transform: "translateX(-50%)",
@@ -153,7 +155,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
                   <motion.div 
                     className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer backdrop-blur-sm z-10 border-2 transition-all duration-300 ${
                       activeSection === milestone.sectionId
-                        ? "border-purple-500 bg-white/20 text-white scale-125"
+                        ? "border-neutral-400 bg-neutral-300/20 text-white scale-125"
                         : "border-white/30 bg-white/10 text-white/60"
                     }`}
                     whileHover={{ 
@@ -162,8 +164,8 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
                     }}
                     animate={{
                       boxShadow: activeSection === milestone.sectionId 
-                        ? ["0 0 0px 0px rgba(168,109,255,0)", "0 0 15px 5px rgba(168,109,255,0.5)", "0 0 0px 0px rgba(168,109,255,0)"]
-                        : "0 0 0px 0px rgba(168,109,255,0)"
+                        ? ["0 0 0px 0px rgba(255,255,255,0)", "0 0 15px 5px rgba(255,255,255,0.3)", "0 0 0px 0px rgba(255,255,255,0)"]
+                        : "0 0 0px 0px rgba(255,255,255,0)"
                     }}
                     transition={{
                       boxShadow: {
@@ -172,7 +174,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
                       }
                     }}
                   >
-                    <span>{milestone.emoji}</span>
+                    {milestone.icon}
                   </motion.div>
                 </Link>
               </TooltipTrigger>
