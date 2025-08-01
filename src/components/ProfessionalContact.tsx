@@ -1,0 +1,160 @@
+import React from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Mail, Phone, Github, Linkedin, MapPin, FileText } from "lucide-react";
+
+interface ProfessionalContactProps {
+  language: "en" | "he";
+  currentText: any;
+  isRtl: boolean;
+}
+
+const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, currentText, isRtl }) => {
+  const contactMethods = [
+    {
+      icon: Mail,
+      label: "Email",
+      value: "oriasher135@gmail.com",
+      href: "mailto:oriasher135@gmail.com"
+    },
+    {
+      icon: Phone,
+      label: "Phone",
+      value: "+972 52-677-0092",
+      href: "tel:+972526770092"
+    },
+    {
+      icon: MapPin,
+      label: "Location",
+      value: "Israel",
+      href: null
+    }
+  ];
+
+  const socialLinks = [
+    {
+      icon: Github,
+      label: "GitHub",
+      href: "https://github.com/oriasher"
+    },
+    {
+      icon: Linkedin,
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/ori-asher-a9b542320/"
+    }
+  ];
+
+  return (
+    <section className="py-20 px-6 relative z-10" id="contact">
+      <div className="max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-light tracking-wider text-almost-white mb-6">
+            {currentText.contact.title}
+          </h2>
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-light-gray to-transparent mx-auto mb-6"></div>
+          <p className="text-xl text-light-gray max-w-2xl mx-auto leading-relaxed">
+            {currentText.contact.cta}
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          {/* Contact methods */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <Card className="bg-soft-black border-dark-gray p-8 h-full">
+              <h3 className="text-2xl font-medium text-almost-white mb-8">Get In Touch</h3>
+              <div className="space-y-6">
+                {contactMethods.map((method, index) => (
+                  <motion.div
+                    key={method.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="flex items-center gap-4"
+                  >
+                    <div className="w-12 h-12 bg-dark-gray rounded-lg flex items-center justify-center">
+                      <method.icon size={20} className="text-light-gray" />
+                    </div>
+                    <div>
+                      <p className="text-light-gray text-sm">{method.label}</p>
+                      {method.href ? (
+                        <a 
+                          href={method.href}
+                          className="text-almost-white hover:text-light-gray transition-colors"
+                        >
+                          {method.value}
+                        </a>
+                      ) : (
+                        <p className="text-almost-white">{method.value}</p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </Card>
+          </motion.div>
+
+          {/* Social & Resume */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <Card className="bg-soft-black border-dark-gray p-8">
+              <h3 className="text-2xl font-medium text-almost-white mb-8">Connect</h3>
+              <div className="space-y-4">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-4 p-4 bg-dark-gray hover:bg-light-gray/10 rounded-lg transition-all duration-300 group"
+                  >
+                    <social.icon size={20} className="text-light-gray group-hover:text-almost-white transition-colors" />
+                    <span className="text-almost-white group-hover:text-light-gray transition-colors">
+                      {social.label}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </Card>
+
+            <Card className="bg-soft-black border-dark-gray p-8">
+              <h3 className="text-2xl font-medium text-almost-white mb-6">Resume</h3>
+              <p className="text-light-gray mb-6">
+                Download my resume to learn more about my experience and skills.
+              </p>
+              <a 
+                href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Button className="w-full bg-almost-white text-deep-black hover:bg-light-gray transition-all duration-300">
+                  <FileText size={16} className="mr-2" />
+                  {currentText.about?.downloadCv || "Download Resume"}
+                </Button>
+              </a>
+            </Card>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ProfessionalContact;

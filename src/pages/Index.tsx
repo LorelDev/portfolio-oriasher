@@ -2,15 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-scroll";
-import Hero from "@/components/Hero";
-import HorizontalSocialIcons from "@/components/HorizontalSocialIcons";
-import { FileText, Package, Code } from "lucide-react";
+import ProfessionalHero from "@/components/ProfessionalHero";
+import ProfessionalProjects from "@/components/ProfessionalProjects";
+import ProfessionalContact from "@/components/ProfessionalContact";
 import VerticalTimeline from "@/components/VerticalTimeline";
-import ScrollReveal from "@/components/ScrollReveal";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
-import EnhancedAboutMe from "@/components/EnhancedAboutMe";
-import ConversationalContactForm from "@/components/ConversationalContactForm";
 import GravityField from "@/components/GravityField";
 
 const Index = () => {
@@ -42,52 +39,6 @@ const Index = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const enBioContent = [
-    {
-      text: "I'm a computer science student at Sapir College.",
-      imagePath: "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png"
-    },
-    {
-      text: "Still learning. Still experimenting.",
-      imagePath: "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png"
-    },
-    {
-      text: "But always trying to build things that work — both technically and emotionally.",
-      imagePath: "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png"
-    },
-    {
-      text: "Every line of code I write teaches me something new.",
-      imagePath: "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png"
-    },
-    {
-      text: "And I believe I already have a lot to offer.",
-      imagePath: "/lovable-uploads/21764655-ea01-4fdb-aea6-0c4f7ab27e66.png"
-    }
-  ];
-  
-  const heBioContent = [
-    {
-      text: "אני סטודנט למדעי המחשב במכללת ספיר.",
-      imagePath: "/lovable-uploads/1f4db796-1fa1-4727-8fb8-1860d579e610.png"
-    },
-    {
-      text: "עדיין לומד. עדיין מתנסה.",
-      imagePath: "/lovable-uploads/1f4db796-1fa1-4727-8fb8-1860d579e610.png"
-    },
-    {
-      text: "אבל תמיד מנסה לבנות דברים שעובדים — גם טכנית, גם רגשית.",
-      imagePath: "/lovable-uploads/1f4db796-1fa1-4727-8fb8-1860d579e610.png"
-    },
-    {
-      text: "כל שורת קוד שאני כותב מלמדת אותי משהו חדש.",
-      imagePath: "/lovable-uploads/1f4db796-1fa1-4727-8fb8-1860d579e610.png"
-    },
-    {
-      text: "ואני מאמין שיש לי כבר הרבה מה להציע.",
-      imagePath: "/lovable-uploads/1f4db796-1fa1-4727-8fb8-1860d579e610.png"
-    }
-  ];
 
   const content = {
     en: {
@@ -188,7 +139,6 @@ const Index = () => {
 
   const currentText = content[language];
   const isRtl = language === "he";
-  const currentBioContent = language === "en" ? enBioContent : heBioContent;
 
   return (
     <div 
@@ -201,7 +151,7 @@ const Index = () => {
         <Button 
           onClick={toggleLanguage}
           variant="outline" 
-          className="mono-button rounded-none"
+          className="bg-soft-black border-dark-gray text-light-gray hover:bg-dark-gray hover:text-almost-white transition-all duration-300"
         >
           {language === "en" ? "עברית" : "English"}
         </Button>
@@ -209,123 +159,36 @@ const Index = () => {
       
       <VerticalTimeline language={language} isRtl={isRtl} />
 
-      <Hero 
+      <ProfessionalHero 
         language={language} 
         currentText={currentText} 
         isRtl={isRtl} 
       />
 
-      <EnhancedAboutMe 
-        bioContent={currentBioContent}
-        language={language}
-        isRtl={isRtl}
-        title={currentText.about.title}
+      <Separator className="border-dark-gray/30 relative z-10" />
+
+      <ProfessionalProjects 
+        language={language} 
+        currentText={currentText} 
+        isRtl={isRtl} 
       />
 
-      <Separator className="border-dark-gray relative z-10" />
+      <Separator className="border-dark-gray/30 relative z-10" />
 
-      <section className="mono-section px-4 z-10 relative" id="projects">
-        <div className="max-w-6xl mx-auto">
-          <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl font-medium mb-12 text-center tracking-wide">
-              {currentText.myProjects.title}
-            </h2>
-          </ScrollReveal>
-          
-          <ScrollReveal delay={0.2}>
-            <div className="flex justify-center">
-              <Card className="mono-card overflow-hidden transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.03)] max-w-4xl w-full rounded-none">
-                <div 
-                  className="relative h-[300px] md:h-[400px] bg-soft-black flex items-center justify-center" 
-                  style={{
-                    backgroundImage: 'url(https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundBlendMode: 'overlay'
-                  }}
-                >
-                  <div className="relative z-10 text-center px-6 bg-black/50 backdrop-blur-sm p-8 rounded-lg">
-                    <ScrollReveal direction="down" delay={0.3}>
-                      <Code size={64} className="mx-auto mb-4 text-light-gray" />
-                    </ScrollReveal>
-                    <ScrollReveal delay={0.4}>
-                      <h3 className="text-2xl md:text-3xl font-medium mb-4 text-almost-white tracking-wide">
-                        {currentText.myProjects.title}
-                      </h3>
-                    </ScrollReveal>
-                    <ScrollReveal delay={0.5}>
-                      <p className="text-lg md:text-xl mb-6 text-light-gray max-content-width">
-                        {currentText.myProjects.description}
-                      </p>
-                    </ScrollReveal>
-                    <ScrollReveal delay={0.6}>
-                      <Button 
-                        className="mono-button"
-                        onClick={() => {
-                          toast({
-                            title: isRtl ? "בקרוב!" : "Coming Soon!",
-                            description: isRtl ? "הפרויקטים שלי בהמשך..." : "My projects coming up...",
-                          });
-                        }}
-                      >
-                        {currentText.myProjects.comingSoon}
-                        <Code className="h-4 w-4 ml-2" />
-                      </Button>
-                    </ScrollReveal>
-                  </div>
-                </div>
-              </Card>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
+      <ProfessionalContact 
+        language={language} 
+        currentText={currentText} 
+        isRtl={isRtl} 
+      />
 
-      <Separator className="border-dark-gray relative z-10" />
+      <Separator className="border-dark-gray/30 relative z-10" />
 
-      <section className="mono-section px-4 relative z-10" id="contact">
+      <footer className="py-12 px-6 bg-deep-black text-light-gray text-center relative z-10">
         <div className="max-w-4xl mx-auto">
-          <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl font-medium mb-4 text-center tracking-wide">
-              {currentText.contact.title}
-            </h2>
-          </ScrollReveal>
-          
-          <ScrollReveal delay={0.2}>
-            <p className="text-xl text-center mb-12 text-light-gray max-content-width mx-auto">
-              {currentText.contact.cta}
-            </p>
-          </ScrollReveal>
-          
-          <ScrollReveal delay={0.3}>
-            <ConversationalContactForm isRtl={isRtl} currentText={currentText} />
-          </ScrollReveal>
-          
-          <ScrollReveal delay={0.4} className="mt-12 flex justify-center">
-            <div className="p-4">
-              <HorizontalSocialIcons translations={currentText.social} />
-            </div>
-          </ScrollReveal>
-          
-          <ScrollReveal delay={0.5} className="mt-8 flex justify-center">
-            <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
-              <Button 
-                className="mono-button flex items-center gap-2"
-              >
-                <FileText className="h-4 w-4" />
-                {currentText.about.downloadCv}
-              </Button>
-            </a>
-          </ScrollReveal>
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-light-gray to-transparent mx-auto mb-6"></div>
+          <p className="mb-2 text-lg">{currentText.footer.message}</p>
+          <p className="text-light-gray/60">{currentText.footer.copyright}</p>
         </div>
-      </section>
-
-      <Separator className="border-dark-gray relative z-10" />
-
-      <footer className="py-8 px-4 bg-deep-black text-light-gray text-center relative z-10">
-        <ScrollReveal direction="up">
-          <p className="mb-2">{currentText.footer.message}</p>
-          <p>{currentText.footer.copyright}</p>
-        </ScrollReveal>
       </footer>
     </div>
   );
