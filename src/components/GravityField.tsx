@@ -67,53 +67,60 @@ const GravityField: React.FC = () => {
       if (event.gamma !== null && event.beta !== null) {
         isSupported = true;
         // Convert device orientation to gravity values
-        const newGravityX = event.gamma / 90; // -1 to 1
-        const newGravityY = event.beta / 90; // -1 to 1
+        const newGravityX = (event.gamma || 0) / 45; // Increased sensitivity
+        const newGravityY = (event.beta || 0) / 45; // Increased sensitivity
         
         setGravity({ 
-          x: newGravityX * 0.5, 
-          y: newGravityY * 0.5 
+          x: Math.max(-1, Math.min(1, newGravityX)), 
+          y: Math.max(-1, Math.min(1, newGravityY))
         });
       }
     };
 
     const requestPermission = async () => {
+      // For iOS 13+ devices
       if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
         try {
           const permission = await (DeviceOrientationEvent as any).requestPermission();
           if (permission === 'granted') {
-            window.addEventListener('deviceorientation', handleOrientation);
+            window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+            isSupported = true;
           }
         } catch (error) {
           console.log('Device orientation permission denied');
+          // Fallback to mouse
+          setupMouseControl();
         }
       } else {
-        // Android or other platforms
-        window.addEventListener('deviceorientation', handleOrientation);
+        // Android or other platforms - try directly
+        window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+        
+        // Test if it works after a short delay
+        setTimeout(() => {
+          if (!isSupported) {
+            setupMouseControl();
+          }
+        }, 2000);
       }
     };
 
-    // Check if device orientation is supported
-    setTimeout(() => {
-      if (!isSupported) {
-        // Fallback to mouse gravity on desktop
-        const handleMouseMove = (event: MouseEvent) => {
-          if (containerRef.current) {
-            const rect = containerRef.current.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            
-            const gravityX = (event.clientX - centerX) / (rect.width / 2) * 0.3;
-            const gravityY = (event.clientY - centerY) / (rect.height / 2) * 0.3;
-            
-            setGravity({ x: gravityX, y: gravityY });
-          }
-        };
+    const setupMouseControl = () => {
+      const handleMouseMove = (event: MouseEvent) => {
+        if (containerRef.current) {
+          const rect = containerRef.current.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          
+          const gravityX = (event.clientX - centerX) / (rect.width / 2) * 0.4;
+          const gravityY = (event.clientY - centerY) / (rect.height / 2) * 0.4;
+          
+          setGravity({ x: gravityX, y: gravityY });
+        }
+      };
 
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-      }
-    }, 1000);
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => window.removeEventListener('mousemove', handleMouseMove);
+    };
 
     requestPermission();
 
@@ -197,11 +204,23 @@ const GravityField: React.FC = () => {
         ))}
       </AnimatePresence>
       
-      {/* Instruction text for mobile */}
-      <div className="absolute top-4 left-4 text-white/50 text-sm z-10 pointer-events-auto">
-        <div className="md:hidden">הטה את הטלפון כדי לשלוט בגרביטציה</div>
-        <div className="hidden md:block">הזז את העכבר כדי לשלוט בגרביטציה</div>
-      </div>
+      {/* Touch area for mobile interaction */}
+      <div 
+        className="absolute inset-0 z-10 pointer-events-auto md:pointer-events-none"
+        onTouchMove={(e) => {
+          const touch = e.touches[0];
+          if (containerRef.current && touch) {
+            const rect = containerRef.current.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            const gravityX = (touch.clientX - centerX) / (rect.width / 2) * 0.6;
+            const gravityY = (touch.clientY - centerY) / (rect.height / 2) * 0.6;
+            
+            setGravity({ x: gravityX, y: gravityY });
+          }
+        }}
+      />
     </div>
   );
 };
