@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import EnhancedAboutMe from "@/components/EnhancedAboutMe";
 import ConversationalContactForm from "@/components/ConversationalContactForm";
+import GravityField from "@/components/GravityField";
 
 const Index = () => {
   const [language, setLanguage] = useState<"en" | "he">("en");
@@ -192,9 +193,10 @@ const Index = () => {
   return (
     <div 
       dir={isRtl ? "rtl" : "ltr"} 
-      className={`min-h-screen bg-deep-black overflow-x-hidden ${isRtl ? "font-assistant" : "font-poppins"}`}
+      className={`min-h-screen bg-deep-black overflow-x-hidden relative ${isRtl ? "font-assistant" : "font-poppins"}`}
       style={{ fontFamily: isRtl ? "'Assistant', sans-serif" : "'Poppins', sans-serif" }}
     >
+      <GravityField />
       <div className={`fixed top-4 ${isRtl ? "left-4" : "right-4"} z-30`}>
         <Button 
           onClick={toggleLanguage}
