@@ -115,10 +115,10 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               <a href="https://www.linkedin.com/in/ori-asher-a9b542320/" className="text-light-gray hover:text-almost-white transition-colors">
                 <Linkedin size={24} />
               </a>
-              <a href="mailto:oriasher135@gmail.com" className="text-light-gray hover:text-almost-white transition-colors">
+              <a href="mailto:ori.asher@outlook.com" className="text-light-gray hover:text-almost-white transition-colors">
                 <Mail size={24} />
               </a>
-              <a href="tel:+972526770092" className="text-light-gray hover:text-almost-white transition-colors">
+              <a href="tel:+972552285564" className="text-light-gray hover:text-almost-white transition-colors">
                 <Phone size={24} />
               </a>
             </motion.div>

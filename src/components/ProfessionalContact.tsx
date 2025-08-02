@@ -15,14 +15,14 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
     {
       icon: Mail,
       label: "Email",
-      value: "oriasher135@gmail.com",
-      href: "mailto:oriasher135@gmail.com"
+      value: "ori.asher@outlook.com",
+      href: "mailto:ori.asher@outlook.com"
     },
     {
       icon: Phone,
       label: "Phone",
-      value: "+972 52-677-0092",
-      href: "tel:+972526770092"
+      value: "+972 55-228-5564",
+      href: "tel:+972552285564"
     },
     {
       icon: MapPin,
