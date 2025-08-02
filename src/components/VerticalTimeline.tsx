@@ -28,11 +28,11 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
   const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   
-  // Reordered milestones according to the specified order: Mail, Phone, Laptop, Hand
+  // Reordered milestones according to user request: Hand (Hello), Laptop (Projects), Mail (Contact)
   const milestones: TimelineMilestone[] = [
-    { sectionId: "contact", icon: <Mail size={18} />, tooltipEn: "Contact", tooltipHe: "צור קשר" },
-    { sectionId: "projects", icon: <Phone size={18} />, tooltipEn: "Projects", tooltipHe: "פרויקטים" },
     { sectionId: "hero", icon: <Hand size={18} />, tooltipEn: "Hello", tooltipHe: "שלום" },
+    { sectionId: "projects", icon: <Laptop size={18} />, tooltipEn: "Projects", tooltipHe: "פרויקטים" },
+    { sectionId: "contact", icon: <Mail size={18} />, tooltipEn: "Contact", tooltipHe: "צור קשר" },
   ];
 
   useEffect(() => {
