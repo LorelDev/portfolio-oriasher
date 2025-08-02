@@ -120,7 +120,7 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
             className="space-y-8"
           >
             <Card className="bg-soft-black border-dark-gray p-8">
-              <h3 className="text-2xl font-medium text-almost-white mb-8">תתחברו איתי בלינקדאין!</h3>
+              <h3 className="text-2xl font-medium text-almost-white mb-8">Connect with me on LinkedIn!</h3>
               <a
                 href="https://www.linkedin.com/in/ori-asher-a9b542320/"
                 target="_blank"
