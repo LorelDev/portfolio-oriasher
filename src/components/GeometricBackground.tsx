@@ -23,18 +23,11 @@ const GeometricBackground = () => {
   const mouseRef = useRef({ x: 0, y: 0 });
   const animationRef = useRef<number>();
 
-  // Return null for mobile devices - no background at all
-  // Wait for hook to initialize to prevent hydration mismatch
-  if (isMobile === undefined) {
-    return null;
-  }
-  
-  if (isMobile) {
-    return null;
-  }
-
-
+  // ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL LOGIC
   useEffect(() => {
+    // Don't run effect on mobile or if not ready
+    if (isMobile === undefined || isMobile) return;
+    
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -238,7 +231,13 @@ const GeometricBackground = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [isMobile]);
+
+  // Return null for mobile devices - no background at all
+  // Wait for hook to initialize to prevent hydration mismatch
+  if (isMobile === undefined || isMobile) {
+    return null;
+  }
 
   return (
     <canvas
