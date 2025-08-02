@@ -77,12 +77,12 @@ const ProfessionalProjects: React.FC<ProfessionalProjectsProps> = ({ language, c
               </div>
               <div className="p-6">
                 <h4 className="text-lg font-medium text-almost-white mb-2">
-                  {language === "he" ? "אפליקציה באפ סטור" : "App Store Application"}
+                  {language === "he" ? "אפליקציה לימודית" : "Educational App"}
                 </h4>
                 <p className="text-light-gray text-sm mb-4">
                   {language === "he" 
-                    ? "אפליקציה חדשנית עם ממשק משתמש מתקדם"
-                    : "Innovative app with advanced user interface"
+                    ? "אפליקציה שתהיה מושקת באפ סטור"
+                    : "App that will be launched on the App Store"
                   }
                 </p>
                 <Button 
