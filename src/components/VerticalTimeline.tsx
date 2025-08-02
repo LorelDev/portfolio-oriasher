@@ -81,7 +81,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
     >
       {/* Full-height background line */}
       <div className={`absolute w-0.5 h-full rounded-full ${
-        isDark ? 'bg-white/20' : 'bg-foreground/20'
+        isDark ? 'bg-white/20' : 'bg-gray-300'
       }`}
         style={{ 
           top: 0,
@@ -94,7 +94,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
       {!isMobile && (
         <motion.div 
           className={`absolute w-0.5 rounded-full ${
-            isDark ? 'bg-neutral-300' : 'bg-foreground'
+            isDark ? 'bg-neutral-300' : 'bg-primary'
           }`}
           style={{ 
             left: "50%", 
