@@ -9,11 +9,13 @@ import VerticalTimeline from "@/components/VerticalTimeline";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import GravityField from "@/components/GravityField";
+import { useTheme } from "@/hooks/use-theme";
 
 const Index = () => {
   const [language, setLanguage] = useState<"en" | "he">("en");
   const [scrollPosition, setScrollPosition] = useState(0);
   const { toast } = useToast();
+  const { isDark, toggleTheme } = useTheme();
 
   const toggleLanguage = () => {
     setLanguage(prevLang => prevLang === "en" ? "he" : "en");
@@ -163,7 +165,7 @@ const Index = () => {
   return (
     <div 
       dir={isRtl ? "rtl" : "ltr"} 
-      className={`min-h-[100dvh] bg-deep-black overflow-x-hidden relative ${isRtl ? "font-assistant" : "font-poppins"}`}
+      className={`min-h-[100dvh] bg-background overflow-x-hidden relative transition-colors duration-300 ${isRtl ? "font-assistant" : "font-poppins"}`}
       style={{ fontFamily: isRtl ? "'Assistant', sans-serif" : "'Poppins', sans-serif" }}
     >
       
@@ -171,7 +173,7 @@ const Index = () => {
         <Button 
           onClick={toggleLanguage}
           variant="outline" 
-          className="bg-soft-black border-dark-gray text-light-gray hover:bg-dark-gray hover:text-almost-white transition-all duration-300"
+          className="bg-card border-border text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-all duration-300"
         >
           {language === "en" ? "עברית" : "English"}
         </Button>
@@ -182,10 +184,11 @@ const Index = () => {
       <ProfessionalHero 
         language={language} 
         currentText={currentText} 
-        isRtl={isRtl} 
+        isRtl={isRtl}
+        onImageClick={toggleTheme}
       />
 
-      <Separator className="border-dark-gray/30 relative z-10" />
+      <Separator className="border-border relative z-10" />
 
       <ProfessionalProjects 
         language={language} 
@@ -193,7 +196,7 @@ const Index = () => {
         isRtl={isRtl} 
       />
 
-      <Separator className="border-dark-gray/30 relative z-10" />
+      <Separator className="border-border relative z-10" />
 
       <ProfessionalContact 
         language={language} 
@@ -201,13 +204,13 @@ const Index = () => {
         isRtl={isRtl} 
       />
 
-      <Separator className="border-dark-gray/30 relative z-10" />
+      <Separator className="border-border relative z-10" />
 
-      <footer className="py-12 px-6 bg-deep-black text-light-gray text-center relative z-10 mobile-safe-bottom">
+      <footer className="py-12 px-6 bg-background text-muted-foreground text-center relative z-10 mobile-safe-bottom">
         <div className="max-w-4xl mx-auto">
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-light-gray to-transparent mx-auto mb-6"></div>
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-border to-transparent mx-auto mb-6"></div>
           <p className="mb-2 text-lg">{currentText.footer.message}</p>
-          <p className="text-light-gray/60">{currentText.footer.copyright}</p>
+          <p className="text-muted-foreground/60">{currentText.footer.copyright}</p>
         </div>
       </footer>
     </div>
