@@ -89,12 +89,10 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
         }} 
       />
       
-      {/* Progress indicator - hidden on mobile */}
-      {!isMobile && (
+      {/* Progress indicator - only shown in dark mode */}
+      {!isMobile && isDark && (
         <motion.div 
-          className={`absolute w-0.5 rounded-full ${
-            isDark ? 'bg-neutral-300' : 'bg-blue-500'
-          }`}
+          className="absolute w-0.5 rounded-full bg-neutral-300"
           style={{ 
             left: "50%", 
             transform: "translateX(-50%)",
