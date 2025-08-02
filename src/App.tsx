@@ -17,7 +17,6 @@ const App = () => (
       <Toaster />
       <Sonner />
       <GeometricBackground />
-      <LiveDotsBackground color="#ffffff" />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />

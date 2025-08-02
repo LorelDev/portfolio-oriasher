@@ -38,12 +38,12 @@ const GeometricBackground = () => {
 
     // Profile image gradient colors - blue to purple with better visibility
     const colors = [
-      'rgba(59, 130, 246, 0.08)',  // blue-500
-      'rgba(99, 102, 241, 0.08)',  // indigo-500
-      'rgba(139, 92, 246, 0.08)',  // violet-500
-      'rgba(168, 85, 247, 0.08)',  // purple-500
-      'rgba(192, 192, 192, 0.06)', // light gray
-      'rgba(255, 255, 255, 0.06)', // white
+      'rgba(59, 130, 246, 0.3)',  // blue-500
+      'rgba(99, 102, 241, 0.3)',  // indigo-500
+      'rgba(139, 92, 246, 0.3)',  // violet-500
+      'rgba(168, 85, 247, 0.3)',  // purple-500
+      'rgba(192, 192, 192, 0.2)', // light gray
+      'rgba(255, 255, 255, 0.2)', // white
     ];
 
     // Initialize shapes
@@ -65,9 +65,9 @@ const GeometricBackground = () => {
           rotationSpeed: (Math.random() - 0.5) * 0.01,
           type: ['triangle', 'circle', 'square', 'diamond', 'hexagon'][Math.floor(Math.random() * 5)] as Shape['type'],
           color: colors[Math.floor(Math.random() * colors.length)],
-          opacity: Math.random() * 0.12 + 0.08,
-          dx: (Math.random() - 0.5) * 0.3,
-          dy: (Math.random() - 0.5) * 0.3,
+          opacity: Math.random() * 0.3 + 0.2,
+          dx: 0,
+          dy: 0,
         });
       }
     };
