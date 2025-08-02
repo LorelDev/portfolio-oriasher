@@ -31,9 +31,9 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
   
   // Reordered milestones according to user request: Hand (Hello), Laptop (Projects), Mail (Contact)
   const milestones: TimelineMilestone[] = [
-    { sectionId: "hero", icon: <Hand size={18} />, tooltipEn: "Hello", tooltipHe: "שלום" },
-    { sectionId: "projects", icon: <Laptop size={18} />, tooltipEn: "Projects", tooltipHe: "פרויקטים" },
-    { sectionId: "contact", icon: <Mail size={18} />, tooltipEn: "Contact", tooltipHe: "צור קשר" },
+    { sectionId: "hero", icon: <Hand size={18} color="currentColor" />, tooltipEn: "Hello", tooltipHe: "שלום" },
+    { sectionId: "projects", icon: <Laptop size={18} color="currentColor" />, tooltipEn: "Projects", tooltipHe: "פרויקטים" },
+    { sectionId: "contact", icon: <Mail size={18} color="currentColor" />, tooltipEn: "Contact", tooltipHe: "צור קשר" },
   ];
 
   useEffect(() => {
