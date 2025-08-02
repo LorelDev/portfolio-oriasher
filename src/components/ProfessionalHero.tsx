@@ -44,7 +44,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               transition={{ duration: 0.8, delay: 0.4 }}
               className="mb-4 md:mb-8"
             >
-              <h1 className={`text-3xl md:text-6xl lg:text-7xl font-black tracking-wider text-foreground mb-2 md:mb-4 text-center lg:${isRtl ? 'text-right' : 'text-left'}`}>
+              <h1 className={`text-3xl md:text-6xl lg:text-7xl font-black tracking-wider text-foreground mb-2 md:mb-4 text-center ${isRtl ? 'lg:text-right' : 'lg:text-left'}`}>
                 {currentText.hero.greeting}
               </h1>
               <div className="w-24 h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto lg:mx-0 shadow-[0_0_10px_hsl(var(--primary)/0.5)]"></div>
@@ -57,10 +57,10 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               transition={{ duration: 0.8, delay: 0.6 }}
               className="mb-4 md:mb-8"
             >
-              <h2 className={`text-lg md:text-2xl font-light text-muted-foreground tracking-wide uppercase text-center lg:${isRtl ? 'text-right' : 'text-left'}`}>
+              <h2 className={`text-lg md:text-2xl font-light text-muted-foreground tracking-wide uppercase text-center ${isRtl ? 'lg:text-right' : 'lg:text-left'}`}>
                 {currentText.hero.title}
               </h2>
-              <h3 className={`text-base md:text-xl font-light text-muted-foreground/80 mt-1 md:mt-2 text-center lg:${isRtl ? 'text-right' : 'text-left'}`}>
+              <h3 className={`text-base md:text-xl font-light text-muted-foreground/80 mt-1 md:mt-2 text-center ${isRtl ? 'lg:text-right' : 'lg:text-left'}`}>
                 {currentText.hero.subtitle}
               </h3>
             </motion.div>
@@ -70,7 +70,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className={`text-sm md:text-lg leading-relaxed mb-6 md:mb-12 text-muted-foreground max-w-2xl mx-auto lg:mx-0 text-center lg:${isRtl ? 'text-right' : 'text-left'}`}
+              className={`text-sm md:text-lg leading-relaxed mb-6 md:mb-12 text-muted-foreground max-w-2xl mx-auto lg:mx-0 text-center ${isRtl ? 'lg:text-right' : 'lg:text-left'}`}
             >
               {currentText.hero.tagline}
             </motion.p>
