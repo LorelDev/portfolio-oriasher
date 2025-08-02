@@ -61,62 +61,8 @@ const ProfessionalProjects: React.FC<ProfessionalProjectsProps> = ({ language, c
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="flex justify-center"
         >
-          {/* Main project card */}
-          <motion.div variants={itemVariants} className="md:col-span-2">
-            <Card className="bg-soft-black border-dark-gray hover:border-light-gray/30 transition-all duration-300 overflow-hidden group">
-              <div className="relative h-64 md:h-80">
-                <div 
-                  className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/20"
-                  style={{
-                    backgroundImage: 'url(https://images.unsplash.com/photo-1461749280684-dccba630e2f6)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundBlendMode: 'overlay'
-                  }}
-                />
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-300"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Code size={48} className="text-almost-white/80" />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-medium text-almost-white mb-4">
-                  Portfolio Website
-                </h3>
-                <p className="text-light-gray mb-6 leading-relaxed">
-                  A modern, responsive portfolio built with React, TypeScript, and Framer Motion. 
-                  Features interactive animations and mobile-optimized design.
-                </p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {['React', 'TypeScript', 'Tailwind', 'Framer Motion'].map((tech) => (
-                    <span key={tech} className="px-3 py-1 bg-dark-gray text-light-gray text-sm rounded-full">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex gap-3">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="border-light-gray text-light-gray hover:bg-light-gray hover:text-deep-black"
-                  >
-                    <ExternalLink size={16} className="mr-2" />
-                    Live Demo
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="border-light-gray text-light-gray hover:bg-light-gray hover:text-deep-black"
-                  >
-                    <Github size={16} className="mr-2" />
-                    Code
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
 
           {/* Single coming soon card - App Store Project */}
           <motion.div variants={itemVariants}>
