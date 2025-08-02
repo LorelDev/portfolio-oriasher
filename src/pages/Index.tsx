@@ -5,7 +5,7 @@ import { Link } from "react-scroll";
 import ProfessionalHero from "@/components/ProfessionalHero";
 import ProfessionalProjects from "@/components/ProfessionalProjects";
 import ProfessionalContact from "@/components/ProfessionalContact";
-import VerticalTimeline from "@/components/VerticalTimeline";
+
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import GravityField from "@/components/GravityField";
@@ -179,7 +179,7 @@ const Index = () => {
         </Button>
       </div>
       
-      <VerticalTimeline language={language} isRtl={isRtl} />
+      
 
       <ProfessionalHero 
         language={language} 
