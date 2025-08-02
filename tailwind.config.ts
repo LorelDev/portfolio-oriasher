@@ -20,24 +20,20 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'apple': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'sans-serif'],
 				'assistant': ['Assistant', 'sans-serif'],
+				'poppins': ['Poppins', 'sans-serif'],
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 			},
 			colors: {
-				// Apple-inspired color palette
-				"apple-blue": "#007AFF",
-				"apple-green": "#30D158",
-				"apple-gray": "#8E8E93",
-				"apple-gray-2": "#AEAEB2",
-				"apple-gray-3": "#C7C7CC",
-				"apple-gray-4": "#D1D1D6",
-				"apple-gray-5": "#E5E5EA",
-				"apple-gray-6": "#F2F2F7",
-				"apple-black": "#1C1C1E",
-				"apple-white": "#FFFFFF",
+				// Custom monochrome theme colors
+				"deep-black": "#0f0f0f",
+				"soft-black": "#181818",
+				"almost-white": "#f2f2f2",
+				"light-gray": "#a0a0a0",
+				"dark-gray": "#2c2c2c",
+				"softer-black": "#1e1e1e",
 				
 				// Original shadcn colors
 				border: 'hsl(var(--border))',
@@ -123,22 +119,13 @@ export default {
                     '50%': {
                         boxShadow: '0 0 20px rgba(255, 255, 255, 0.08)'
                     }
-                },
-                'pulse-subtle': {
-                    '0%, 100%': {
-                        opacity: '0.05'
-                    },
-                    '50%': {
-                        opacity: '0.1'
-                    }
                 }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
                 'fade-in': 'fade-in 0.5s ease-out forwards',
-                'subtle-glow': 'subtle-glow 4s ease-in-out infinite',
-                'pulse-subtle': 'pulse-subtle 6s ease-in-out infinite'
+                'subtle-glow': 'subtle-glow 4s ease-in-out infinite'
 			}
 		}
 	},

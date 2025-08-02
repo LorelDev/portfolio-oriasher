@@ -7,76 +7,75 @@
 
 @layer base {
   :root {
-    /* Apple-inspired light theme */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 5%;
-    --card: 0 0% 99%;
-    --card-foreground: 0 0% 5%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 5%;
-    --primary: 213 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 10%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 210 100% 95%;
-    --accent-foreground: 213 100% 50%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 90%;
-    --input: 0 0% 95%;
-    --ring: 213 100% 50%;
-    --chart-1: 213 100% 50%;
-    --chart-2: 142 76% 36%;
-    --chart-3: 38 92% 50%;
-    --chart-4: 280 100% 70%;
-    --chart-5: 340 75% 55%;
-    --radius: 12px;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 20%;
-    --sidebar-primary: 213 100% 50%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 0 0% 96%;
-    --sidebar-accent-foreground: 0 0% 10%;
-    --sidebar-border: 0 0% 90%;
-    --sidebar-ring: 213 100% 50%;
+    --background: 0 0% 6%; /* #0f0f0f */
+    --foreground: 0 0% 95%; /* #f2f2f2 */
+
+    --card: 0 0% 9%; /* #181818 */
+    --card-foreground: 0 0% 95%; /* #f2f2f2 */
+
+    --popover: 0 0% 9%; /* #181818 */
+    --popover-foreground: 0 0% 95%; /* #f2f2f2 */
+
+    --primary: 0 0% 95%; /* #f2f2f2 */
+    --primary-foreground: 0 0% 6%; /* #0f0f0f */
+
+    --secondary: 0 0% 12%; /* #1e1e1e */
+    --secondary-foreground: 0 0% 95%; /* #f2f2f2 */
+
+    --muted: 0 0% 12%; /* #1e1e1e */
+    --muted-foreground: 0 0% 63%; /* #a0a0a0 */
+
+    --accent: 0 0% 12%; /* #1e1e1e */
+    --accent-foreground: 0 0% 95%; /* #f2f2f2 */
+
+    --destructive: 0 0% 95%; 
+    --destructive-foreground: 0 0% 95%;
+
+    --border: 0 0% 17%; /* #2c2c2c */
+    --input: 0 0% 17%; /* #2c2c2c */
+    --ring: 0 0% 17%; /* #2c2c2c */
+
+    --radius: 0.25rem;
+
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 0 0% 95%;
+    --sidebar-primary-foreground: 0 0% 6%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 17%;
+    --sidebar-ring: 0 0% 17%;
   }
 
   .dark {
-    /* Apple-inspired dark theme */
-    --background: 0 0% 6%;
-    --foreground: 0 0% 95%;
-    --card: 0 0% 8%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 6%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 213 100% 55%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 90%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 0 0% 12%;
-    --accent-foreground: 213 100% 55%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%;
-    --input: 0 0% 12%;
-    --ring: 213 100% 55%;
-    --chart-1: 213 100% 55%;
-    --chart-2: 142 76% 36%;
-    --chart-3: 38 92% 50%;
-    --chart-4: 280 100% 70%;
-    --chart-5: 340 75% 55%;
+    /* Dark theme is already our default */
+    --background: 0 0% 6%; /* #0f0f0f */
+    --foreground: 0 0% 95%; /* #f2f2f2 */
+    --card: 0 0% 9%; /* #181818 */
+    --card-foreground: 0 0% 95%; /* #f2f2f2 */
+    --popover: 0 0% 9%; /* #181818 */
+    --popover-foreground: 0 0% 95%; /* #f2f2f2 */
+    --primary: 0 0% 95%; /* #f2f2f2 */
+    --primary-foreground: 0 0% 6%; /* #0f0f0f */
+    --secondary: 0 0% 12%; /* #1e1e1e */
+    --secondary-foreground: 0 0% 95%; /* #f2f2f2 */
+    --muted: 0 0% 12%; /* #1e1e1e */
+    --muted-foreground: 0 0% 63%; /* #a0a0a0 */
+    --accent: 0 0% 12%; /* #1e1e1e */
+    --accent-foreground: 0 0% 95%; /* #f2f2f2 */
+    --destructive: 0 0% 95%;
+    --destructive-foreground: 0 0% 95%;
+    --border: 0 0% 17%; /* #2c2c2c */
+    --input: 0 0% 17%; /* #2c2c2c */
+    --ring: 0 0% 17%; /* #2c2c2c */
     --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 0 0% 85%;
-    --sidebar-primary: 213 100% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 0 0% 95%;
+    --sidebar-primary-foreground: 0 0% 6%;
     --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 0 0% 85%;
-    --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 213 100% 55%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 17%;
+    --sidebar-ring: 0 0% 17%;
   }
 }
 
@@ -86,14 +85,12 @@
   }
 
   body {
-    @apply bg-background text-foreground font-apple;
+    @apply bg-deep-black text-almost-white;
     /* Fix for mobile browser bottom bar */
     padding-bottom: env(safe-area-inset-bottom);
     /* Use dynamic viewport height for mobile browsers */
     min-height: 100vh;
     min-height: 100dvh;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
   /* Global viewport height utilities for mobile */
@@ -121,29 +118,29 @@
   }
 }
 
-/* Apple-style theme components */
+/* Custom mono theme components */
 @layer components {
   .mono-button {
-    @apply border border-border text-foreground bg-transparent 
-    hover:bg-accent transition-all duration-200 ease-out px-4 py-2 rounded-lg;
+    @apply border border-dark-gray text-almost-white bg-transparent 
+    hover:bg-softer-black transition-all duration-200 ease-out px-4 py-2;
   }
 
   .mono-input {
-    @apply bg-card border border-border text-foreground
-    placeholder:text-muted-foreground focus:ring-1 focus:ring-ring
-    focus:outline-none transition-all duration-200 rounded-lg;
+    @apply bg-soft-black border border-dark-gray text-almost-white
+    placeholder:text-[#777777] focus:ring-1 focus:ring-[rgba(255,255,255,0.1)]
+    focus:outline-none transition-all duration-200;
   }
 
   .mono-section {
-    @apply py-20 border-t border-border;
+    @apply py-20 border-t border-dark-gray;
   }
 
   .mono-card {
-    @apply bg-card border border-border rounded-xl;
+    @apply bg-soft-black border border-dark-gray;
   }
 
   .mono-divider {
-    @apply border-t border-border my-8;
+    @apply border-t border-dark-gray my-8;
   }
 
   .max-content-width {

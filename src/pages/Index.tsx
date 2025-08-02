@@ -163,14 +163,15 @@ const Index = () => {
   return (
     <div 
       dir={isRtl ? "rtl" : "ltr"} 
-      className={`min-h-[100dvh] bg-background text-foreground overflow-x-hidden relative font-apple transition-colors duration-300`}
+      className={`min-h-[100dvh] bg-deep-black overflow-x-hidden relative ${isRtl ? "font-assistant" : "font-poppins"}`}
+      style={{ fontFamily: isRtl ? "'Assistant', sans-serif" : "'Poppins', sans-serif" }}
     >
       
       <div className={`fixed top-4 ${isRtl ? "left-4" : "right-4"} z-30`}>
         <Button 
           onClick={toggleLanguage}
           variant="outline" 
-          className="bg-card/80 backdrop-blur-sm border-border/50 text-foreground hover:bg-card hover:border-border transition-all duration-300 rounded-xl shadow-sm"
+          className="bg-soft-black border-dark-gray text-light-gray hover:bg-dark-gray hover:text-almost-white transition-all duration-300"
         >
           {language === "en" ? "עברית" : "English"}
         </Button>
@@ -184,7 +185,7 @@ const Index = () => {
         isRtl={isRtl} 
       />
 
-      <Separator className="border-border/20 relative z-10" />
+      <Separator className="border-dark-gray/30 relative z-10" />
 
       <ProfessionalProjects 
         language={language} 
@@ -192,7 +193,7 @@ const Index = () => {
         isRtl={isRtl} 
       />
 
-      <Separator className="border-border/20 relative z-10" />
+      <Separator className="border-dark-gray/30 relative z-10" />
 
       <ProfessionalContact 
         language={language} 
@@ -200,13 +201,13 @@ const Index = () => {
         isRtl={isRtl} 
       />
 
-      <Separator className="border-border/20 relative z-10" />
+      <Separator className="border-dark-gray/30 relative z-10" />
 
-      <footer className="py-16 px-6 bg-card/50 backdrop-blur-sm text-muted-foreground text-center relative z-10 mobile-safe-bottom border-t border-border/20">
+      <footer className="py-12 px-6 bg-deep-black text-light-gray text-center relative z-10 mobile-safe-bottom">
         <div className="max-w-4xl mx-auto">
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-border to-transparent mx-auto mb-8"></div>
-          <p className="mb-3 text-lg font-medium text-foreground">{currentText.footer.message}</p>
-          <p className="text-muted-foreground/80">{currentText.footer.copyright}</p>
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-light-gray to-transparent mx-auto mb-6"></div>
+          <p className="mb-2 text-lg">{currentText.footer.message}</p>
+          <p className="text-light-gray/60">{currentText.footer.copyright}</p>
         </div>
       </footer>
     </div>
