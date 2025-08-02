@@ -186,8 +186,9 @@ const GeometricBackground = () => {
           offsetX = (mouseRef.current.x - centerX) * mouseInfluence;
           offsetY = (mouseRef.current.y - centerY) * mouseInfluence;
         } else {
-          // Mobile: device orientation with better sensitivity
-          const orientationInfluence = 2.5 * parallaxStrength;
+          // Mobile: device orientation - shapes move toward device tilt direction
+          const orientationInfluence = 8 * parallaxStrength; // Increased for better visibility
+          // Gamma controls left/right tilt, Beta controls forward/backward tilt
           offsetX = orientationRef.current.gamma * orientationInfluence;
           offsetY = orientationRef.current.beta * orientationInfluence;
         }
