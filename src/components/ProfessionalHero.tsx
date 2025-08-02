@@ -57,7 +57,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               transition={{ duration: 0.8, delay: 0.6 }}
               className="mb-4 md:mb-8"
             >
-              <h2 className="text-lg md:text-2xl font-light text-muted-foreground tracking-wide uppercase">
+              <h2 className="text-lg md:text-2xl font-light text-muted-foreground tracking-wide uppercase text-right">
                 {currentText.hero.title}
               </h2>
               <h3 className="text-base md:text-xl font-light text-muted-foreground/80 mt-1 md:mt-2">
