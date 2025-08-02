@@ -44,7 +44,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               transition={{ duration: 0.8, delay: 0.4 }}
               className="mb-4 md:mb-8"
             >
-              <h1 className={`text-3xl md:text-6xl lg:text-7xl font-black tracking-wider text-foreground mb-2 md:mb-4 ${isRtl ? 'text-right' : 'text-left'}`}>
+              <h1 className={`text-3xl md:text-6xl lg:text-7xl font-black tracking-wider text-foreground mb-2 md:mb-4 text-center lg:${isRtl ? 'text-right' : 'text-left'}`}>
                 {currentText.hero.greeting}
               </h1>
               <div className="w-24 h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto lg:mx-0 shadow-[0_0_10px_hsl(var(--primary)/0.5)]"></div>
