@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowDown, Github, Linkedin, Mail, Phone } from "lucide-react";
+import { ArrowDown, Github, Linkedin, Mail, Phone, Instagram } from "lucide-react";
 import { Link } from "react-scroll";
 
 interface ProfessionalHeroProps {
@@ -114,6 +114,9 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               </a>
               <a href="https://www.linkedin.com/in/ori-asher-a9b542320/" className="text-light-gray hover:text-almost-white transition-colors">
                 <Linkedin size={24} />
+              </a>
+              <a href="https://www.instagram.com/ori.asher/?igsh=dDIzOTg4MWdyMjc4&utm_source=qr#" className="text-light-gray hover:text-almost-white transition-colors">
+                <Instagram size={24} />
               </a>
               <a href="mailto:ori.asher@outlook.com" className="text-light-gray hover:text-almost-white transition-colors">
                 <Mail size={24} />

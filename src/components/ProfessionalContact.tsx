@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Mail, Phone, Github, Linkedin, MapPin, FileText } from "lucide-react";
+import { Mail, Phone, Github, Linkedin, MapPin, FileText, Instagram } from "lucide-react";
 
 interface ProfessionalContactProps {
   language: "en" | "he";
@@ -42,6 +42,11 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
       icon: Linkedin,
       label: "LinkedIn",
       href: "https://www.linkedin.com/in/ori-asher-a9b542320/"
+    },
+    {
+      icon: Instagram,
+      label: "Instagram",
+      href: "https://www.instagram.com/ori.asher/?igsh=dDIzOTg4MWdyMjc4&utm_source=qr#"
     }
   ];
 
