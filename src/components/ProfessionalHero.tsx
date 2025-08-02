@@ -12,7 +12,7 @@ interface ProfessionalHeroProps {
 
 const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentText, isRtl }) => {
   return (
-    <section className="min-h-screen flex items-center justify-center relative z-10 px-6" id="hero">
+    <section className="min-h-[100dvh] flex items-center justify-center relative z-10 px-6" id="hero">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           

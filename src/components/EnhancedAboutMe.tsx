@@ -38,7 +38,7 @@ const EnhancedAboutMe = ({ bioContent, language, isRtl, title }: EnhancedAboutMe
       id="about" 
       ref={sectionRef}
       className={cn(
-        "relative min-h-screen px-6 md:px-12 lg:px-24 py-24",
+        "relative min-h-[100dvh] px-6 md:px-12 lg:px-24 py-24",
         "flex items-center justify-center overflow-hidden"
       )}
       style={{ direction: isRtl ? "rtl" : "ltr" }}

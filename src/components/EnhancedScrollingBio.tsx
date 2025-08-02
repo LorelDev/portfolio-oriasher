@@ -190,7 +190,7 @@ const EnhancedScrollingBio = ({ bioContent, language, isRtl, title }: EnhancedSc
       id="about" 
       ref={sectionRef}
       className={cn(
-        "relative min-h-screen flex flex-col items-center justify-center px-4 pb-24 pt-12 overflow-hidden",
+        "relative min-h-[100dvh] flex flex-col items-center justify-center px-4 pb-24 pt-12 overflow-hidden",
         isRtl ? "text-right" : "text-left"
       )}
       style={{ direction: isRtl ? "rtl" : "ltr" }}

@@ -130,7 +130,7 @@ const ScrollingBio: React.FC<ScrollingBioProps> = ({
   return (
     <div 
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col items-center justify-center py-16 z-10 bg-deep-black overflow-hidden"
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center py-16 z-10 bg-deep-black overflow-hidden"
       id="about"
       dir={isRtl ? "rtl" : "ltr"}
     >

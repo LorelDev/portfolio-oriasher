@@ -88,13 +88,15 @@
     @apply bg-deep-black text-almost-white;
     /* Fix for mobile browser bottom bar */
     padding-bottom: env(safe-area-inset-bottom);
+    /* Use dynamic viewport height for mobile browsers */
+    min-height: 100vh;
+    min-height: 100dvh;
   }
 
-  /* Mobile viewport fix for browser UI */
-  @supports (height: 100dvh) {
-    body {
-      min-height: 100dvh;
-    }
+  /* Global viewport height utilities for mobile */
+  .min-h-screen-mobile {
+    min-height: 100vh;
+    min-height: 100dvh;
   }
 
   /* Additional mobile spacing fix */

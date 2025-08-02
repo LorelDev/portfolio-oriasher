@@ -92,7 +92,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
 
   return (
     <div 
-      className="relative min-h-screen flex flex-col justify-center items-center text-center px-4 py-10 md:py-16 overflow-hidden bg-deep-black"
+      className="relative min-h-[100dvh] flex flex-col justify-center items-center text-center px-4 py-10 md:py-16 overflow-hidden bg-deep-black"
       id="hero"
     >      
       

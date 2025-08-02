@@ -163,7 +163,7 @@ const Index = () => {
   return (
     <div 
       dir={isRtl ? "rtl" : "ltr"} 
-      className={`min-h-screen bg-deep-black overflow-x-hidden relative ${isRtl ? "font-assistant" : "font-poppins"}`}
+      className={`min-h-[100dvh] bg-deep-black overflow-x-hidden relative ${isRtl ? "font-assistant" : "font-poppins"}`}
       style={{ fontFamily: isRtl ? "'Assistant', sans-serif" : "'Poppins', sans-serif" }}
     >
       
