@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { animateScroll as scroll, scroller } from "react-scroll";
@@ -117,7 +116,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
                     activeSection === milestone.sectionId
                       ? isDark 
                         ? "border-neutral-400 bg-neutral-300/20 text-white scale-125"
-                        : "border-primary bg-primary/30 scale-125 text-primary shadow-lg ring-2 ring-primary/20"
+                        : "border-blue-600 bg-blue-500/30 scale-125 text-blue-700 shadow-lg ring-2 ring-blue-500/20"
                       : isDark
                         ? "border-white/30 bg-white/10 text-white/60"
                         : "border-gray-600 bg-gray-100 text-gray-800 shadow-lg ring-1 ring-gray-300"
