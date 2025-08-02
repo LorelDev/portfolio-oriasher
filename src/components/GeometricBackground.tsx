@@ -24,6 +24,11 @@ const GeometricBackground = () => {
   const animationRef = useRef<number>();
 
   // Return null for mobile devices - no background at all
+  // Wait for hook to initialize to prevent hydration mismatch
+  if (isMobile === undefined) {
+    return null;
+  }
+  
   if (isMobile) {
     return null;
   }
