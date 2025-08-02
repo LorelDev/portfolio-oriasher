@@ -270,9 +270,24 @@ body * {
   cursor: default;
 }
 
-/* Ensure text is always visible */
+/* Ensure text is always visible - better RTL/Hebrew support */
 .light h1, .light h2, .light h3, .light p, .light span {
-  color: hsl(var(--foreground)) !important;
+  color: hsl(var(--foreground));
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Better Hebrew text rendering */
+[dir="rtl"] {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+/* Fix underline issues in Hebrew */
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] p, [dir="rtl"] span {
+  text-decoration: none !important;
+  text-underline-position: under;
+  text-decoration-skip-ink: auto;
 }
 
 [data-state="delayed-open"],
