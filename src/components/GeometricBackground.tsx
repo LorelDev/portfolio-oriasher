@@ -80,14 +80,14 @@ const GeometricBackground = () => {
           y,
           baseX: x,
           baseY: y,
-          size: Math.random() * 60 + 30,
+          size: Math.random() * 40 + 20,
           rotation: Math.random() * Math.PI * 2,
-          rotationSpeed: (Math.random() - 0.5) * 0.01,
+          rotationSpeed: (Math.random() - 0.5) * 0.005,
           type: ['triangle', 'circle', 'square', 'diamond', 'hexagon'][Math.floor(Math.random() * 5)] as Shape['type'],
           color: colors[Math.floor(Math.random() * colors.length)],
-          opacity: Math.random() * 0.3 + 0.2,
-          dx: (Math.random() - 0.5) * 0.2,
-          dy: (Math.random() - 0.5) * 0.2,
+          opacity: Math.random() * 0.15 + 0.1,
+          dx: (Math.random() - 0.5) * 0.1,
+          dy: (Math.random() - 0.5) * 0.1,
         });
       }
     };
@@ -203,7 +203,7 @@ const GeometricBackground = () => {
           const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
           const parallaxStrength = (distanceFromCenter / maxDistance) * 0.8 + 0.3;
           
-          const orientationInfluence = 12 * parallaxStrength; // Increased sensitivity
+          const orientationInfluence = 6 * parallaxStrength; // Reduced sensitivity for subtlety
           // Gamma controls left/right tilt, Beta controls forward/backward tilt
           offsetX = orientationRef.current.gamma * orientationInfluence;
           offsetY = orientationRef.current.beta * orientationInfluence;
