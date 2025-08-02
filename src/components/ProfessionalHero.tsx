@@ -25,12 +25,12 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
             className="order-1 lg:order-1 flex justify-center"
           >
             <div className="relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-lg"></div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/30 to-purple-600/30 rounded-full blur-lg dark:from-blue-600/20 dark:to-purple-600/20"></div>
               <img 
                 src="/lovable-uploads/c978d951-d4f9-40eb-bf98-966b69180143.png"
                 alt="Ori Asher"
                 onClick={onImageClick}
-                className="relative w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-80 lg:h-80 xl:w-96 xl:h-96 object-cover rounded-full border-2 border-border/20 cursor-pointer hover:scale-105 transition-all duration-300"
+                className="relative w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-80 lg:h-80 xl:w-96 xl:h-96 object-cover rounded-full border-2 border-border cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg"
               />
             </div>
           </motion.div>
