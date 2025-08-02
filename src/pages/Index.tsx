@@ -70,7 +70,8 @@ const Index = () => {
         name: "Name",
         email: "Email",
         message: "Message",
-        submit: "Send Message"
+        submit: "Send Message",
+        getInTouch: "Get In Touch"
       },
       social: {
         linkedin: "LinkedIn",
@@ -119,7 +120,8 @@ const Index = () => {
         name: "שם",
         email: "אימייל",
         message: "הודעה",
-        submit: "שלח הודעה"
+        submit: "שלח הודעה",
+        getInTouch: "צור קשר"
       },
       social: {
         linkedin: "לינקדאין",

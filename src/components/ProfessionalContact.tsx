@@ -73,7 +73,7 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
             viewport={{ once: true }}
           >
             <Card className="bg-soft-black border-dark-gray p-8 h-full">
-              <h3 className="text-2xl font-medium text-almost-white mb-8">Get In Touch</h3>
+              <h3 className="text-2xl font-medium text-almost-white mb-8">{currentText.contact.getInTouch}</h3>
               <div className="space-y-6">
                 {contactMethods.map((method, index) => (
                   <motion.div
