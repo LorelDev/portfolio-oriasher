@@ -93,15 +93,6 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
             </motion.div>
           </Link>
         ))}
-        <motion.div
-          className="absolute bottom-0 h-1 bg-neutral-300"
-          style={{
-            left: 0,
-            right: 0,
-            width: progressWidth,
-            transformOrigin: isRtl ? "right" : "left"
-          }}
-        />
       </motion.div>
     );
   }
