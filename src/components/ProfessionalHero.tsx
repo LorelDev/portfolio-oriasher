@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Github, Linkedin, Mail, Phone } from "lucide-react";
 import { Link } from "react-scroll";
-import InteractiveGeometricGlow from "@/components/InteractiveGeometricGlow";
+import SimpleGeometricBackground from "@/components/SimpleGeometricBackground";
 
 interface ProfessionalHeroProps {
   language: "en" | "he";
@@ -24,11 +24,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
             transition={{ duration: 1, delay: 0.2 }}
             className="order-1 lg:order-1 flex justify-center"
           >
-            <InteractiveGeometricGlow 
-              intensity={0.8} 
-              speed={1.2} 
-              mouseSensitivity={0.5}
-            >
+            <SimpleGeometricBackground>
               <div className="relative">
                 <div className="absolute -inset-2 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-full blur-2xl"></div>
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-lg"></div>
@@ -42,7 +38,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
                   }}
                 />
               </div>
-            </InteractiveGeometricGlow>
+            </SimpleGeometricBackground>
           </motion.div>
 
           {/* Content */}
