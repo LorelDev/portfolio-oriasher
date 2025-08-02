@@ -38,20 +38,20 @@ const ProfessionalProjects: React.FC<ProfessionalProjectsProps> = ({ language, c
   };
 
   return (
-    <section className="py-20 px-6 relative z-10" id="projects">
+    <section className="py-8 md:py-20 px-6 relative z-10" id="projects">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8 md:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-light tracking-wider text-almost-white mb-6">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-light tracking-wider text-almost-white mb-3 md:mb-6">
             {currentText.myProjects.title}
           </h2>
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-light-gray to-transparent mx-auto mb-6"></div>
-          <p className="text-xl text-light-gray max-w-2xl mx-auto leading-relaxed">
+          <div className="w-16 md:w-24 h-px bg-gradient-to-r from-transparent via-light-gray to-transparent mx-auto mb-3 md:mb-6"></div>
+          <p className="text-sm md:text-xl text-light-gray max-w-2xl mx-auto leading-relaxed">
             {currentText.myProjects.description}
           </p>
         </motion.div>
@@ -67,7 +67,7 @@ const ProfessionalProjects: React.FC<ProfessionalProjectsProps> = ({ language, c
           {/* Single coming soon card - App Store Project */}
           <motion.div variants={itemVariants} className="w-full">
             <Card className="bg-soft-black border-dark-gray hover:border-light-gray/30 transition-all duration-300 overflow-hidden">
-              <div className="relative h-64 md:h-72">
+              <div className="relative h-40 md:h-64 lg:h-72">
                 <img
                   src="/lovable-uploads/e6b68a56-c5e3-424c-a0b9-17127ad1b417.png"
                   alt="App Stores"
@@ -75,11 +75,11 @@ const ProfessionalProjects: React.FC<ProfessionalProjectsProps> = ({ language, c
                 />
                 <div className="absolute inset-0 bg-black/40 hover:bg-black/20 transition-all duration-300"></div>
               </div>
-              <div className="p-8">
-                <h4 className="text-2xl font-medium text-almost-white mb-4">
+              <div className="p-4 md:p-8">
+                <h4 className="text-lg md:text-2xl font-medium text-almost-white mb-2 md:mb-4">
                   {language === "he" ? "אפליקציה לימודית" : "Educational App"}
                 </h4>
-                <p className="text-light-gray text-base mb-6 leading-relaxed">
+                <p className="text-light-gray text-sm md:text-base mb-4 md:mb-6 leading-relaxed">
                   {language === "he" 
                     ? "אפליקציה שתושק בחנויות האפליקציות"
                     : "App that will be launched on app stores"
