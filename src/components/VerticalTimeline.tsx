@@ -80,7 +80,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
     >
       {/* Full-height background line */}
       <div className={`absolute w-0.5 h-full rounded-full ${
-        isDark ? 'bg-white/20' : 'bg-gray-600'
+        isDark ? 'bg-white/20' : 'bg-gray-300'
       }`}
         style={{ 
           top: 0,
@@ -110,14 +110,16 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <motion.div 
-                  className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer backdrop-blur-sm z-10 border-2 transition-all duration-300 pointer-events-auto ${
+                  className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer z-10 border-2 transition-all duration-300 pointer-events-auto ${
+                    isDark ? 'backdrop-blur-sm' : ''
+                  } ${
                     activeSection === milestone.sectionId
                       ? isDark 
                         ? "border-neutral-400 bg-neutral-300/20 text-white scale-125"
-                        : "border-blue-600 bg-blue-500/30 scale-125 text-blue-700 shadow-lg ring-2 ring-blue-500/20"
+                        : "border-blue-600 bg-blue-500/30 scale-125 text-blue-800 shadow-lg ring-2 ring-blue-500/20"
                       : isDark
                         ? "border-white/30 bg-white/10 text-white/60"
-                        : "border-gray-600 bg-gray-100 text-gray-800 shadow-lg ring-1 ring-gray-300"
+                        : "border-gray-900 bg-white/95 text-gray-900 shadow-lg ring-1 ring-gray-400"
                   }`}
                   whileHover={{ 
                     scale: 1.2, 
