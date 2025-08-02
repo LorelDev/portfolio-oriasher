@@ -166,7 +166,7 @@ const Index = () => {
       className={`min-h-screen bg-deep-black overflow-x-hidden relative ${isRtl ? "font-assistant" : "font-poppins"}`}
       style={{ fontFamily: isRtl ? "'Assistant', sans-serif" : "'Poppins', sans-serif" }}
     >
-      <GravityField />
+      
       <div className={`fixed top-4 ${isRtl ? "left-4" : "right-4"} z-30`}>
         <Button 
           onClick={toggleLanguage}

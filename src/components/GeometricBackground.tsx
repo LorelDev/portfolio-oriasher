@@ -66,8 +66,8 @@ const GeometricBackground = () => {
           type: ['triangle', 'circle', 'square', 'diamond', 'hexagon'][Math.floor(Math.random() * 5)] as Shape['type'],
           color: colors[Math.floor(Math.random() * colors.length)],
           opacity: Math.random() * 0.3 + 0.2,
-          dx: 0,
-          dy: 0,
+          dx: (Math.random() - 0.5) * 0.8,
+          dy: (Math.random() - 0.5) * 0.8,
         });
       }
     };
