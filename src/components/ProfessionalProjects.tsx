@@ -69,8 +69,8 @@ const ProfessionalProjects: React.FC<ProfessionalProjectsProps> = ({ language, c
             <Card className="bg-soft-black border-dark-gray hover:border-light-gray/30 transition-all duration-300 overflow-hidden">
               <div className="relative h-64 md:h-72">
                 <img
-                  src={appStoreImage}
-                  alt="App Store Project"
+                  src="/lovable-uploads/e6b68a56-c5e3-424c-a0b9-17127ad1b417.png"
+                  alt="App Stores"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/40 hover:bg-black/20 transition-all duration-300"></div>
@@ -80,9 +80,9 @@ const ProfessionalProjects: React.FC<ProfessionalProjectsProps> = ({ language, c
                   {language === "he" ? "אפליקציה לימודית" : "Educational App"}
                 </h4>
                 <p className="text-light-gray text-base mb-6 leading-relaxed">
-                  {language === "he"
-                    ? "אפליקציה שתהיה מושקת באפ סטור"
-                    : "App that will be launched on the App Store"
+                  {language === "he" 
+                    ? "אפליקציה שתושק בחנויות האפליקציות"
+                    : "App that will be launched on app stores"
                   }
                 </p>
                 <Button 
