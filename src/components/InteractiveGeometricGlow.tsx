@@ -29,21 +29,21 @@ const GeometricShape = ({
     if (meshRef.current) {
       const time = state.clock.getElapsedTime();
       
-      // Base rotation animation
-      meshRef.current.rotation.x = rotation[0] + time * 0.1 * (index % 2 === 0 ? 1 : -1);
-      meshRef.current.rotation.y = rotation[1] + time * 0.15 * (index % 3 === 0 ? 1 : -1);
-      meshRef.current.rotation.z = rotation[2] + time * 0.05;
+      // Very subtle rotation animation
+      meshRef.current.rotation.x = rotation[0] + time * 0.02 * (index % 2 === 0 ? 1 : -1);
+      meshRef.current.rotation.y = rotation[1] + time * 0.03 * (index % 3 === 0 ? 1 : -1);
+      meshRef.current.rotation.z = rotation[2] + time * 0.01;
       
-      // Mouse interaction parallax
+      // Very subtle mouse/tilt interaction
       if (mousePosition) {
-        const parallaxStrength = 0.02 + (index * 0.005);
+        const parallaxStrength = 0.005 + (index * 0.001);
         meshRef.current.position.x = position[0] + mousePosition.x * parallaxStrength * (index % 2 === 0 ? 1 : -1);
         meshRef.current.position.y = position[1] + mousePosition.y * parallaxStrength * (index % 3 === 0 ? 1 : -1);
       }
       
-      // Breathing effect
-      const breathingScale = 1 + Math.sin(time * 2 + index) * 0.1;
-      meshRef.current.scale.setScalar(scale * breathingScale * (hovered ? 1.2 : 1));
+      // Very subtle breathing effect
+      const breathingScale = 1 + Math.sin(time * 1.5 + index) * 0.02;
+      meshRef.current.scale.setScalar(scale * breathingScale);
     }
   });
 
@@ -64,27 +64,25 @@ const GeometricShape = ({
     return new THREE.MeshStandardMaterial({
       color,
       transparent: true,
-      opacity: opacity,
-      roughness: 0.2,
-      metalness: 0.8,
+      opacity: opacity * 0.15, // Much more subtle
+      roughness: 0.8,
+      metalness: 0.1,
       emissive: color,
-      emissiveIntensity: 0.3
+      emissiveIntensity: 0.05 // Very low emission
     });
   }, [color, opacity]);
 
   return (
     <Float
-      speed={1 + index * 0.2}
-      rotationIntensity={0.3}
-      floatIntensity={0.2}
+      speed={0.5 + index * 0.1} // Slower movement
+      rotationIntensity={0.1} // Less rotation
+      floatIntensity={0.05} // Minimal floating
     >
       <mesh
         ref={meshRef}
         position={position}
         geometry={geometry}
         material={material}
-        onPointerEnter={() => setHovered(true)}
-        onPointerLeave={() => setHovered(false)}
       />
     </Float>
   );
@@ -96,14 +94,15 @@ const useDeviceOrientation = () => {
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (!isMobile) return;
+    if (!isMobile || typeof window === 'undefined') return;
 
     const handleOrientation = (event: DeviceOrientationEvent) => {
       const { beta, gamma } = event;
       if (beta !== null && gamma !== null) {
+        // Normalize to -1 to 1 range with smaller movement
         setOrientation({
-          x: gamma / 30, // Normalize to -1 to 1 range
-          y: beta / 30
+          x: Math.max(-1, Math.min(1, gamma / 45)), // Less sensitive
+          y: Math.max(-1, Math.min(1, (beta - 45) / 45)) // Adjusted for portrait mode
         });
       }
     };
@@ -155,36 +154,36 @@ const Scene = ({ intensity, speed, mouseSensitivity }: Omit<GeometricGlowProps, 
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [isMobile, mouseSensitivity]);
 
-  // Generate geometric shapes
+  // Generate subtle geometric shapes
   const shapes = useMemo(() => {
     const shapeTypes = ['sphere', 'box', 'octahedron', 'tetrahedron'];
     const colors = ['#60a5fa', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b'];
     
-    return Array.from({ length: 8 }, (_, i) => ({
+    return Array.from({ length: 12 }, (_, i) => ({ // More shapes but smaller
       id: i,
       position: [
-        (Math.random() - 0.5) * viewport.width * 2,
-        (Math.random() - 0.5) * viewport.height * 2,
-        (Math.random() - 0.5) * 4
+        (Math.random() - 0.5) * viewport.width * 3, // Spread wider
+        (Math.random() - 0.5) * viewport.height * 3,
+        (Math.random() - 0.5) * 6 - 2 // Further back
       ] as [number, number, number],
       rotation: [
         Math.random() * Math.PI * 2,
         Math.random() * Math.PI * 2,
         Math.random() * Math.PI * 2
       ] as [number, number, number],
-      scale: 0.3 + Math.random() * 0.4,
+      scale: 0.1 + Math.random() * 0.2, // Much smaller
       color: colors[i % colors.length],
-      opacity: 0.1 + Math.random() * 0.3,
+      opacity: 0.3 + Math.random() * 0.4, // Will be further reduced by material
       shape: shapeTypes[i % shapeTypes.length]
     }));
   }, [viewport]);
 
   return (
     <>
-      {/* Ambient lighting */}
-      <ambientLight intensity={0.2} />
-      <pointLight position={[10, 10, 10]} intensity={0.5} />
-      <pointLight position={[-10, -10, -10]} intensity={0.3} color="#8b5cf6" />
+      {/* Very subtle ambient lighting */}
+      <ambientLight intensity={0.1} />
+      <pointLight position={[10, 10, 10]} intensity={0.1} />
+      <pointLight position={[-10, -10, -10]} intensity={0.05} color="#8b5cf6" />
       
       {/* Geometric shapes */}
       {shapes.map((shape) => (
@@ -202,7 +201,7 @@ const Scene = ({ intensity, speed, mouseSensitivity }: Omit<GeometricGlowProps, 
       ))}
       
       {/* Post-processing effects */}
-      <fog attach="fog" args={['#000000', 5, 20]} />
+      <fog attach="fog" args={['#000000', 8, 25]} />
     </>
   );
 };
@@ -249,17 +248,16 @@ const InteractiveGeometricGlow: React.FC<GeometricGlowProps> = ({
         {children}
       </div>
       
-      {/* Premium glow overlay */}
+      {/* Very subtle glow overlay */}
       <div 
         className="absolute inset-0 pointer-events-none z-0"
         style={{
           background: `
-            radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.05) 0%, transparent 40%),
-            radial-gradient(circle at 70% 30%, rgba(6, 182, 212, 0.05) 0%, transparent 40%)
+            radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.01) 0%, transparent 50%),
+            radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.005) 0%, transparent 40%)
           `,
-          filter: 'blur(1px)',
-          opacity: intensity
+          filter: 'blur(2px)',
+          opacity: intensity * 0.3
         }}
       />
     </div>
