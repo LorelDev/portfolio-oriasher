@@ -120,7 +120,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
                         : "border-primary bg-primary/30 scale-125 text-primary shadow-lg ring-2 ring-primary/20"
                       : isDark
                         ? "border-white/30 bg-white/10 text-white/60"
-                        : "border-gray-400 bg-gray-100 text-gray-700 shadow-lg ring-1 ring-gray-300"
+                        : "border-gray-600 bg-gray-100 text-gray-800 shadow-lg ring-1 ring-gray-300"
                   }`}
                   whileHover={{ 
                     scale: 1.2, 
