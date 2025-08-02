@@ -203,7 +203,7 @@ const Index = () => {
 
       <Separator className="border-dark-gray/30 relative z-10" />
 
-      <footer className="py-12 px-6 bg-deep-black text-light-gray text-center relative z-10">
+      <footer className="py-12 px-6 bg-deep-black text-light-gray text-center relative z-10 mobile-safe-bottom">
         <div className="max-w-4xl mx-auto">
           <div className="w-24 h-px bg-gradient-to-r from-transparent via-light-gray to-transparent mx-auto mb-6"></div>
           <p className="mb-2 text-lg">{currentText.footer.message}</p>
