@@ -60,7 +60,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               <h2 className="text-lg md:text-2xl font-light text-muted-foreground tracking-wide uppercase text-right">
                 {currentText.hero.title}
               </h2>
-              <h3 className="text-base md:text-xl font-light text-muted-foreground/80 mt-1 md:mt-2">
+              <h3 className="text-base md:text-xl font-light text-muted-foreground/80 mt-1 md:mt-2 text-right">
                 {currentText.hero.subtitle}
               </h3>
             </motion.div>
