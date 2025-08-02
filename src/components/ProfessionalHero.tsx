@@ -12,8 +12,8 @@ interface ProfessionalHeroProps {
 
 const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentText, isRtl }) => {
   return (
-    <section className="min-h-[100dvh] flex items-center justify-center relative z-10 px-6" id="hero">
-      <div className="max-w-6xl mx-auto">
+    <section className="min-h-[100dvh] flex items-center justify-center relative z-10 px-6 py-4" id="hero">
+      <div className="max-w-6xl mx-auto flex flex-col h-full justify-between">
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           
           {/* Profile Image - Mobile: Top, Desktop: Left */}
@@ -40,9 +40,9 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="mb-8"
+              className="mb-4 md:mb-8"
             >
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-wider text-almost-white mb-4">
+              <h1 className="text-3xl md:text-6xl lg:text-7xl font-black tracking-wider text-almost-white mb-2 md:mb-4">
                 {currentText.hero.greeting}
               </h1>
               <div className="w-24 h-px bg-gradient-to-r from-transparent via-light-gray to-transparent mx-auto lg:mx-0"></div>
@@ -53,12 +53,12 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="mb-8"
+              className="mb-4 md:mb-8"
             >
-              <h2 className="text-xl md:text-2xl font-light text-light-gray tracking-wide uppercase">
+              <h2 className="text-lg md:text-2xl font-light text-light-gray tracking-wide uppercase">
                 {currentText.hero.title}
               </h2>
-              <h3 className="text-lg md:text-xl font-light text-light-gray/80 mt-2">
+              <h3 className="text-base md:text-xl font-light text-light-gray/80 mt-1 md:mt-2">
                 {currentText.hero.subtitle}
               </h3>
             </motion.div>
@@ -68,7 +68,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-lg md:text-xl leading-relaxed mb-12 text-light-gray max-w-2xl mx-auto lg:mx-0"
+              className="text-sm md:text-lg leading-relaxed mb-6 md:mb-12 text-light-gray max-w-2xl mx-auto lg:mx-0"
             >
               {currentText.hero.tagline}
             </motion.p>
@@ -78,7 +78,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.0 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center mb-12"
+              className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start items-center mb-6 md:mb-12"
             >
               <Link to="projects" smooth={true} duration={800}>
                 <Button 
