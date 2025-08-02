@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Code, ExternalLink, Github } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import appStoreImage from "@/assets/app-store-project.jpg";
 
 interface ProfessionalProjectsProps {
   language: "en" | "he";
@@ -117,41 +118,26 @@ const ProfessionalProjects: React.FC<ProfessionalProjectsProps> = ({ language, c
             </Card>
           </motion.div>
 
-          {/* Coming soon cards */}
-          <motion.div variants={itemVariants} className="space-y-8">
-            <Card className="bg-soft-black border-dark-gray hover:border-light-gray/30 transition-all duration-300 p-6">
-              <div className="text-center">
-                <Code size={32} className="text-light-gray mx-auto mb-4" />
-                <h4 className="text-lg font-medium text-almost-white mb-2">
-                  E-Commerce Platform
-                </h4>
-                <p className="text-light-gray text-sm mb-4">
-                  Full-stack solution with React & Node.js
-                </p>
-                <Button 
-                  size="sm" 
-                  variant="ghost"
-                  className="text-light-gray hover:text-almost-white"
-                  onClick={() => {
-                    toast({
-                      title: isRtl ? "בקרוב!" : "Coming Soon!",
-                      description: isRtl ? "הפרויקט בפיתוח..." : "Project in development...",
-                    });
-                  }}
-                >
-                  Coming Soon
-                </Button>
+          {/* Single coming soon card - App Store Project */}
+          <motion.div variants={itemVariants}>
+            <Card className="bg-soft-black border-dark-gray hover:border-light-gray/30 transition-all duration-300 overflow-hidden">
+              <div className="relative h-48">
+                <img
+                  src={appStoreImage}
+                  alt="App Store Project"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/40 hover:bg-black/20 transition-all duration-300"></div>
               </div>
-            </Card>
-
-            <Card className="bg-soft-black border-dark-gray hover:border-light-gray/30 transition-all duration-300 p-6">
-              <div className="text-center">
-                <Code size={32} className="text-light-gray mx-auto mb-4" />
+              <div className="p-6">
                 <h4 className="text-lg font-medium text-almost-white mb-2">
-                  Mobile App
+                  {language === "he" ? "אפליקציה באפ סטור" : "App Store Application"}
                 </h4>
                 <p className="text-light-gray text-sm mb-4">
-                  React Native cross-platform app
+                  {language === "he" 
+                    ? "אפליקציה חדשנית עם ממשק משתמש מתקדם"
+                    : "Innovative app with advanced user interface"
+                  }
                 </p>
                 <Button 
                   size="sm" 
@@ -164,7 +150,7 @@ const ProfessionalProjects: React.FC<ProfessionalProjectsProps> = ({ language, c
                     });
                   }}
                 >
-                  Coming Soon
+                  {language === "he" ? "בקרוב" : "Coming Soon"}
                 </Button>
               </div>
             </Card>

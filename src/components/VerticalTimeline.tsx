@@ -125,17 +125,19 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
         }} 
       />
       
-      {/* Progress indicator */}
-      <motion.div 
-        className="absolute w-0.5 bg-neutral-300 rounded-full" 
-        style={{ 
-          left: "50%", 
-          transform: "translateX(-50%)",
-          top: 0,
-          height: progressHeight,
-          originY: 0
-        }}
-      />
+      {/* Progress indicator - hidden on mobile */}
+      {!isMobile && (
+        <motion.div 
+          className="absolute w-0.5 bg-neutral-300 rounded-full" 
+          style={{ 
+            left: "50%", 
+            transform: "translateX(-50%)",
+            top: 0,
+            height: progressHeight,
+            originY: 0
+          }}
+        />
+      )}
       
       {/* Milestone indicators positioned evenly along the timeline */}
       <div className="h-full flex flex-col items-center justify-around py-[15vh] w-10">
