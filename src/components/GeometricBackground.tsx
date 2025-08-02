@@ -195,10 +195,9 @@ const GeometricBackground = () => {
         const finalX = shape.x + offsetX;
         const finalY = shape.y + offsetY;
 
-        // Set style
-        ctx.fillStyle = shape.color;
+        // Set style for hollow shapes
         ctx.strokeStyle = shape.color;
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 2;
         ctx.globalAlpha = shape.opacity;
 
         // Draw shape
@@ -220,7 +219,7 @@ const GeometricBackground = () => {
             break;
         }
 
-        ctx.fill();
+        ctx.stroke();
         ctx.globalAlpha = 1;
       });
 
