@@ -121,29 +121,29 @@
   }
 }
 
-/* Custom mono theme components */
+/* Apple-style theme components */
 @layer components {
   .mono-button {
-    @apply border border-dark-gray text-almost-white bg-transparent 
-    hover:bg-softer-black transition-all duration-200 ease-out px-4 py-2;
+    @apply border border-border text-foreground bg-transparent 
+    hover:bg-accent transition-all duration-200 ease-out px-4 py-2 rounded-lg;
   }
 
   .mono-input {
-    @apply bg-soft-black border border-dark-gray text-almost-white
-    placeholder:text-[#777777] focus:ring-1 focus:ring-[rgba(255,255,255,0.1)]
-    focus:outline-none transition-all duration-200;
+    @apply bg-card border border-border text-foreground
+    placeholder:text-muted-foreground focus:ring-1 focus:ring-ring
+    focus:outline-none transition-all duration-200 rounded-lg;
   }
 
   .mono-section {
-    @apply py-20 border-t border-dark-gray;
+    @apply py-20 border-t border-border;
   }
 
   .mono-card {
-    @apply bg-soft-black border border-dark-gray;
+    @apply bg-card border border-border rounded-xl;
   }
 
   .mono-divider {
-    @apply border-t border-dark-gray my-8;
+    @apply border-t border-border my-8;
   }
 
   .max-content-width {
