@@ -66,8 +66,8 @@ const GeometricBackground = () => {
           type: ['triangle', 'circle', 'square', 'diamond', 'hexagon'][Math.floor(Math.random() * 5)] as Shape['type'],
           color: colors[Math.floor(Math.random() * colors.length)],
           opacity: Math.random() * 0.3 + 0.2,
-          dx: (Math.random() - 0.5) * 0.8,
-          dy: (Math.random() - 0.5) * 0.8,
+          dx: (Math.random() - 0.5) * 0.2,
+          dy: (Math.random() - 0.5) * 0.2,
         });
       }
     };
@@ -179,12 +179,23 @@ const GeometricBackground = () => {
         const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
         const parallaxStrength = (distanceFromCenter / maxDistance) * 0.5 + 0.2;
 
-        // Desktop: mouse parallax
+        // Desktop: mouse repulsion - shapes move away from mouse
         if (window.innerWidth > 768) {
-          const mouseInfluence = 0.15 * parallaxStrength;
+          const mouseInfluence = 0.3;
+          const distanceFromMouse = Math.sqrt(
+            Math.pow(shape.baseX - mouseRef.current.x, 2) + 
+            Math.pow(shape.baseY - mouseRef.current.y, 2)
+          );
           
-          offsetX = (mouseRef.current.x - centerX) * mouseInfluence;
-          offsetY = (mouseRef.current.y - centerY) * mouseInfluence;
+          // Only apply repulsion if mouse is close enough (within 300px)
+          if (distanceFromMouse < 300) {
+            const repulsionStrength = (300 - distanceFromMouse) / 300;
+            const directionX = (shape.baseX - mouseRef.current.x) / distanceFromMouse;
+            const directionY = (shape.baseY - mouseRef.current.y) / distanceFromMouse;
+            
+            offsetX = directionX * mouseInfluence * repulsionStrength * 50;
+            offsetY = directionY * mouseInfluence * repulsionStrength * 50;
+          }
         } else {
           // Mobile: device orientation - shapes move toward device tilt direction
           const orientationInfluence = 8 * parallaxStrength; // Increased for better visibility
