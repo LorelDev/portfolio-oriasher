@@ -28,7 +28,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               <img 
                 src="/lovable-uploads/c978d951-d4f9-40eb-bf98-966b69180143.png"
                 alt="Ori Asher"
-                className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-80 lg:h-80 xl:w-96 xl:h-96 object-cover rounded-full border-2 border-light-gray/20"
+                className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-80 lg:h-80 xl:w-96 xl:h-96 object-cover rounded-full border-2 border-light-gray/20"
               />
             </div>
           </motion.div>

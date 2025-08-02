@@ -60,7 +60,7 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
           viewport={{ once: true }}
           className="text-center mb-8 md:mb-16"
         >
-          <h2 className="text-lg md:text-4xl lg:text-5xl font-light tracking-wider text-almost-white mb-2 md:mb-6">
+          <h2 className="text-xl md:text-4xl lg:text-5xl font-light tracking-wider text-almost-white mb-2 md:mb-6">
             {currentText.contact.title}
           </h2>
           <div className="w-16 md:w-24 h-px bg-gradient-to-r from-transparent via-light-gray to-transparent mx-auto mb-3 md:mb-6"></div>
