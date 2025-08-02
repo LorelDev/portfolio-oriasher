@@ -155,7 +155,7 @@ const Hero = ({ language, currentText, isRtl }: HeroProps) => {
                 {currentText.hero.cta}
               </Button>
             </Link>
-            <a href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" target="_blank" rel="noopener noreferrer">
+            <a href={language === "en" ? "https://drive.google.com/uc?export=download&id=1cZPVm3bj3a_8uxTcrtRHf9kizREiJzCK" : "https://drive.google.com/uc?export=download&id=1rJpHd05DTIHSJSl7FGuhxJRBaxIcaocQ"} target="_blank" rel="noopener noreferrer">
               <Button 
                 variant="outline" 
                 className="mono-button"

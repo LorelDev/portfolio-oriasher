@@ -140,16 +140,16 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
                 {currentText.contact.resumeDescription}
               </p>
               <p className="text-sm text-light-gray/70 mb-4">
-                * קורות חיים בעברית. לקורות חיים באנגלית, שנה את השפה של האתר לאנגלית
+                {language === "he" ? "* קורות חיים בעברית. לקורות חיים באנגלית, שנה את השפה של האתר לאנגלית" : "* Resume in English. For Hebrew resume, change the website language to Hebrew"}
               </p>
               <a 
-                href="https://drive.google.com/uc?export=download&id=1rJpHd05DTIHSJSl7FGuhxJRBaxIcaocQ" 
+                href={language === "en" ? "https://drive.google.com/uc?export=download&id=1cZPVm3bj3a_8uxTcrtRHf9kizREiJzCK" : "https://drive.google.com/uc?export=download&id=1rJpHd05DTIHSJSl7FGuhxJRBaxIcaocQ"} 
                 target="_blank" 
                 rel="noopener noreferrer"
               >
                 <Button className="w-full bg-almost-white text-deep-black hover:bg-light-gray transition-all duration-300">
                   <FileText size={16} className="mr-2" />
-                  {currentText.about?.downloadCv || "הורד קורות חיים"} (עברית)
+                  {currentText.about?.downloadCv || "הורד קורות חיים"}{language === "he" ? " (עברית)" : ""}
                 </Button>
               </a>
             </Card>
