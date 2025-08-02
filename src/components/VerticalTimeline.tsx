@@ -64,37 +64,7 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
   }, []);
 
   if (isMobile) {
-    return (
-      <motion.div
-        className={`fixed ${isRtl ? "right-0" : "left-0"} bottom-0 w-full h-12 bg-black/70 backdrop-blur-sm z-50 flex justify-around items-center px-4`}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-      >
-        {milestones.map((milestone) => (
-          <Link
-            key={milestone.sectionId}
-            to={milestone.sectionId}
-            spy={true}
-            smooth={true}
-            duration={800}
-            offset={-50}
-          >
-            <motion.div
-              className={`rounded-full w-8 h-8 flex items-center justify-center cursor-pointer transition-all duration-300 ${
-                activeSection === milestone.sectionId
-                  ? "bg-neutral-300 text-black"
-                  : "bg-white/20 text-white/70"
-              }`}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {milestone.icon}
-            </motion.div>
-          </Link>
-        ))}
-      </motion.div>
-    );
+    return null;
   }
 
   // Desktop timeline - updated with pointer-events-none on the timeline elements 
