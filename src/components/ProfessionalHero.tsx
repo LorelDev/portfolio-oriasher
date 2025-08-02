@@ -70,7 +70,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-sm md:text-lg leading-relaxed mb-6 md:mb-12 text-muted-foreground max-w-2xl mx-auto lg:mx-0"
+              className={`text-sm md:text-lg leading-relaxed mb-6 md:mb-12 text-muted-foreground max-w-2xl mx-auto lg:mx-0 text-center lg:${isRtl ? 'text-right' : 'text-left'}`}
             >
               {currentText.hero.tagline}
             </motion.p>
