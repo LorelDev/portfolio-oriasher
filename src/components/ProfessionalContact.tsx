@@ -60,11 +60,11 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
           viewport={{ once: true }}
           className="text-center mb-8 md:mb-16"
         >
-          <h2 className="text-xl md:text-4xl lg:text-5xl font-light tracking-wider text-almost-white mb-2 md:mb-6">
+          <h2 className="text-xl md:text-4xl lg:text-5xl font-light tracking-wider text-foreground mb-2 md:mb-6">
             {currentText.contact.title}
           </h2>
-          <div className="w-16 md:w-24 h-px bg-gradient-to-r from-transparent via-light-gray to-transparent mx-auto mb-3 md:mb-6"></div>
-          <p className="text-sm md:text-xl text-light-gray max-w-2xl mx-auto leading-relaxed">
+          <div className="w-16 md:w-24 h-px bg-gradient-to-r from-transparent via-muted-foreground to-transparent mx-auto mb-3 md:mb-6"></div>
+          <p className="text-sm md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             {currentText.contact.cta}
           </p>
         </motion.div>
@@ -77,8 +77,8 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <Card className="bg-soft-black border-dark-gray p-4 md:p-8 h-full">
-              <h3 className="text-lg md:text-2xl font-medium text-almost-white mb-4 md:mb-8">{currentText.contact.getInTouch}</h3>
+            <Card className="bg-card border-border p-4 md:p-8 h-full">
+              <h3 className="text-lg md:text-2xl font-medium text-card-foreground mb-4 md:mb-8">{currentText.contact.getInTouch}</h3>
               <div className="space-y-3 md:space-y-6">
                 {contactMethods.map((method, index) => (
                   <motion.div
@@ -89,21 +89,21 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
                     viewport={{ once: true }}
                     className="flex items-center gap-4"
                   >
-                    <div className="w-10 h-10 md:w-12 md:h-12 bg-dark-gray rounded-lg flex items-center justify-center">
-                      <method.icon size={16} className="text-light-gray md:hidden" />
-                      <method.icon size={20} className="text-light-gray hidden md:block" />
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-muted rounded-lg flex items-center justify-center">
+                      <method.icon size={16} className="text-muted-foreground md:hidden" />
+                      <method.icon size={20} className="text-muted-foreground hidden md:block" />
                     </div>
                     <div>
-                      <p className="text-light-gray text-sm">{method.label}</p>
+                      <p className="text-muted-foreground text-sm">{method.label}</p>
                       {method.href ? (
                         <a 
                           href={method.href}
-                          className="text-almost-white hover:text-light-gray transition-colors"
+                          className="text-foreground hover:text-muted-foreground transition-colors"
                         >
                           {method.value}
                         </a>
                       ) : (
-                        <p className="text-almost-white">{method.value}</p>
+                        <p className="text-foreground">{method.value}</p>
                       )}
                     </div>
                   </motion.div>
@@ -120,8 +120,8 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
             viewport={{ once: true }}
             className="space-y-4 md:space-y-8"
           >
-            <Card className="bg-soft-black border-dark-gray p-4 md:p-8">
-              <h3 className="text-lg md:text-2xl font-medium text-almost-white mb-4 md:mb-8">{language === "en" ? "Connect with me on LinkedIn!" : "תתחברו איתי בלינקדאין!"}</h3>
+            <Card className="bg-card border-border p-4 md:p-8">
+              <h3 className="text-lg md:text-2xl font-medium text-card-foreground mb-4 md:mb-8">{language === "en" ? "Connect with me on LinkedIn!" : "תתחברו איתי בלינקדאין!"}</h3>
               <a
                 href="https://www.linkedin.com/in/ori-asher-a9b542320/"
                 target="_blank"
@@ -130,18 +130,18 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
               >
                 <Linkedin size={20} className="text-blue-400 group-hover:text-blue-300 transition-colors md:hidden" />
                 <Linkedin size={24} className="text-blue-400 group-hover:text-blue-300 transition-colors hidden md:block" />
-                <span className="text-almost-white group-hover:text-blue-100 transition-colors text-base md:text-lg font-medium">
+                <span className="text-foreground group-hover:text-blue-100 transition-colors text-base md:text-lg font-medium">
                   LinkedIn
                 </span>
               </a>
             </Card>
 
-            <Card className="bg-soft-black border-dark-gray p-4 md:p-8">
-              <h3 className="text-lg md:text-2xl font-medium text-almost-white mb-3 md:mb-6">{currentText.contact.resume}</h3>
-              <p className="text-light-gray mb-3 md:mb-6 text-sm md:text-base">
+            <Card className="bg-card border-border p-4 md:p-8">
+              <h3 className="text-lg md:text-2xl font-medium text-card-foreground mb-3 md:mb-6">{currentText.contact.resume}</h3>
+              <p className="text-muted-foreground mb-3 md:mb-6 text-sm md:text-base">
                 {currentText.contact.resumeDescription}
               </p>
-              <p className="text-xs md:text-sm text-light-gray/70 mb-3 md:mb-4">
+              <p className="text-xs md:text-sm text-muted-foreground/70 mb-3 md:mb-4">
                 {language === "he" ? "* קורות חיים בעברית. לקורות חיים באנגלית, שנה את השפה של האתר לאנגלית" : "* Resume in English. For Hebrew resume, change the website language to Hebrew"}
               </p>
               <a 
@@ -149,7 +149,7 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
                 target="_blank" 
                 rel="noopener noreferrer"
               >
-                <Button className="w-full bg-almost-white text-deep-black hover:bg-light-gray transition-all duration-300">
+                <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300">
                   <FileText size={14} className="mr-2 md:hidden" />
                   <FileText size={16} className="mr-2 hidden md:block" />
                   {currentText.about?.downloadCv || "הורד קורות חיים"}{language === "he" ? " (עברית)" : ""}

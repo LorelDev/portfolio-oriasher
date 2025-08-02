@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-scroll";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTheme } from "@/hooks/use-theme";
 import { Mail, Phone, Laptop, Hand } from "lucide-react";
 
 interface TimelineProps {
@@ -21,6 +22,7 @@ interface TimelineMilestone {
 const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
   const { scrollYProgress } = useScroll();
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const { isDark } = useTheme();
   
   const isMobile = useIsMobile();
   
@@ -78,7 +80,9 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
       style={{ width: "auto" }} // Ensure width is minimal
     >
       {/* Full-height background line */}
-      <div className="absolute w-0.5 bg-white/20 h-full rounded-full" 
+      <div className={`absolute w-0.5 h-full rounded-full ${
+        isDark ? 'bg-white/20' : 'bg-foreground/20'
+      }`}
         style={{ 
           top: 0,
           left: "50%", 
@@ -89,7 +93,9 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
       {/* Progress indicator - hidden on mobile */}
       {!isMobile && (
         <motion.div 
-          className="absolute w-0.5 bg-neutral-300 rounded-full" 
+          className={`absolute w-0.5 rounded-full ${
+            isDark ? 'bg-neutral-300' : 'bg-foreground'
+          }`}
           style={{ 
             left: "50%", 
             transform: "translateX(-50%)",
@@ -117,17 +123,25 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
                   <motion.div 
                     className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer backdrop-blur-sm z-10 border-2 transition-all duration-300 ${
                       activeSection === milestone.sectionId
-                        ? "border-neutral-400 bg-neutral-300/20 text-white scale-125"
-                        : "border-white/30 bg-white/10 text-white/60"
+                        ? isDark 
+                          ? "border-neutral-400 bg-neutral-300/20 text-white scale-125"
+                          : "border-foreground bg-background scale-125 text-foreground shadow-md"
+                        : isDark
+                          ? "border-white/30 bg-white/10 text-white/60"
+                          : "border-foreground/30 bg-foreground/10 text-foreground/60"
                     }`}
                     whileHover={{ 
                       scale: 1.2, 
-                      boxShadow: "0 0 15px 5px rgba(255,255,255,0.2)"
+                      boxShadow: isDark 
+                        ? "0 0 15px 5px rgba(255,255,255,0.2)"
+                        : "0 0 15px 5px rgba(0,0,0,0.2)"
                     }}
                     animate={{
                       boxShadow: activeSection === milestone.sectionId 
-                        ? ["0 0 0px 0px rgba(255,255,255,0)", "0 0 15px 5px rgba(255,255,255,0.3)", "0 0 0px 0px rgba(255,255,255,0)"]
-                        : "0 0 0px 0px rgba(255,255,255,0)"
+                        ? isDark
+                          ? ["0 0 0px 0px rgba(255,255,255,0)", "0 0 15px 5px rgba(255,255,255,0.3)", "0 0 0px 0px rgba(255,255,255,0)"]
+                          : ["0 0 0px 0px rgba(0,0,0,0)", "0 0 15px 5px rgba(0,0,0,0.3)", "0 0 0px 0px rgba(0,0,0,0)"]
+                        : "0 0 0px 0px rgba(0,0,0,0)"
                     }}
                     transition={{
                       boxShadow: {
