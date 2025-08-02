@@ -1,12 +1,6 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { 
-  Float, 
-  MeshDistortMaterial, 
-  Sphere, 
-  RoundedBox,
-  useTexture 
-} from '@react-three/drei';
+import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -56,15 +50,27 @@ const GeometricShape = ({
   const geometry = useMemo(() => {
     switch (shape) {
       case 'box':
-        return <RoundedBox args={[1, 1, 1]} radius={0.1} smoothness={4} />;
+        return new THREE.BoxGeometry(1, 1, 1);
       case 'octahedron':
-        return <octahedronGeometry args={[1, 0]} />;
+        return new THREE.OctahedronGeometry(1, 0);
       case 'tetrahedron':
-        return <tetrahedronGeometry args={[1, 0]} />;
+        return new THREE.TetrahedronGeometry(1, 0);
       default:
-        return <Sphere args={[1, 32, 32]} />;
+        return new THREE.SphereGeometry(1, 16, 16);
     }
   }, [shape]);
+
+  const material = useMemo(() => {
+    return new THREE.MeshStandardMaterial({
+      color,
+      transparent: true,
+      opacity: opacity,
+      roughness: 0.2,
+      metalness: 0.8,
+      emissive: color,
+      emissiveIntensity: 0.3
+    });
+  }, [color, opacity]);
 
   return (
     <Float
@@ -75,23 +81,11 @@ const GeometricShape = ({
       <mesh
         ref={meshRef}
         position={position}
+        geometry={geometry}
+        material={material}
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
-      >
-        {geometry}
-        <MeshDistortMaterial
-          color={color}
-          transparent
-          opacity={opacity}
-          roughness={0.2}
-          metalness={0.8}
-          distort={0.1}
-          speed={2}
-          emissive={color}
-          emissiveIntensity={0.3}
-          toneMapped={false}
-        />
-      </mesh>
+      />
     </Float>
   );
 };
