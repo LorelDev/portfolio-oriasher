@@ -89,7 +89,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               </Link>
               
               <a 
-                href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" 
+                href="https://drive.google.com/uc?export=download&id=1rJpHd05DTIHSJSl7FGuhxJRBaxIcaocQ" 
                 target="_blank" 
                 rel="noopener noreferrer"
               >
@@ -97,7 +97,7 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
                   variant="outline" 
                   className="border-light-gray text-light-gray hover:bg-light-gray hover:text-deep-black transition-all duration-300 px-8 py-3 text-lg"
                 >
-                  {currentText.hero.downloadResume}
+                  {currentText.hero.downloadResume} (עברית)
                 </Button>
               </a>
             </motion.div>
