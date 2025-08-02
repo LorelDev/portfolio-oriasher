@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Github, Linkedin, Mail, Phone } from "lucide-react";
 import { Link } from "react-scroll";
-import SimpleGeometricBackground from "@/components/SimpleGeometricBackground";
 
 interface ProfessionalHeroProps {
   language: "en" | "he";
@@ -17,28 +16,21 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           
-          {/* Profile Image with Premium Geometric Glow */}
+          {/* Profile Image - Mobile: Top, Desktop: Left */}
           <motion.div
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
             className="order-1 lg:order-1 flex justify-center"
           >
-            <SimpleGeometricBackground>
-              <div className="relative">
-                <div className="absolute -inset-2 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-full blur-2xl"></div>
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-lg"></div>
-                <img 
-                  src="/lovable-uploads/c978d951-d4f9-40eb-bf98-966b69180143.png"
-                  alt="Ori Asher"
-                  className="relative w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 xl:w-96 xl:h-96 object-cover rounded-full border-2 border-light-gray/30 shadow-2xl"
-                  style={{
-                    filter: 'brightness(1.05) contrast(1.1)',
-                    boxShadow: '0 0 60px rgba(96, 165, 250, 0.15), 0 0 120px rgba(139, 92, 246, 0.1)'
-                  }}
-                />
-              </div>
-            </SimpleGeometricBackground>
+            <div className="relative">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-lg"></div>
+              <img 
+                src="/lovable-uploads/c978d951-d4f9-40eb-bf98-966b69180143.png"
+                alt="Ori Asher"
+                className="relative w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 xl:w-96 xl:h-96 object-cover rounded-full border-2 border-light-gray/20"
+              />
+            </div>
           </motion.div>
 
           {/* Content */}
