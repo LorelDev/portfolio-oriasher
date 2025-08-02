@@ -21,13 +21,13 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
     {
       icon: Phone,
       label: currentText.contact.phoneLabel,
-      value: "+972 55-228-5564",
-      href: "tel:+972552285564"
+      value: "055-228-5564",
+      href: "tel:0552285564"
     },
     {
       icon: MapPin,
       label: currentText.contact.locationLabel,
-      value: currentText.contact.locationValue,
+      value: "ישראל, שדרות",
       href: null
     }
   ];
