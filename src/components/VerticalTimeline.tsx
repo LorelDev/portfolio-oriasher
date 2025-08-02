@@ -117,16 +117,16 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
                     activeSection === milestone.sectionId
                       ? isDark 
                         ? "border-neutral-400 bg-neutral-300/20 text-white scale-125"
-                        : "border-foreground bg-background scale-125 text-foreground shadow-md"
+                        : "border-primary bg-primary/20 scale-125 text-primary shadow-lg"
                       : isDark
                         ? "border-white/30 bg-white/10 text-white/60"
-                        : "border-foreground/30 bg-foreground/10 text-foreground/60"
+                        : "border-muted-foreground bg-muted/50 text-muted-foreground shadow-md"
                   }`}
                   whileHover={{ 
                     scale: 1.2, 
                     boxShadow: isDark 
                       ? "0 0 15px 5px rgba(255,255,255,0.2)"
-                      : "0 0 15px 5px rgba(0,0,0,0.2)"
+                      : "0 0 15px 5px rgba(0,0,0,0.3)"
                   }}
                   animate={{
                     boxShadow: activeSection === milestone.sectionId 
