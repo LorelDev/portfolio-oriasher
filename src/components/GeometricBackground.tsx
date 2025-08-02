@@ -22,6 +22,20 @@ const GeometricBackground = () => {
   const shapesRef = useRef<Shape[]>([]);
   const mouseRef = useRef({ x: 0, y: 0 });
   const animationRef = useRef<number>();
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  // Track theme changes
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'));
+    };
+    
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    
+    return () => observer.disconnect();
+  }, []);
 
   // ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL LOGIC
   useEffect(() => {
@@ -41,20 +55,36 @@ const GeometricBackground = () => {
 
     updateCanvasSize();
 
-    // Profile image gradient colors - blue to purple with better visibility
-    const colors = [
-      'rgba(59, 130, 246, 0.3)',  // blue-500
-      'rgba(99, 102, 241, 0.3)',  // indigo-500
-      'rgba(139, 92, 246, 0.3)',  // violet-500
-      'rgba(168, 85, 247, 0.3)',  // purple-500
-      'rgba(192, 192, 192, 0.2)', // light gray
-      'rgba(255, 255, 255, 0.2)', // white
-    ];
+    // Profile image gradient colors - adaptive to theme
+    const getColors = () => {
+      if (isDarkMode) {
+        return [
+          'rgba(59, 130, 246, 0.3)',  // blue-500
+          'rgba(99, 102, 241, 0.3)',  // indigo-500
+          'rgba(139, 92, 246, 0.3)',  // violet-500
+          'rgba(168, 85, 247, 0.3)',  // purple-500
+          'rgba(192, 192, 192, 0.2)', // light gray
+          'rgba(255, 255, 255, 0.2)', // white
+        ];
+      } else {
+        return [
+          'rgba(59, 130, 246, 0.6)',  // blue-500 - darker for light mode
+          'rgba(99, 102, 241, 0.6)',  // indigo-500
+          'rgba(139, 92, 246, 0.6)',  // violet-500
+          'rgba(168, 85, 247, 0.6)',  // purple-500
+          'rgba(75, 85, 99, 0.4)',    // gray-600
+          'rgba(31, 41, 55, 0.4)',    // gray-800
+        ];
+      }
+    };
+
+    const colors = getColors();
 
     // Initialize shapes
     const initShapes = () => {
       shapesRef.current = [];
       const shapeCount = Math.min(20, Math.floor((canvas.width * canvas.height) / 50000));
+      const currentColors = getColors();
       
       for (let i = 0; i < shapeCount; i++) {
         const x = Math.random() * canvas.width;
@@ -69,8 +99,8 @@ const GeometricBackground = () => {
           rotation: Math.random() * Math.PI * 2,
           rotationSpeed: (Math.random() - 0.5) * 0.005,
           type: ['triangle', 'circle', 'square', 'diamond', 'hexagon'][Math.floor(Math.random() * 5)] as Shape['type'],
-          color: colors[Math.floor(Math.random() * colors.length)],
-          opacity: Math.random() * 0.15 + 0.1,
+          color: currentColors[Math.floor(Math.random() * currentColors.length)],
+          opacity: isDarkMode ? Math.random() * 0.15 + 0.1 : Math.random() * 0.25 + 0.15,
           dx: (Math.random() - 0.5) * 0.1,
           dy: (Math.random() - 0.5) * 0.1,
         });
@@ -231,7 +261,7 @@ const GeometricBackground = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isMobile]);
+  }, [isMobile, isDarkMode]); // Add isDarkMode as dependency
 
   // Return null for mobile devices - no background at all
   // Wait for hook to initialize to prevent hydration mismatch
