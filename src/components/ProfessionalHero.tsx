@@ -14,27 +14,27 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
   return (
     <section className="min-h-screen flex items-center justify-center relative z-10 px-6" id="hero">
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           
-          {/* Profile Image */}
+          {/* Profile Image - Mobile: Top, Desktop: Left */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="order-2 lg:order-1 flex justify-center"
+            className="order-1 lg:order-1 flex justify-center"
           >
             <div className="relative">
               <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-lg"></div>
               <img 
                 src="/lovable-uploads/c978d951-d4f9-40eb-bf98-966b69180143.png"
                 alt="Ori Asher"
-                className="relative w-80 h-80 md:w-96 md:h-96 object-cover rounded-full border-2 border-light-gray/20"
+                className="relative w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 xl:w-96 xl:h-96 object-cover rounded-full border-2 border-light-gray/20"
               />
             </div>
           </motion.div>
 
           {/* Content */}
-          <div className="order-1 lg:order-2 text-center lg:text-left">
+          <div className="order-2 lg:order-2 text-center lg:text-left">
             {/* Main greeting */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
