@@ -77,7 +77,7 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <Card className="bg-card border-border p-4 md:p-8 h-full">
+            <Card className="bg-card border-border p-3 md:p-6 h-full">
               <h3 className="text-lg md:text-2xl font-medium text-card-foreground mb-4 md:mb-8">{currentText.contact.getInTouch}</h3>
               <div className="space-y-3 md:space-y-6">
                 {contactMethods.map((method, index) => (
@@ -120,7 +120,7 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
             viewport={{ once: true }}
             className="space-y-4 md:space-y-8"
           >
-            <Card className="bg-card border-border p-4 md:p-8">
+            <Card className="bg-card border-border p-3 md:p-6">
               <h3 className="text-lg md:text-2xl font-medium text-card-foreground mb-4 md:mb-8">{language === "en" ? "Connect with me on LinkedIn!" : "תתחברו איתי בלינקדאין!"}</h3>
               <a
                 href="https://www.linkedin.com/in/ori-asher-a9b542320/"
