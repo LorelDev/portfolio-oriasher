@@ -71,7 +71,14 @@ const Index = () => {
         email: "Email",
         message: "Message",
         submit: "Send Message",
-        getInTouch: "Get In Touch"
+        getInTouch: "Get In Touch",
+        connect: "Connect",
+        resume: "Resume",
+        resumeDescription: "Download my resume to learn more about my experience and skills.",
+        emailLabel: "Email",
+        phoneLabel: "Phone", 
+        locationLabel: "Location",
+        locationValue: "Israel"
       },
       social: {
         linkedin: "LinkedIn",
@@ -121,7 +128,14 @@ const Index = () => {
         email: "אימייל",
         message: "הודעה",
         submit: "שלח הודעה",
-        getInTouch: "צור קשר"
+        getInTouch: "צור קשר",
+        connect: "צור קשר",
+        resume: "קורות חיים",
+        resumeDescription: "הורד את קורות החיים שלי כדי ללמוד עוד על הניסיון והכישורים שלי.",
+        emailLabel: "אימייל",
+        phoneLabel: "טלפון",
+        locationLabel: "מיקום", 
+        locationValue: "ישראל"
       },
       social: {
         linkedin: "לינקדאין",

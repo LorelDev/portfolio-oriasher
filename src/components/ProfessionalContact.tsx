@@ -14,20 +14,20 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
   const contactMethods = [
     {
       icon: Mail,
-      label: "Email",
+      label: currentText.contact.emailLabel,
       value: "ori.asher@outlook.com",
       href: "mailto:ori.asher@outlook.com"
     },
     {
       icon: Phone,
-      label: "Phone",
+      label: currentText.contact.phoneLabel,
       value: "+972 55-228-5564",
       href: "tel:+972552285564"
     },
     {
       icon: MapPin,
-      label: "Location",
-      value: "Israel",
+      label: currentText.contact.locationLabel,
+      value: currentText.contact.locationValue,
       href: null
     }
   ];
@@ -115,7 +115,7 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
             className="space-y-8"
           >
             <Card className="bg-soft-black border-dark-gray p-8">
-              <h3 className="text-2xl font-medium text-almost-white mb-8">Connect</h3>
+              <h3 className="text-2xl font-medium text-almost-white mb-8">{currentText.contact.connect}</h3>
               <div className="space-y-4">
                 {socialLinks.map((social) => (
                   <a
@@ -135,9 +135,9 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
             </Card>
 
             <Card className="bg-soft-black border-dark-gray p-8">
-              <h3 className="text-2xl font-medium text-almost-white mb-6">Resume</h3>
+              <h3 className="text-2xl font-medium text-almost-white mb-6">{currentText.contact.resume}</h3>
               <p className="text-light-gray mb-6">
-                Download my resume to learn more about my experience and skills.
+                {currentText.contact.resumeDescription}
               </p>
               <a 
                 href="https://drive.google.com/uc?export=download&id=1v8KM36DgGQztTmocsPp7my0xNSSJxaOw" 
