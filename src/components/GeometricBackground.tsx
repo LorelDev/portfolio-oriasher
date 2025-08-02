@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Shape {
   x: number;
@@ -16,31 +17,17 @@ interface Shape {
 }
 
 const GeometricBackground = () => {
+  const isMobile = useIsMobile();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const shapesRef = useRef<Shape[]>([]);
-  const orientationRef = useRef({ gamma: 0, beta: 0 });
+  const mouseRef = useRef({ x: 0, y: 0 });
   const animationRef = useRef<number>();
-  const [orientationPermissionGranted, setOrientationPermissionGranted] = useState(false);
 
-  // Request device orientation permission (especially for iOS)
-  const requestOrientationPermission = async () => {
-    if (typeof DeviceOrientationEvent !== 'undefined' && 
-        typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
-      try {
-        const permission = await (DeviceOrientationEvent as any).requestPermission();
-        console.log('Orientation permission:', permission);
-        setOrientationPermissionGranted(permission === 'granted');
-        return permission === 'granted';
-      } catch (error) {
-        console.error('Error requesting orientation permission:', error);
-        return false;
-      }
-    } else {
-      // Android or older browsers - permission not needed
-      setOrientationPermissionGranted(true);
-      return true;
-    }
-  };
+  // Return null for mobile devices - no background at all
+  if (isMobile) {
+    return null;
+  }
+
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -94,20 +81,10 @@ const GeometricBackground = () => {
 
     initShapes();
 
-    // Device orientation handler for mobile
-    const handleDeviceOrientation = (e: DeviceOrientationEvent) => {
-      if (e.gamma !== null && e.beta !== null) {
-        // Clamp values to reasonable range and increase sensitivity
-        orientationRef.current.gamma = Math.max(-60, Math.min(60, e.gamma));
-        orientationRef.current.beta = Math.max(-60, Math.min(60, e.beta));
-        
-        // Debug logging
-        console.log('Device orientation:', { 
-          gamma: e.gamma, 
-          beta: e.beta, 
-          clamped: orientationRef.current 
-        });
-      }
+    // Mouse movement handler for desktop
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseRef.current.x = e.clientX;
+      mouseRef.current.y = e.clientY;
     };
 
 
@@ -189,25 +166,24 @@ const GeometricBackground = () => {
         if (shape.y < -shape.size) shape.y = canvas.height + shape.size;
         if (shape.y > canvas.height + shape.size) shape.y = -shape.size;
 
-        // Calculate device orientation effect for mobile only
+        // Calculate subtle mouse parallax effect for desktop
         let offsetX = 0;
         let offsetY = 0;
         
-        // Mobile: device orientation - shapes move in direction of device tilt
-        if (window.innerWidth <= 768) {
-          const centerX = canvas.width / 2;
-          const centerY = canvas.height / 2;
-          const distanceFromCenter = Math.sqrt(
-            Math.pow(shape.baseX - centerX, 2) + Math.pow(shape.baseY - centerY, 2)
-          );
-          const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
-          const parallaxStrength = (distanceFromCenter / maxDistance) * 0.8 + 0.3;
-          
-          const orientationInfluence = 6 * parallaxStrength; // Reduced sensitivity for subtlety
-          // Gamma controls left/right tilt, Beta controls forward/backward tilt
-          offsetX = orientationRef.current.gamma * orientationInfluence;
-          offsetY = orientationRef.current.beta * orientationInfluence;
-        }
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const distanceFromCenter = Math.sqrt(
+          Math.pow(shape.baseX - centerX, 2) + Math.pow(shape.baseY - centerY, 2)
+        );
+        const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
+        const parallaxStrength = (distanceFromCenter / maxDistance) * 0.3 + 0.1;
+        
+        // Subtle mouse parallax - shapes move slightly toward mouse
+        const mouseInfluence = 8 * parallaxStrength;
+        const mouseDistanceX = (mouseRef.current.x - centerX) / centerX;
+        const mouseDistanceY = (mouseRef.current.y - centerY) / centerY;
+        offsetX = mouseDistanceX * mouseInfluence;
+        offsetY = mouseDistanceY * mouseInfluence;
 
         const finalX = shape.x + offsetX;
         const finalY = shape.y + offsetY;
@@ -244,16 +220,14 @@ const GeometricBackground = () => {
     };
 
     // Event listeners
-    window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('resize', handleResize);
 
-    // Request orientation permission and start animation
-    requestOrientationPermission().then(() => {
-      animate();
-    });
+    // Start animation
+    animate();
 
     return () => {
-      window.removeEventListener('deviceorientation', handleDeviceOrientation);
+      window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
@@ -262,29 +236,14 @@ const GeometricBackground = () => {
   }, []);
 
   return (
-    <>
-      <canvas
-        ref={canvasRef}
-        className="fixed top-0 left-0 w-full h-full pointer-events-none"
-        style={{ 
-          zIndex: 5,
-          background: "transparent" 
-        }}
-      />
-      
-      {/* Hidden button for iOS orientation permission - appears only when needed */}
-      {typeof DeviceOrientationEvent !== 'undefined' && 
-       typeof (DeviceOrientationEvent as any).requestPermission === 'function' && 
-       !orientationPermissionGranted && (
-        <button
-          onClick={requestOrientationPermission}
-          className="fixed bottom-4 right-4 z-50 bg-blue-500 text-white px-4 py-2 rounded-lg opacity-30 hover:opacity-100 transition-opacity"
-          style={{ fontSize: '12px' }}
-        >
-          Enable Tilt
-        </button>
-      )}
-    </>
+    <canvas
+      ref={canvasRef}
+      className="fixed top-0 left-0 w-full h-full pointer-events-none"
+      style={{ 
+        zIndex: 5,
+        background: "transparent" 
+      }}
+    />
   );
 };
 
