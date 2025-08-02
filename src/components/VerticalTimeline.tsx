@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Link } from "react-scroll";
+import { animateScroll as scroll, scroller } from "react-scroll";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTheme } from "@/hooks/use-theme";
@@ -112,47 +112,45 @@ const VerticalTimeline = ({ language, isRtl }: TimelineProps) => {
           <TooltipProvider key={milestone.sectionId}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link
-                  to={milestone.sectionId}
-                  spy={true}
-                  smooth={true}
-                  duration={800}
-                  offset={-50}
-                  className="pointer-events-auto"
+                <motion.div 
+                  className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer backdrop-blur-sm z-10 border-2 transition-all duration-300 pointer-events-auto ${
+                    activeSection === milestone.sectionId
+                      ? isDark 
+                        ? "border-neutral-400 bg-neutral-300/20 text-white scale-125"
+                        : "border-foreground bg-background scale-125 text-foreground shadow-md"
+                      : isDark
+                        ? "border-white/30 bg-white/10 text-white/60"
+                        : "border-foreground/30 bg-foreground/10 text-foreground/60"
+                  }`}
+                  whileHover={{ 
+                    scale: 1.2, 
+                    boxShadow: isDark 
+                      ? "0 0 15px 5px rgba(255,255,255,0.2)"
+                      : "0 0 15px 5px rgba(0,0,0,0.2)"
+                  }}
+                  animate={{
+                    boxShadow: activeSection === milestone.sectionId 
+                      ? isDark
+                        ? ["0 0 0px 0px rgba(255,255,255,0)", "0 0 15px 5px rgba(255,255,255,0.3)", "0 0 0px 0px rgba(255,255,255,0)"]
+                        : ["0 0 0px 0px rgba(0,0,0,0)", "0 0 15px 5px rgba(0,0,0,0.3)", "0 0 0px 0px rgba(0,0,0,0)"]
+                      : "0 0 0px 0px rgba(0,0,0,0)"
+                  }}
+                  transition={{
+                    boxShadow: {
+                      repeat: activeSection === milestone.sectionId ? Infinity : 0,
+                      duration: 2
+                    }
+                  }}
+                  onClick={() => {
+                    scroller.scrollTo(milestone.sectionId, {
+                      duration: 800,
+                      smooth: true,
+                      offset: -50
+                    });
+                  }}
                 >
-                  <motion.div 
-                    className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer backdrop-blur-sm z-10 border-2 transition-all duration-300 ${
-                      activeSection === milestone.sectionId
-                        ? isDark 
-                          ? "border-neutral-400 bg-neutral-300/20 text-white scale-125"
-                          : "border-foreground bg-background scale-125 text-foreground shadow-md"
-                        : isDark
-                          ? "border-white/30 bg-white/10 text-white/60"
-                          : "border-foreground/30 bg-foreground/10 text-foreground/60"
-                    }`}
-                    whileHover={{ 
-                      scale: 1.2, 
-                      boxShadow: isDark 
-                        ? "0 0 15px 5px rgba(255,255,255,0.2)"
-                        : "0 0 15px 5px rgba(0,0,0,0.2)"
-                    }}
-                    animate={{
-                      boxShadow: activeSection === milestone.sectionId 
-                        ? isDark
-                          ? ["0 0 0px 0px rgba(255,255,255,0)", "0 0 15px 5px rgba(255,255,255,0.3)", "0 0 0px 0px rgba(255,255,255,0)"]
-                          : ["0 0 0px 0px rgba(0,0,0,0)", "0 0 15px 5px rgba(0,0,0,0.3)", "0 0 0px 0px rgba(0,0,0,0)"]
-                        : "0 0 0px 0px rgba(0,0,0,0)"
-                    }}
-                    transition={{
-                      boxShadow: {
-                        repeat: activeSection === milestone.sectionId ? Infinity : 0,
-                        duration: 2
-                      }
-                    }}
-                  >
-                    {milestone.icon}
-                  </motion.div>
-                </Link>
+                  {milestone.icon}
+                </motion.div>
               </TooltipTrigger>
               <TooltipContent side={isRtl ? "left" : "right"} className="z-50">
                 <p>{language === "en" ? milestone.tooltipEn : milestone.tooltipHe}</p>
