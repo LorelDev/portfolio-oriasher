@@ -61,13 +61,13 @@ const ProfessionalProjects: React.FC<ProfessionalProjectsProps> = ({ language, c
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="flex justify-center"
+          className="flex justify-center max-w-2xl mx-auto"
         >
 
           {/* Single coming soon card - App Store Project */}
-          <motion.div variants={itemVariants}>
+          <motion.div variants={itemVariants} className="w-full">
             <Card className="bg-soft-black border-dark-gray hover:border-light-gray/30 transition-all duration-300 overflow-hidden">
-              <div className="relative h-48">
+              <div className="relative h-64 md:h-72">
                 <img
                   src={appStoreImage}
                   alt="App Store Project"
@@ -75,18 +75,18 @@ const ProfessionalProjects: React.FC<ProfessionalProjectsProps> = ({ language, c
                 />
                 <div className="absolute inset-0 bg-black/40 hover:bg-black/20 transition-all duration-300"></div>
               </div>
-              <div className="p-6">
-                <h4 className="text-lg font-medium text-almost-white mb-2">
+              <div className="p-8">
+                <h4 className="text-2xl font-medium text-almost-white mb-4">
                   {language === "he" ? "אפליקציה לימודית" : "Educational App"}
                 </h4>
-                <p className="text-light-gray text-sm mb-4">
-                  {language === "he" 
+                <p className="text-light-gray text-base mb-6 leading-relaxed">
+                  {language === "he"
                     ? "אפליקציה שתהיה מושקת באפ סטור"
                     : "App that will be launched on the App Store"
                   }
                 </p>
                 <Button 
-                  size="sm" 
+                  size="default"
                   variant="ghost"
                   className="text-light-gray hover:text-almost-white"
                   onClick={() => {
