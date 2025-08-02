@@ -46,7 +46,9 @@ const Index = () => {
         greeting: "Hi, I'm Ori",
         tagline: "A computer science student seeking every opportunity to learn, build, improve, and grow.",
         cta: "See My Work",
-        downloadResume: "Download Resume"
+        downloadResume: "Download Resume",
+        title: "Computer Science Student",
+        subtitle: "Frontend Developer"
       },
       about: {
         title: "About Me",
@@ -93,7 +95,9 @@ const Index = () => {
         greeting: "היי, אני אורי",
         tagline: "סטודנט למדעי המחשב שמחפש כל הזדמנות ללמוד, לבנות, לשפר ולהשתפר.",
         cta: "ראה את העבודות שלי",
-        downloadResume: "הורד קורות חיים"
+        downloadResume: "הורד קורות חיים",
+        title: "סטודנט למדעי המחשב",
+        subtitle: "מפתח פרונטאנד"
       },
       about: {
         title: "קצת עלי",

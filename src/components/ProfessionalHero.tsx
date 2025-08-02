@@ -56,10 +56,10 @@ const ProfessionalHero: React.FC<ProfessionalHeroProps> = ({ language, currentTe
               className="mb-8"
             >
               <h2 className="text-xl md:text-2xl font-light text-light-gray tracking-wide uppercase">
-                Computer Science Student
+                {currentText.hero.title}
               </h2>
               <h3 className="text-lg md:text-xl font-light text-light-gray/80 mt-2">
-                Frontend Developer
+                {currentText.hero.subtitle}
               </h3>
             </motion.div>
 
