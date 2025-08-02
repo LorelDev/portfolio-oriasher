@@ -36,14 +36,14 @@ const GeometricBackground = () => {
 
     updateCanvasSize();
 
-    // Profile image gradient colors - very subtle hollow shapes
+    // Profile image gradient colors - blue to purple with better visibility
     const colors = [
-      'rgba(59, 130, 246, 0.02)',  // blue-500
-      'rgba(99, 102, 241, 0.02)',  // indigo-500
-      'rgba(139, 92, 246, 0.02)',  // violet-500
-      'rgba(168, 85, 247, 0.02)',  // purple-500
-      'rgba(192, 192, 192, 0.015)', // light gray
-      'rgba(255, 255, 255, 0.015)', // white
+      'rgba(59, 130, 246, 0.08)',  // blue-500
+      'rgba(99, 102, 241, 0.08)',  // indigo-500
+      'rgba(139, 92, 246, 0.08)',  // violet-500
+      'rgba(168, 85, 247, 0.08)',  // purple-500
+      'rgba(192, 192, 192, 0.06)', // light gray
+      'rgba(255, 255, 255, 0.06)', // white
     ];
 
     // Initialize shapes
@@ -60,38 +60,24 @@ const GeometricBackground = () => {
           y,
           baseX: x,
           baseY: y,
-          size: Math.random() * 80 + 40,
+          size: Math.random() * 60 + 30,
           rotation: Math.random() * Math.PI * 2,
-          rotationSpeed: (Math.random() - 0.5) * 0.008,
+          rotationSpeed: (Math.random() - 0.5) * 0.01,
           type: ['triangle', 'circle', 'square', 'diamond', 'hexagon'][Math.floor(Math.random() * 5)] as Shape['type'],
           color: colors[Math.floor(Math.random() * colors.length)],
-          opacity: Math.random() * 0.04 + 0.02,
-          dx: (Math.random() - 0.5) * 0.1,
-          dy: (Math.random() - 0.5) * 0.1,
+          opacity: Math.random() * 0.12 + 0.08,
+          dx: (Math.random() - 0.5) * 0.3,
+          dy: (Math.random() - 0.5) * 0.3,
         });
       }
     };
 
     initShapes();
 
-    // Mouse movement handler - adds expansion effect from mouse position
+    // Mouse movement handler
     const handleMouseMove = (e: MouseEvent) => {
-      const mouseX = e.clientX;
-      const mouseY = e.clientY;
-      
-      // Add expansion effect from mouse position
-      shapesRef.current.forEach(shape => {
-        const distance = Math.sqrt(
-          Math.pow(shape.x - mouseX, 2) + Math.pow(shape.y - mouseY, 2)
-        );
-        
-        if (distance < 200) {
-          const force = (200 - distance) / 200;
-          const angle = Math.atan2(shape.y - mouseY, shape.x - mouseX);
-          shape.dx += Math.cos(angle) * force * 0.02;
-          shape.dy += Math.sin(angle) * force * 0.02;
-        }
-      });
+      mouseRef.current.x = e.clientX;
+      mouseRef.current.y = e.clientY;
     };
 
     // Device orientation handler for mobile
@@ -174,10 +160,6 @@ const GeometricBackground = () => {
         shape.x += shape.dx;
         shape.y += shape.dy;
         shape.rotation += shape.rotationSpeed;
-        
-        // Apply friction to slow down movement
-        shape.dx *= 0.995;
-        shape.dy *= 0.995;
 
         // Wrap around edges
         if (shape.x < -shape.size) shape.x = canvas.width + shape.size;
@@ -185,38 +167,60 @@ const GeometricBackground = () => {
         if (shape.y < -shape.size) shape.y = canvas.height + shape.size;
         if (shape.y > canvas.height + shape.size) shape.y = -shape.size;
 
-        // Apply device orientation on mobile (subtle drift effect)
-        if (window.innerWidth <= 768) {
-          const tiltInfluence = 0.008;
-          shape.dx += orientationRef.current.gamma * tiltInfluence;
-          shape.dy += orientationRef.current.beta * tiltInfluence;
+        // Calculate parallax effect based on distance from center
+        let offsetX = 0;
+        let offsetY = 0;
+        
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const distanceFromCenter = Math.sqrt(
+          Math.pow(shape.baseX - centerX, 2) + Math.pow(shape.baseY - centerY, 2)
+        );
+        const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
+        const parallaxStrength = (distanceFromCenter / maxDistance) * 0.5 + 0.2;
+
+        // Desktop: mouse parallax
+        if (window.innerWidth > 768) {
+          const mouseInfluence = 0.15 * parallaxStrength;
+          
+          offsetX = (mouseRef.current.x - centerX) * mouseInfluence;
+          offsetY = (mouseRef.current.y - centerY) * mouseInfluence;
+        } else {
+          // Mobile: device orientation with better sensitivity
+          const orientationInfluence = 2.5 * parallaxStrength;
+          offsetX = orientationRef.current.gamma * orientationInfluence;
+          offsetY = orientationRef.current.beta * orientationInfluence;
         }
 
-        // Set style for hollow shapes
+        const finalX = shape.x + offsetX;
+        const finalY = shape.y + offsetY;
+
+        // Set style
+        ctx.fillStyle = shape.color;
         ctx.strokeStyle = shape.color;
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1;
         ctx.globalAlpha = shape.opacity;
 
-        // Draw hollow shape (stroke only, no fill)
+        // Draw shape
         switch (shape.type) {
           case 'triangle':
-            drawTriangle(ctx, shape.x, shape.y, shape.size, shape.rotation);
+            drawTriangle(ctx, finalX, finalY, shape.size, shape.rotation);
             break;
           case 'circle':
-            drawCircle(ctx, shape.x, shape.y, shape.size);
+            drawCircle(ctx, finalX, finalY, shape.size);
             break;
           case 'square':
-            drawSquare(ctx, shape.x, shape.y, shape.size, shape.rotation);
+            drawSquare(ctx, finalX, finalY, shape.size, shape.rotation);
             break;
           case 'diamond':
-            drawDiamond(ctx, shape.x, shape.y, shape.size, shape.rotation);
+            drawDiamond(ctx, finalX, finalY, shape.size, shape.rotation);
             break;
           case 'hexagon':
-            drawHexagon(ctx, shape.x, shape.y, shape.size, shape.rotation);
+            drawHexagon(ctx, finalX, finalY, shape.size, shape.rotation);
             break;
         }
 
-        ctx.stroke();
+        ctx.fill();
         ctx.globalAlpha = 1;
       });
 
