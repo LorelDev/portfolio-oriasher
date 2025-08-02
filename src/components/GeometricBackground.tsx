@@ -36,14 +36,14 @@ const GeometricBackground = () => {
 
     updateCanvasSize();
 
-    // Profile image gradient colors - blue to purple
+    // Profile image gradient colors - blue to purple with better visibility
     const colors = [
-      'rgba(59, 130, 246, 0.03)',  // blue-500
-      'rgba(99, 102, 241, 0.03)',  // indigo-500
-      'rgba(139, 92, 246, 0.03)',  // violet-500
-      'rgba(168, 85, 247, 0.03)',  // purple-500
-      'rgba(192, 192, 192, 0.02)', // light gray
-      'rgba(255, 255, 255, 0.02)', // white
+      'rgba(59, 130, 246, 0.08)',  // blue-500
+      'rgba(99, 102, 241, 0.08)',  // indigo-500
+      'rgba(139, 92, 246, 0.08)',  // violet-500
+      'rgba(168, 85, 247, 0.08)',  // purple-500
+      'rgba(192, 192, 192, 0.06)', // light gray
+      'rgba(255, 255, 255, 0.06)', // white
     ];
 
     // Initialize shapes
@@ -60,14 +60,14 @@ const GeometricBackground = () => {
           y,
           baseX: x,
           baseY: y,
-          size: Math.random() * 40 + 20,
+          size: Math.random() * 60 + 30,
           rotation: Math.random() * Math.PI * 2,
-          rotationSpeed: (Math.random() - 0.5) * 0.005,
+          rotationSpeed: (Math.random() - 0.5) * 0.01,
           type: ['triangle', 'circle', 'square', 'diamond', 'hexagon'][Math.floor(Math.random() * 5)] as Shape['type'],
           color: colors[Math.floor(Math.random() * colors.length)],
-          opacity: Math.random() * 0.03 + 0.01,
-          dx: (Math.random() - 0.5) * 0.2,
-          dy: (Math.random() - 0.5) * 0.2,
+          opacity: Math.random() * 0.12 + 0.08,
+          dx: (Math.random() - 0.5) * 0.3,
+          dy: (Math.random() - 0.5) * 0.3,
         });
       }
     };
@@ -83,8 +83,9 @@ const GeometricBackground = () => {
     // Device orientation handler for mobile
     const handleDeviceOrientation = (e: DeviceOrientationEvent) => {
       if (e.gamma !== null && e.beta !== null) {
-        orientationRef.current.gamma = e.gamma;
-        orientationRef.current.beta = e.beta;
+        // Clamp values to reasonable range
+        orientationRef.current.gamma = Math.max(-30, Math.min(30, e.gamma));
+        orientationRef.current.beta = Math.max(-30, Math.min(30, e.beta));
       }
     };
 
@@ -166,21 +167,27 @@ const GeometricBackground = () => {
         if (shape.y < -shape.size) shape.y = canvas.height + shape.size;
         if (shape.y > canvas.height + shape.size) shape.y = -shape.size;
 
-        // Calculate parallax effect
+        // Calculate parallax effect based on distance from center
         let offsetX = 0;
         let offsetY = 0;
+        
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const distanceFromCenter = Math.sqrt(
+          Math.pow(shape.baseX - centerX, 2) + Math.pow(shape.baseY - centerY, 2)
+        );
+        const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
+        const parallaxStrength = (distanceFromCenter / maxDistance) * 0.5 + 0.2;
 
         // Desktop: mouse parallax
         if (window.innerWidth > 768) {
-          const centerX = canvas.width / 2;
-          const centerY = canvas.height / 2;
-          const mouseInfluence = 0.02;
+          const mouseInfluence = 0.15 * parallaxStrength;
           
           offsetX = (mouseRef.current.x - centerX) * mouseInfluence;
           offsetY = (mouseRef.current.y - centerY) * mouseInfluence;
         } else {
-          // Mobile: device orientation
-          const orientationInfluence = 0.3;
+          // Mobile: device orientation with better sensitivity
+          const orientationInfluence = 2.5 * parallaxStrength;
           offsetX = orientationRef.current.gamma * orientationInfluence;
           offsetY = orientationRef.current.beta * orientationInfluence;
         }
@@ -221,9 +228,14 @@ const GeometricBackground = () => {
     };
 
     // Event listeners
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('deviceorientation', handleDeviceOrientation);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
     window.addEventListener('resize', handleResize);
+
+    // Request permission for device orientation on iOS
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+      (DeviceOrientationEvent as any).requestPermission();
+    }
 
     // Start animation
     animate();
