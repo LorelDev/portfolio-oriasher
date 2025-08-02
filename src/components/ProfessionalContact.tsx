@@ -120,23 +120,18 @@ const ProfessionalContact: React.FC<ProfessionalContactProps> = ({ language, cur
             className="space-y-8"
           >
             <Card className="bg-soft-black border-dark-gray p-8">
-              <h3 className="text-2xl font-medium text-almost-white mb-8">{currentText.contact.connect}</h3>
-              <div className="space-y-4">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-4 p-4 bg-dark-gray hover:bg-light-gray/10 rounded-lg transition-all duration-300 group"
-                  >
-                    <social.icon size={20} className="text-light-gray group-hover:text-almost-white transition-colors" />
-                    <span className="text-almost-white group-hover:text-light-gray transition-colors">
-                      {social.label}
-                    </span>
-                  </a>
-                ))}
-              </div>
+              <h3 className="text-2xl font-medium text-almost-white mb-8">תתחברו איתי בלינקדאין!</h3>
+              <a
+                href="https://www.linkedin.com/in/ori-asher-a9b542320/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-4 p-6 bg-gradient-to-r from-blue-600/20 to-blue-500/20 hover:from-blue-600/30 hover:to-blue-500/30 rounded-lg transition-all duration-300 group border border-blue-500/20 hover:border-blue-500/40"
+              >
+                <Linkedin size={24} className="text-blue-400 group-hover:text-blue-300 transition-colors" />
+                <span className="text-almost-white group-hover:text-blue-100 transition-colors text-lg font-medium">
+                  LinkedIn
+                </span>
+              </a>
             </Card>
 
             <Card className="bg-soft-black border-dark-gray p-8">
