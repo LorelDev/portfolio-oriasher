@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import MagicTrail from "./components/MagicTrail";
+import GeometricBackground from "./components/GeometricBackground";
 import LiveDotsBackground from "./components/LiveDotsBackground";
 
 const queryClient = new QueryClient();
@@ -16,7 +16,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <MagicTrail />
+      <GeometricBackground />
       <LiveDotsBackground color="#ffffff" />
       <BrowserRouter>
         <Routes>

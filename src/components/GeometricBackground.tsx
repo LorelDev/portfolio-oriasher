@@ -1,0 +1,253 @@
+import { useEffect, useRef } from "react";
+
+interface Shape {
+  x: number;
+  y: number;
+  size: number;
+  rotation: number;
+  rotationSpeed: number;
+  type: 'triangle' | 'circle' | 'square' | 'diamond' | 'hexagon';
+  color: string;
+  opacity: number;
+  dx: number;
+  dy: number;
+  baseX: number;
+  baseY: number;
+}
+
+const GeometricBackground = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const shapesRef = useRef<Shape[]>([]);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const orientationRef = useRef({ gamma: 0, beta: 0 });
+  const animationRef = useRef<number>();
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const updateCanvasSize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    updateCanvasSize();
+
+    // Profile image gradient colors - blue to purple
+    const colors = [
+      'rgba(59, 130, 246, 0.03)',  // blue-500
+      'rgba(99, 102, 241, 0.03)',  // indigo-500
+      'rgba(139, 92, 246, 0.03)',  // violet-500
+      'rgba(168, 85, 247, 0.03)',  // purple-500
+      'rgba(192, 192, 192, 0.02)', // light gray
+      'rgba(255, 255, 255, 0.02)', // white
+    ];
+
+    // Initialize shapes
+    const initShapes = () => {
+      shapesRef.current = [];
+      const shapeCount = Math.min(20, Math.floor((canvas.width * canvas.height) / 50000));
+      
+      for (let i = 0; i < shapeCount; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        
+        shapesRef.current.push({
+          x,
+          y,
+          baseX: x,
+          baseY: y,
+          size: Math.random() * 40 + 20,
+          rotation: Math.random() * Math.PI * 2,
+          rotationSpeed: (Math.random() - 0.5) * 0.005,
+          type: ['triangle', 'circle', 'square', 'diamond', 'hexagon'][Math.floor(Math.random() * 5)] as Shape['type'],
+          color: colors[Math.floor(Math.random() * colors.length)],
+          opacity: Math.random() * 0.03 + 0.01,
+          dx: (Math.random() - 0.5) * 0.2,
+          dy: (Math.random() - 0.5) * 0.2,
+        });
+      }
+    };
+
+    initShapes();
+
+    // Mouse movement handler
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseRef.current.x = e.clientX;
+      mouseRef.current.y = e.clientY;
+    };
+
+    // Device orientation handler for mobile
+    const handleDeviceOrientation = (e: DeviceOrientationEvent) => {
+      if (e.gamma !== null && e.beta !== null) {
+        orientationRef.current.gamma = e.gamma;
+        orientationRef.current.beta = e.beta;
+      }
+    };
+
+    // Window resize handler
+    const handleResize = () => {
+      updateCanvasSize();
+      initShapes();
+    };
+
+    // Draw shape functions
+    const drawTriangle = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number, rotation: number) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
+      ctx.beginPath();
+      ctx.moveTo(0, -size / 2);
+      ctx.lineTo(-size / 2, size / 2);
+      ctx.lineTo(size / 2, size / 2);
+      ctx.closePath();
+      ctx.restore();
+    };
+
+    const drawCircle = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number) => {
+      ctx.beginPath();
+      ctx.arc(x, y, size / 2, 0, Math.PI * 2);
+    };
+
+    const drawSquare = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number, rotation: number) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
+      ctx.beginPath();
+      ctx.rect(-size / 2, -size / 2, size, size);
+      ctx.restore();
+    };
+
+    const drawDiamond = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number, rotation: number) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
+      ctx.beginPath();
+      ctx.moveTo(0, -size / 2);
+      ctx.lineTo(size / 2, 0);
+      ctx.lineTo(0, size / 2);
+      ctx.lineTo(-size / 2, 0);
+      ctx.closePath();
+      ctx.restore();
+    };
+
+    const drawHexagon = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number, rotation: number) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (i * Math.PI) / 3;
+        const px = Math.cos(angle) * size / 2;
+        const py = Math.sin(angle) * size / 2;
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.restore();
+    };
+
+    // Animation loop
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      shapesRef.current.forEach((shape) => {
+        // Update position with base movement
+        shape.x += shape.dx;
+        shape.y += shape.dy;
+        shape.rotation += shape.rotationSpeed;
+
+        // Wrap around edges
+        if (shape.x < -shape.size) shape.x = canvas.width + shape.size;
+        if (shape.x > canvas.width + shape.size) shape.x = -shape.size;
+        if (shape.y < -shape.size) shape.y = canvas.height + shape.size;
+        if (shape.y > canvas.height + shape.size) shape.y = -shape.size;
+
+        // Calculate parallax effect
+        let offsetX = 0;
+        let offsetY = 0;
+
+        // Desktop: mouse parallax
+        if (window.innerWidth > 768) {
+          const centerX = canvas.width / 2;
+          const centerY = canvas.height / 2;
+          const mouseInfluence = 0.02;
+          
+          offsetX = (mouseRef.current.x - centerX) * mouseInfluence;
+          offsetY = (mouseRef.current.y - centerY) * mouseInfluence;
+        } else {
+          // Mobile: device orientation
+          const orientationInfluence = 0.3;
+          offsetX = orientationRef.current.gamma * orientationInfluence;
+          offsetY = orientationRef.current.beta * orientationInfluence;
+        }
+
+        const finalX = shape.x + offsetX;
+        const finalY = shape.y + offsetY;
+
+        // Set style
+        ctx.fillStyle = shape.color;
+        ctx.strokeStyle = shape.color;
+        ctx.lineWidth = 1;
+        ctx.globalAlpha = shape.opacity;
+
+        // Draw shape
+        switch (shape.type) {
+          case 'triangle':
+            drawTriangle(ctx, finalX, finalY, shape.size, shape.rotation);
+            break;
+          case 'circle':
+            drawCircle(ctx, finalX, finalY, shape.size);
+            break;
+          case 'square':
+            drawSquare(ctx, finalX, finalY, shape.size, shape.rotation);
+            break;
+          case 'diamond':
+            drawDiamond(ctx, finalX, finalY, shape.size, shape.rotation);
+            break;
+          case 'hexagon':
+            drawHexagon(ctx, finalX, finalY, shape.size, shape.rotation);
+            break;
+        }
+
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      });
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    // Event listeners
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('deviceorientation', handleDeviceOrientation);
+    window.addEventListener('resize', handleResize);
+
+    // Start animation
+    animate();
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('deviceorientation', handleDeviceOrientation);
+      window.removeEventListener('resize', handleResize);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed top-0 left-0 w-full h-full pointer-events-none"
+      style={{ 
+        zIndex: 5,
+        background: "transparent" 
+      }}
+    />
+  );
+};
+
+export default GeometricBackground;
